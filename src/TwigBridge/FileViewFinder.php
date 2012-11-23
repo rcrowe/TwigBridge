@@ -2,7 +2,7 @@
 
 namespace TwigBridge;
 
-class FileViewFinder extends Illuminate\View\FileViewFinder
+class FileViewFinder extends \Illuminate\View\FileViewFinder
 {
     /**
      * Register a view extension with the finder.
