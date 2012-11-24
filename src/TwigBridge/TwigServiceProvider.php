@@ -5,7 +5,6 @@ namespace TwigBridge;
 use Illuminate\View\ViewServiceProvider;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\Support\MessageBag;
-use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_Lexer;
 
@@ -72,7 +71,7 @@ class TwigServiceProvider extends ViewServiceProvider
             $options['cache'] = $app['config']->get('cache.path').'/twig';
         }
 
-        $loader = new Twig_Loader_Filesystem($paths);
+        $loader = new Twig\Loader\Filesystem($paths);
         $twig   = new Twig_Environment($loader, $options);
 
         // Allow block delimiters to be changes
