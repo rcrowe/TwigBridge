@@ -65,7 +65,10 @@ class TwigServiceProvider extends ViewServiceProvider
             // 'cache' => $app['config']['cache.path'],
         ));
 
-        $resolver->register('twig', function() use($twig) { return new Engines\TwigEngine($twig); });
+        $resolver->register('twig', function() use($twig)
+        {
+            return new Engines\TwigEngine($twig);
+        });
     }
 
     /**
