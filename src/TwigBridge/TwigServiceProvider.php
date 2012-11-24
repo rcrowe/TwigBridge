@@ -7,6 +7,7 @@ use Illuminate\View\Engines\EngineResolver;
 use Illuminate\Support\MessageBag;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use Twig_Lexer;
 
 class TwigServiceProvider extends ViewServiceProvider
 {
@@ -18,6 +19,9 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function register($app)
     {
+        // Register the package configuration with the loader.
+        $app['config']->package('rcrowe/twigbridge', __DIR__.'/../');
+
         $this->registerEngineResolver($app);
         $this->registerViewFinder($app);
         $this->registerEnvironment($app);
@@ -60,11 +64,27 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $paths = $app['config']['view.paths'];
 
-        $loader = new Twig_Loader_Filesystem($paths);
-        $twig   = new Twig_Environment($loader, array(
-            // 'cache' => $app['config']['cache.path'],
-        ));
+        // Grab the environment options from the config
+        $options = $app['config']->get('twigbridge::environment', array());
 
+        // If no cache path is set, we will try using the default file storage path
+        if (!isset($options['cache'])) {
+            $options['cache'] = $app['config']->get('cache.path').'/twig';
+        }
+
+        $loader = new Twig_Loader_Filesystem($paths);
+        $twig   = new Twig_Environment($loader, $options);
+
+        // Allow block delimiters to be changes
+        $lexer = new Twig_Lexer($twig, $app['config']->get('twigbridge::delimiters', array(
+            'tag_comment'  => array('{#', '#}'),
+            'tag_block'    => array('{%', '%}'),
+            'tag_variable' => array('{{', '}}'),
+        )));
+
+        $twig->setLexer($lexer);
+
+        // Register twig engine
         $resolver->register('twig', function() use($twig)
         {
             return new Engines\TwigEngine($twig);
