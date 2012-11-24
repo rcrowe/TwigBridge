@@ -5,5 +5,9 @@ Add:
 - "rcrowe/twigbridge" to your composer.json
 - TwigBridge\TwigServiceProvider to your providers in app.php
 
-Currently no configuration of Twig is provided, or any intergration for calling Laravel functions 
-but I should have these added in soon.
+Configuration:
+- Take a look at src/twigbridge.php for default configuration
+- Override by creating app/config/packages/rcrowe/twigbridge.php and copy& change what you need
+
+Illuminate Intergration:
+- Currently working on intergration
