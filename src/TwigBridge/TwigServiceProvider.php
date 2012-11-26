@@ -114,9 +114,9 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerEnvironment()
     {
-        $me = $this;
+        list($me, $app) = array($this, $this->app);
 
-        $this->app['view'] = $this->app->share(function($app) use ($me)
+        $app['view'] = $app->share(function($app) use ($me)
         {
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
