@@ -59,4 +59,16 @@ return array(
         // A flag that indicates which optimizations to apply (default to -1 -- all optimizations are enabled; set it to 0 to disable)
         'optimizations' => -1,
     ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Extensions
+    |--------------------------------------------------------------------------
+    |
+    | List of Twig extensions that are made available to your Twig templates.
+    |
+    */
+    'extensions' => array(
+        'TwigBridge\Extensions\Url',
+    ),
 );

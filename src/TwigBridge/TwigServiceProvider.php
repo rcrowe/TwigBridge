@@ -83,6 +83,13 @@ class TwigServiceProvider extends ViewServiceProvider
 
         $twig->setLexer($lexer);
 
+        // Load extensions
+        $extensions = $this->app['config']->get('twigbridge::extensions', array());
+
+        foreach ($extensions as $extension) {
+            $twig->addExtension( new $extension );
+        }
+
         // Register twig engine
         $resolver->register('twig', function() use($twig)
         {
