@@ -34,9 +34,9 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerEngineResolver()
     {
-        $me = $this;
+        list($me, $app) = array($this, $this->app);
 
-        $this->app['view.engine.resolver'] = $this->app->share(function($app) use($me)
+        $app['view.engine.resolver'] = $app->share(function($app) use ($me)
         {
             $resolver = new EngineResolver;
 
