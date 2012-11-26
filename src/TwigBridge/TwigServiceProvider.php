@@ -16,14 +16,14 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function register($app)
+    public function register()
     {
         // Register the package configuration with the loader.
-        $app['config']->package('rcrowe/twigbridge', __DIR__.'/../');
+        $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../');
 
-        $this->registerEngineResolver($app);
-        $this->registerViewFinder($app);
-        $this->registerEnvironment($app);
+        $this->registerEngineResolver();
+        $this->registerViewFinder();
+        $this->registerEnvironment();
     }
 
     /**
@@ -32,11 +32,11 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function registerEngineResolver($app)
+    public function registerEngineResolver()
     {
         $me = $this;
 
-        $app['view.engine.resolver'] = $app->share(function($app) use($me)
+        $this->app['view.engine.resolver'] = $this->app->share(function($app) use($me)
         {
             $resolver = new EngineResolver;
 
@@ -45,7 +45,7 @@ class TwigServiceProvider extends ViewServiceProvider
             // on the extension of view files. We call a method for each engines.
             foreach (array('php', 'blade', 'twig') as $engine)
             {
-                $me->{'register'.ucfirst($engine).'Engine'}($app, $resolver);
+                $me->{'register'.ucfirst($engine).'Engine'}($resolver);
             }
 
             return $resolver;
@@ -59,23 +59,23 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerTwigEngine($app, $resolver)
+    public function registerTwigEngine($resolver)
     {
-        $paths = $app['config']['view.paths'];
+        $paths = $this->app['config']['view.paths'];
 
         // Grab the environment options from the config
-        $options = $app['config']->get('twigbridge::environment', array());
+        $options = $this->app['config']->get('twigbridge::environment', array());
 
         // If no cache path is set, we will try using the default file storage path
         if (!isset($options['cache'])) {
-            $options['cache'] = $app['config']->get('cache.path').'/twig';
+            $options['cache'] = $this->app['config']->get('cache.path').'/twig';
         }
 
         $loader = new Twig\Loader\Filesystem($paths);
         $twig   = new Twig_Environment($loader, $options);
 
         // Allow block delimiters to be changes
-        $lexer = new Twig_Lexer($twig, $app['config']->get('twigbridge::delimiters', array(
+        $lexer = new Twig_Lexer($twig, $this->app['config']->get('twigbridge::delimiters', array(
             'tag_comment'  => array('{#', '#}'),
             'tag_block'    => array('{%', '%}'),
             'tag_variable' => array('{{', '}}'),
@@ -96,9 +96,9 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function registerViewFinder($app)
+    public function registerViewFinder()
     {
-        $app['view.finder'] = $app->share(function($app)
+        $this->app['view.finder'] = $this->app->share(function($app)
         {
             $paths = $app['config']['view.paths'];
 
@@ -112,11 +112,11 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function registerEnvironment($app)
+    public function registerEnvironment()
     {
         $me = $this;
 
-        $app['view'] = $app->share(function($app) use ($me)
+        $this->app['view'] = $this->app->share(function($app) use ($me)
         {
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
