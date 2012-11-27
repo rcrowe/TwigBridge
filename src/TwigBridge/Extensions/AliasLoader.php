@@ -4,6 +4,12 @@ namespace TwigBridge\Extensions;
 
 use Twig_Function_Function;
 
+/**
+ * If enabled, when a function used in a Twig template can not be found
+ * we fall back to calling those classes defined in the alias array.
+ *
+ * These means we get nicer integration with Laravel functions.
+ */
 class AliasLoader
 {
     /**
@@ -22,6 +28,12 @@ class AliasLoader
         $this->shortcuts = array_change_key_case($shortcuts, CASE_LOWER);
     }
 
+    /**
+     * Get the function responsible for the Twig function.
+     *
+     * @param string $name Name of the Twig function.
+     * @return Twig_Function_Function|false False if the function can not be found.
+     */
     public function getFunction($name)
     {
         // Check for user defined alias of Twig functions

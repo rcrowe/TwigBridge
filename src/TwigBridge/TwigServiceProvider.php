@@ -83,7 +83,7 @@ class TwigServiceProvider extends ViewServiceProvider
 
         $twig->setLexer($lexer);
 
-        // Load extensions
+        // Load config defined extensions
         $extensions = $this->app['config']->get('twigbridge::extensions', array());
 
         foreach ($extensions as $extension) {
@@ -107,8 +107,15 @@ class TwigServiceProvider extends ViewServiceProvider
         }
 
         // Register twig engine
-        $resolver->register('twig', function() use($twig)
+        $app = $this->app;
+
+        $resolver->register('twig', function() use($app, $twig)
         {
+            // Give anyone listening the chance to alter Twig
+            // Perfect example is adding Twig extensions.
+            // Another package can automatically add Twig function support.
+            $app['events']->fire('twigbridge.twig', array($twig));
+
             return new Engines\TwigEngine($twig);
         });
     }
