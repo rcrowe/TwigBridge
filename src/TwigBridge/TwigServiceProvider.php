@@ -10,7 +10,7 @@ use Twig_Lexer;
 
 class TwigServiceProvider extends ViewServiceProvider
 {
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.2';
 
     /**
      * Register the service provider.
