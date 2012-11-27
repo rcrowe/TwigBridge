@@ -27,7 +27,7 @@ TwigBridge's configuration file can be extended by creating `app/config/packages
 You can quickly publish a configuration file by running the following Artisan command.
 
 ```php
-$ php artisan config:publish jasonlewis/basset
+$ php artisan config:publish rcrowe/twigbridge
 ```
 
 Extensions
