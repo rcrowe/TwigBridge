@@ -5,17 +5,17 @@ namespace TwigBridge\Extensions;
 use Twig_Extension;
 use Twig_Function_Function;
 
-class Url extends Twig_Extension
+class Example extends Twig_Extension
 {
     public function getName()
     {
-        return 'url';
+        return 'Example';
     }
 
     public function getFunctions()
     {
         return array(
-            'url' => new Twig_Function_Function('URL::to'),
+            'example_url' => new Twig_Function_Function('URL::to'),
         );
     }
 }

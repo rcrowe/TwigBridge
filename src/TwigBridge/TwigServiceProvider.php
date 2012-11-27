@@ -90,6 +90,22 @@ class TwigServiceProvider extends ViewServiceProvider
             $twig->addExtension( new $extension );
         }
 
+        // Alias loader
+        // We look for the Twig function in our aliases
+        // It takes the pattern alias_function(...)
+        $aliases   = $this->app['config']->get('app.aliases', array());
+        $shortcuts = $this->app['config']->get('twigbridge::alias_shortcuts', array());
+
+        // Allow alias functions to be disabled
+        if (!$this->app['config']->get('twigbridge::disable_aliases', false)) {
+            $twig->registerUndefinedFunctionCallback(function($name) use($aliases, $shortcuts) {
+                // Allow any method on aliased classes
+                // Classes are aliased in your config/app.php file
+                $alias = new Extensions\AliasLoader($aliases, $shortcuts);
+                return $alias->getFunction($name);
+            });
+        }
+
         // Register twig engine
         $resolver->register('twig', function() use($twig)
         {

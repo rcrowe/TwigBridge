@@ -66,9 +66,38 @@ return array(
     |--------------------------------------------------------------------------
     |
     | List of Twig extensions that are made available to your Twig templates.
+    | When an unknown function is called within your templates, Twig looks to these
+    | extensions first.
     |
     */
+    // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
-        'TwigBridge\Extensions\Url',
+        // 'TwigBridge\Extensions\Example',
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Alias Extensions
+    |--------------------------------------------------------------------------
+    |
+    | TwigBridge automatically gives you access to all classes and public methods
+    | that you define as aliases in app/config/app.php
+    |
+    | It follows the format of class_method(...). So for example:
+    |
+    | hash_make -> calls Hash::make(...)
+    | url_to    -> calls URL::to(...)
+    |
+    | These are called last, after built-in functions and extensions defined above.
+    */
+    // Do not allow all aliases to be accessed as Twig functions
+    // NOTE: If you change this, make sure you clear your cache
+    'disable_aliases' => false,
+
+    // Give aliases shortcuts
+    // Key   -> shortcut
+    // Value -> alias
+    'alias_shortcuts' => array(
+        'url' => 'url_to',
     ),
 );
