@@ -60,3 +60,18 @@ Event::listen('twigbridge.twig', function($twig) {
     $twig->addExtension( new TwigBridge\Extensions\Example );
 });
 ```
+
+Artisan
+-------
+
+TwigBridge offers a number of CLI interactions.
+
+List Twig & Bridge versions:
+```php
+$ php artisan twig
+```
+
+Empty the Twig cache:
+```php
+$ php artisan twig:clean
+```

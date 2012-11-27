@@ -10,6 +10,8 @@ use Twig_Lexer;
 
 class TwigServiceProvider extends ViewServiceProvider
 {
+    const VERSION = '0.0.1';
+
     /**
      * Register the service provider.
      *
@@ -24,6 +26,7 @@ class TwigServiceProvider extends ViewServiceProvider
         $this->registerEngineResolver();
         $this->registerViewFinder();
         $this->registerEnvironment();
+        $this->registerCommands();
     }
 
     /**
@@ -184,5 +187,28 @@ class TwigServiceProvider extends ViewServiceProvider
 
             return $environment;
         });
+    }
+
+    /**
+     * Register the artisan commands.
+     *
+     * @param  Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    public function registerCommands()
+    {
+        // Info command
+        $this->app['command.twigbridge'] = $this->app->share(function($app)
+        {
+            return new Console\TwigBridgeCommand;
+        });
+
+        // Empty Twig cache command
+        $this->app['command.twigbridge.clean'] = $this->app->share(function($app)
+        {
+            return new Console\CleanCommand;
+        });
+
+        $this->commands('command.twigbridge', 'command.twigbridge.clean');
     }
 }
