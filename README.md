@@ -46,7 +46,7 @@ Intergration
 
 You are able to call all Laravel functions in your Twig templates, TwigBridge does this by making all classes defined as `aliases` in `app/config/app.php` as accessible.
 
-To use the Laravel (or indeed any aliased class and method) intergration, function in Twig use the following format `class_method(...)`.
+To use the Laravel intergration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
 
 You can define shortcuts to these by changing the `alias_shortcuts` config parameter. For example, calling `url(...)` is actually an alias to `url_to(...)`.
 
