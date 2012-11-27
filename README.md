@@ -26,7 +26,7 @@ TwigBridge's configuration file can be extended by creating `app/config/packages
 
 You can quickly publish a configuration file by running the following Artisan command.
 
-```php
+```
 $ php artisan config:publish rcrowe/twigbridge
 ```
 
@@ -67,11 +67,11 @@ Artisan
 TwigBridge offers a number of CLI interactions.
 
 List Twig & Bridge versions:
-```php
+```
 $ php artisan twig
 ```
 
 Empty the Twig cache:
-```php
+```
 $ php artisan twig:clean
 ```
