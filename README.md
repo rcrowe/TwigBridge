@@ -41,6 +41,9 @@ Sometimes you want to extend / add new functions for use in Twig templates. Add 
 )
 ```
 
+TwigBridge comes with the following Extensions:
+- HTML (Meido\HTML & Meido\Form)
+
 Intergration
 ------------
 
