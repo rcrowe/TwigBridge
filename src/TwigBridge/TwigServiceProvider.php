@@ -90,7 +90,16 @@ class TwigServiceProvider extends ViewServiceProvider
         $extensions = $this->app['config']->get('twigbridge::extensions', array());
 
         foreach ($extensions as $extension) {
-            $twig->addExtension( new $extension );
+
+            // Create a new instance of the extension
+            $obj = new $extension;
+
+            // If of correct type, set the application object on the extension
+            if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
+                $obj->setApp($this->app);
+            }
+
+            $twig->addExtension($obj);
         }
 
         // Alias loader

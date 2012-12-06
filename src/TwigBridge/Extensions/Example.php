@@ -2,10 +2,9 @@
 
 namespace TwigBridge\Extensions;
 
-use Twig_Extension;
 use Twig_Function_Function;
 
-class Example extends Twig_Extension
+class Example extends Extension
 {
     public function getName()
     {

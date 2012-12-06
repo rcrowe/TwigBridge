@@ -73,6 +73,7 @@ return array(
     // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
         // 'TwigBridge\Extensions\Example',
+        'TwigBridge\Extensions\Html',
     ),
 
     /*
@@ -98,6 +99,7 @@ return array(
     // Key   -> shortcut
     // Value -> alias
     'alias_shortcuts' => array(
-        'url' => 'url_to',
+        'url'    => 'url_to',
+        'config' => 'config_get',
     ),
 );
