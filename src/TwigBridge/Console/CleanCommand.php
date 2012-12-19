@@ -31,7 +31,7 @@ class CleanCommand extends Command
         // Get the path to where Twig cache lives
         $cache_path = $this->laravel['config']->get('twigbridge::environment.cache', NULL);
 
-        if ($cache_path !== null OR !file_exists($cache_path)) {
+        if ($cache_path === null OR !file_exists($cache_path)) {
             $cache_path = $this->laravel['config']->get('cache.path').'/twig';
         }
 
