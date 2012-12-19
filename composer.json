@@ -16,6 +16,9 @@
         "meido/html": "1.0.*",
         "meido/form": "1.0.*"
     },
+    "require-dev": {
+        "mockery/mockery": "0.7.2"
+    },
     "autoload": {
         "psr-0": {
             "TwigBridge": "src/"
