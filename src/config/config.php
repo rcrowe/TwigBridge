@@ -77,6 +77,6 @@ return array(
     */
     // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
-        // 'TwigBridge\Extensions\Html',
+        'TwigBridge\Extensions\Html',
     ),
 );
