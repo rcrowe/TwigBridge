@@ -12,7 +12,7 @@ class TwigServiceProvider extends ViewServiceProvider
     /**
      * @var string TwigBridge version
      */
-    const VERSION = '0.0.6';
+    const VERSION = '0.1.0';
 
     /**
      * Register the service provider.
@@ -68,8 +68,8 @@ class TwigServiceProvider extends ViewServiceProvider
         $extension = $this->app['config']->get('twigbridge::extension', 'twig');
 
         if (!isset($options['cache']) OR $options['cache'] === null) {
+            // No cache path set for Twig, lets set to the Laravel views storage folder
             $options['cache'] = $this->app['path'].'/storage/views/twig';
-
             $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
         }
 
