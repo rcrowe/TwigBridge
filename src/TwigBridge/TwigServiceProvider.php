@@ -86,20 +86,20 @@ class TwigServiceProvider extends ViewServiceProvider
         $twig->setLexer($lexer);
 
         // Load config defined extensions
-        // $extensions = $this->app['config']->get('twigbridge::extensions', array());
+        $extensions = $this->app['config']->get('twigbridge::extensions', array());
 
-        // foreach ($extensions as $extension) {
+        foreach ($extensions as $extension) {
 
-        //     // Create a new instance of the extension
-        //     $obj = new $extension;
+            // Create a new instance of the extension
+            $obj = new $extension;
 
-        //     // If of correct type, set the application object on the extension
-        //     if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
-        //         $obj->setApp($this->app);
-        //     }
+            // If of correct type, set the application object on the extension
+            if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
+                $obj->setApp($this->app);
+            }
 
-        //     $twig->addExtension($obj);
-        // }
+            $twig->addExtension($obj);
+        }
 
         // // Alias loader
         // // We look for the Twig function in our aliases
