@@ -73,17 +73,17 @@ class TwigServiceProvider extends ViewServiceProvider
             $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
         }
 
-        $loader = new Twig\Loader\Filesystem($paths, $extension);
-        $twig   = new Twig_Environment($loader, $options);
+        // $loader = new Twig\Loader\Filesystem($paths, $extension);
+        // $twig   = new Twig_Environment($loader, $options);
 
         // Allow block delimiters to be changes
-        $lexer = new Twig_Lexer($twig, $this->app['config']->get('twigbridge::delimiters', array(
-            'tag_comment'  => array('{#', '#}'),
-            'tag_block'    => array('{%', '%}'),
-            'tag_variable' => array('{{', '}}'),
-        )));
+        // $lexer = new Twig_Lexer($twig, $this->app['config']->get('twigbridge::delimiters', array(
+        //     'tag_comment'  => array('{#', '#}'),
+        //     'tag_block'    => array('{%', '%}'),
+        //     'tag_variable' => array('{{', '}}'),
+        // )));
 
-        $twig->setLexer($lexer);
+        // $twig->setLexer($lexer);
 
         // Load config defined extensions
         $extensions = $this->app['config']->get('twigbridge::extensions', array());
@@ -118,17 +118,17 @@ class TwigServiceProvider extends ViewServiceProvider
         // }
 
         // Register twig engine
-        $app = $this->app;
+        // $app = $this->app;
 
-        $resolver->register('twig', function() use($app, $twig)
-        {
-            // Give anyone listening the chance to alter Twig
-            // Perfect example is adding Twig extensions.
-            // Another package can automatically add Twig function support.
-            $app['events']->fire('twigbridge.twig', array($twig));
+        // $resolver->register('twig', function() use($app, $twig)
+        // {
+        //     // Give anyone listening the chance to alter Twig
+        //     // Perfect example is adding Twig extensions.
+        //     // Another package can automatically add Twig function support.
+        //     $app['events']->fire('twigbridge.twig', array($twig));
 
-            return new Engines\TwigEngine($twig);
-        });
+        //     return new Engines\TwigEngine($twig);
+        // });
     }
 
     /**

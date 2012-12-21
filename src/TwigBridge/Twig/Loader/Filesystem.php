@@ -24,6 +24,16 @@ class Filesystem extends Twig_Loader_Filesystem
         $this->extension = $extension;
     }
 
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    }
+
     /**
      * No longer have to use an extension for a twig file in your templates.
      */

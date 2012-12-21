@@ -18,6 +18,11 @@ class TwigEngine implements EngineInterface
         $this->twig = $twig;
     }
 
+    public function getTwig()
+    {
+        return $this->twig;
+    }
+
     /**
      * Get the evaluated contents of the view.
      *
