@@ -13,7 +13,7 @@ class TwigBridge
     public function __construct(Application $app)
     {
         $this->app        = $app;
-        $this->view_paths = $app['config']->get('view.paths');
+        $this->view_paths = $app['config']->get('view.paths', array());
 
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
