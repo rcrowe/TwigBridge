@@ -77,8 +77,6 @@ class TwigServiceProvider extends ViewServiceProvider
         $loader = new Twig\Loader\Filesystem($paths);
         $twig   = new Twig_Environment($loader, $options);
 
-        die('test');
-
         // Allow block delimiters to be changes
         $lexer = new Twig_Lexer($twig, $this->app['config']->get('twigbridge::delimiters', array(
             'tag_comment'  => array('{#', '#}'),
