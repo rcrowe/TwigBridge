@@ -63,15 +63,20 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerTwigEngine($resolver)
     {
-        $paths     = $this->app['config']['view.paths'];
-        $options   = $this->app['config']->get('twigbridge::twig', array());
-        $extension = $this->app['config']->get('twigbridge::extension', 'twig');
+        $bridge = new TwigBridge($this->app);
 
-        if (!isset($options['cache']) OR $options['cache'] === null) {
-            // No cache path set for Twig, lets set to the Laravel views storage folder
-            $options['cache'] = $this->app['path'].'/storage/views/twig';
-            $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
-        }
+        var_dump($bridge->getOptions());
+
+        die(var_dump( get_class($this->app) ));
+
+        // $paths     = $this->app['config']['view.paths'];
+        // $options   = $this->app['config']->get('twigbridge::twig', array());
+
+        // if (!isset($options['cache']) OR $options['cache'] === null) {
+        //     // No cache path set for Twig, lets set to the Laravel views storage folder
+        //     $options['cache'] = $this->app['path'].'/storage/views/twig';
+        //     $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
+        // }
 
         // $loader = new Twig\Loader\Filesystem($paths, $extension);
         // $twig   = new Twig_Environment($loader, $options);
