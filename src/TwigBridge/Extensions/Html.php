@@ -32,7 +32,7 @@ class Html extends Extension
     public function setApp(Application $app)
     {
         $app['html'] = new Meido_HTML($app['url']);
-        $app['form'] = new Meido_Form($app);
+        $app['form'] = new Meido_Form($app['url']);
 
         parent::setApp($app);
     }
