@@ -65,34 +65,7 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $bridge = new TwigBridge($this->app);
 
-        // var_dump($bridge->getOptions());
-
-        // die(var_dump( get_class($this->app) ));
-
-        // $paths     = $this->app['config']['view.paths'];
-        // $options   = $this->app['config']->get('twigbridge::twig', array());
-
-        // if (!isset($options['cache']) OR $options['cache'] === null) {
-        //     // No cache path set for Twig, lets set to the Laravel views storage folder
-        //     $options['cache'] = $this->app['path'].'/storage/views/twig';
-        //     $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
-        // }
-
         $twig = $bridge->getTwig();
-
-        // die(var_dump($twig));
-
-        // $loader = new Twig\Loader\Filesystem($paths, $extension);
-        // $twig   = new Twig_Environment($loader, $options);
-
-        // Allow block delimiters to be changes
-        // $lexer = new Twig_Lexer($twig, $this->app['config']->get('twigbridge::delimiters', array(
-        //     'tag_comment'  => array('{#', '#}'),
-        //     'tag_block'    => array('{%', '%}'),
-        //     'tag_variable' => array('{{', '}}'),
-        // )));
-
-        // $twig->setLexer($lexer);
 
         // Load config defined extensions
         // $extensions = $this->app['config']->get('twigbridge::extensions', array());

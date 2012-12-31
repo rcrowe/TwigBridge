@@ -4,6 +4,7 @@ namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use Twig_Environment;
+use Twig_Lexer;
 
 class TwigBridge
 {
@@ -11,6 +12,7 @@ class TwigBridge
     protected $paths = array();
     protected $options = array();
     protected $extension;
+    protected $lexer;
 
     public function __construct(Application $app)
     {
@@ -58,10 +60,34 @@ class TwigBridge
         $this->extension = $extension;
     }
 
+    public function getLexer(Twig_Environment $twig)
+    {
+        if ($this->lexer !== null) {
+            return $this->lexer;
+        }
+
+        $delimiters = $this->app['config']->get('twigbridge::delimiters', array(
+            'tag_comment'  => array('{#', '#}'),
+            'tag_block'    => array('{%', '%}'),
+            'tag_variable' => array('{{', '}}'),
+        ));
+
+        $this->setLexer($twig, $delimiters);
+
+        return $this->lexer;
+    }
+
+    public function setLexer(Twig_Environment $twig, array $delimiters)
+    {
+        $this->lexer = new Twig_Lexer($twig, $delimiters);
+    }
+
     public function getTwig()
     {
         $loader = new Twig\Loader\Filesystem($this->paths, $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
+
+        $twig->setLexer($this->getLexer($twig));
 
         return $twig;
     }

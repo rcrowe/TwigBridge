@@ -57,6 +57,16 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetTwigLexer()
+    {
+
+    }
+
+    public function testCustomLexer()
+    {
+
+    }
+
     public function getApplication(array $twig_options = array())
     {
         $app = new Application;
