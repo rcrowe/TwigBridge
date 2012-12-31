@@ -65,9 +65,9 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $bridge = new TwigBridge($this->app);
 
-        var_dump($bridge->getOptions());
+        // var_dump($bridge->getOptions());
 
-        die(var_dump( get_class($this->app) ));
+        // die(var_dump( get_class($this->app) ));
 
         // $paths     = $this->app['config']['view.paths'];
         // $options   = $this->app['config']->get('twigbridge::twig', array());
@@ -77,6 +77,10 @@ class TwigServiceProvider extends ViewServiceProvider
         //     $options['cache'] = $this->app['path'].'/storage/views/twig';
         //     $this->app['config']->set('twigbridge::twig.cache', $options['cache']);
         // }
+
+        $twig = $bridge->getTwig();
+
+        // die(var_dump($twig));
 
         // $loader = new Twig\Loader\Filesystem($paths, $extension);
         // $twig   = new Twig_Environment($loader, $options);
@@ -91,20 +95,20 @@ class TwigServiceProvider extends ViewServiceProvider
         // $twig->setLexer($lexer);
 
         // Load config defined extensions
-        $extensions = $this->app['config']->get('twigbridge::extensions', array());
+        // $extensions = $this->app['config']->get('twigbridge::extensions', array());
 
-        foreach ($extensions as $extension) {
+        // foreach ($extensions as $extension) {
 
             // Create a new instance of the extension
-            $obj = new $extension;
+            // $obj = new $extension;
 
             // If of correct type, set the application object on the extension
-            if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
-                $obj->setApp($this->app);
-            }
+            // if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
+                // $obj->setApp($this->app);
+            // }
 
-            $twig->addExtension($obj);
-        }
+            // $twig->addExtension($obj);
+        // }
 
         // // Alias loader
         // // We look for the Twig function in our aliases
@@ -123,17 +127,17 @@ class TwigServiceProvider extends ViewServiceProvider
         // }
 
         // Register twig engine
-        // $app = $this->app;
+        $app = $this->app;
 
-        // $resolver->register('twig', function() use($app, $twig)
-        // {
-        //     // Give anyone listening the chance to alter Twig
-        //     // Perfect example is adding Twig extensions.
-        //     // Another package can automatically add Twig function support.
-        //     $app['events']->fire('twigbridge.twig', array($twig));
+        $resolver->register('twig', function() use($app, $twig)
+        {
+            // Give anyone listening the chance to alter Twig
+            // Perfect example is adding Twig extensions.
+            // Another package can automatically add Twig function support.
+            $app['events']->fire('twigbridge.twig', array($twig));
 
-        //     return new Engines\TwigEngine($twig);
-        // });
+            return new Engines\TwigEngine($twig);
+        });
     }
 
     /**

@@ -28,10 +28,33 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
     public function testSetOptions()
     {
+        // $bridge = new TwigBridge($this->getApplication());
+        // $options = $bridge->getOptions();
+
+        // $this->assertEquals($options['cache'], '/hello/world');
+    }
+
+    public function testCachePathAlreadySet()
+    {
         $bridge = new TwigBridge($this->getApplication(array('cache' => '/hello/world')));
         $options = $bridge->getOptions();
 
         $this->assertEquals($options['cache'], '/hello/world');
+    }
+
+    public function testGetExtension()
+    {
+
+    }
+
+    public function testSetExtension()
+    {
+
+    }
+
+    public function testGetTwig()
+    {
+
     }
 
     public function getApplication(array $twig_options = array())

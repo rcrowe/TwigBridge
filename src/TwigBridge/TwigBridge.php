@@ -3,34 +3,37 @@
 namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
+use Twig_Environment;
 
 class TwigBridge
 {
     protected $app;
-    protected $view_paths = array();
-    protected $twig_options = array();
+    protected $paths = array();
+    protected $options = array();
+    protected $extension;
 
     public function __construct(Application $app)
     {
-        $this->app        = $app;
-        $this->view_paths = $app['config']->get('view.paths', array());
+        $this->app       = $app;
+        $this->paths     = $app['config']->get('view.paths', array());
+        $this->extension = $this->app['config']->get('twigbridge::extension');
 
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
 
     public function getPaths()
     {
-        return $this->view_paths;
+        return $this->paths;
     }
 
     public function setPaths(array $paths)
     {
-        $this->view_paths = $paths;
+        $this->paths = $paths;
     }
 
     public function getOptions()
     {
-        return $this->twig_options;
+        return $this->options;
     }
 
     public function setOptions(array $options)
@@ -42,11 +45,24 @@ class TwigBridge
             $options['cache'] = $this->app['path'].'/storage/views/twig';
         }
 
-        $this->twig_options = $options;
+        $this->options = $options;
+    }
+
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
     }
 
     public function getTwig()
     {
+        $loader = new Twig\Loader\Filesystem($this->paths, $this->extension);
+        $twig   = new Twig_Environment($loader, $this->options);
 
+        return $twig;
     }
 }
