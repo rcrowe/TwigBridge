@@ -12,13 +12,15 @@ class TwigBridge
     protected $paths = array();
     protected $options = array();
     protected $extension;
+    protected $extensions;
     protected $lexer;
 
     public function __construct(Application $app)
     {
-        $this->app       = $app;
-        $this->paths     = $app['config']->get('view.paths', array());
-        $this->extension = $app['config']->get('twigbridge::extension');
+        $this->app        = $app;
+        $this->paths      = $app['config']->get('view.paths', array());
+        $this->extension  = $app['config']->get('twigbridge::extension');
+        $this->extensions = $app['config']->get('twigbridge::extensions', array());
 
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
@@ -60,6 +62,16 @@ class TwigBridge
         $this->extension = $extension;
     }
 
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    public function setExtensions(array $extensions)
+    {
+        $this->extensions = $extensions;
+    }
+
     public function getLexer(Twig_Environment $twig)
     {
         if ($this->lexer !== null) {
@@ -87,7 +99,22 @@ class TwigBridge
         $loader = new Twig\Loader\Filesystem($this->paths, $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
 
+        // Allow template tags to be changed
         $twig->setLexer($this->getLexer($twig));
+
+        // Load extensions
+        foreach ($this->getExtensions() as $extension) {
+
+            // Create a new instance of the extension
+            $obj = new $extension;
+
+            // If of correct type, set the application object on the extension
+            if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
+                $obj->setApp($this->app);
+            }
+
+            $twig->addExtension($obj);
+        }
 
         return $twig;
     }

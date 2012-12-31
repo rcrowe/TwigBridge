@@ -67,6 +67,16 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetExtensions()
+    {
+
+    }
+
+    public function testSetExtensions()
+    {
+
+    }
+
     public function getApplication(array $twig_options = array())
     {
         $app = new Application;
@@ -85,9 +95,16 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('addNamespace')->with('twigbridge', __DIR__);
         $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(function($env, $package, $group, $items) { return $items; });
         $config->getLoader()->shouldReceive('exists')->once()->with('extension', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->once()->with('extensions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->once()->with('twig', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('load')->once()->with('production', 'config', 'twigbridge')->andReturn(
-            array('extension' => 'twig', 'twig' => $twig_options)
+            array(
+                'extension'  => 'twig',
+                'twig'       => $twig_options,
+                'extensions' => array(
+                    'TwigBridge\Extensions\Html',
+                ),
+            )
         );
 
         $config->package('foo/twigbridge', __DIR__);
