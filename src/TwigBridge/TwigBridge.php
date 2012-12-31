@@ -16,7 +16,7 @@ class TwigBridge
     {
         $this->app       = $app;
         $this->paths     = $app['config']->get('view.paths', array());
-        $this->extension = $this->app['config']->get('twigbridge::extension');
+        $this->extension = $app['config']->get('twigbridge::extension');
 
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
