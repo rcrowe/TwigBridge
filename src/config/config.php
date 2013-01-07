@@ -2,11 +2,14 @@
 
 return array(
 
-    /**
-     * File extension for Twig views.
-     *
-     * For example: home.twig or maybe about.twig.html
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Extension
+    |--------------------------------------------------------------------------
+    |
+    | File extension for Twig view files.
+    |
+    */
     'extension' => 'twig',
 
     /*
@@ -73,9 +76,9 @@ return array(
     |--------------------------------------------------------------------------
     |
     | List of Twig extensions that are made available to your Twig templates.
+    | NOTE: If you change this, make sure you clear your cache
     |
     */
-    // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
         'TwigBridge\Extensions\AliasLoader',
         'TwigBridge\Extensions\Html',
@@ -87,6 +90,15 @@ return array(
         // }
     ),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Alias shortcuts
+    |--------------------------------------------------------------------------
+    |
+    | Call these shortcuts in your Twig files. A shortcut is always a shortcut
+    | to an alias.
+    |
+    */
     'alias_shortcuts' => array(
         'config'    => 'config_get',
         'logged_in' => 'auth_check',
@@ -98,8 +110,8 @@ return array(
     | Global variables
     |--------------------------------------------------------------------------
     |
-    | These will always be passed in and can be accessed as Twig variables. Note, these will
-    | be overwritten if you pass data into the view with the same key.
+    | These will always be passed in and can be accessed as Twig variables.
+    | NOTE: these will be overwritten if you pass data into the view with the same key.
     |
     */
     'globals' => array(
