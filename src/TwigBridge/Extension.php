@@ -1,9 +1,9 @@
 <?php
 
-namespace TwigBridge\Extensions;
+namespace TwigBridge;
 
-use Illuminate\Foundation\Application;
 use Twig_Extension;
+use Illuminate\Foundation\Application;
 use Twig_Environment;
 
 abstract class Extension extends Twig_Extension

@@ -2,6 +2,7 @@
 
 namespace TwigBridge\Extensions;
 
+use TwigBridge\Extension;
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Function_Method;
