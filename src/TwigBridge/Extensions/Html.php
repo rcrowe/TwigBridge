@@ -35,7 +35,7 @@ class Html extends Extension
         $app['html'] = new Meido_HTML($app['url']);
         $app['form'] = new Meido_Form($app['url']);
 
-        $this->app  = $app;
+        parent::__construct($app, $twig);
     }
 
     public function getName()
