@@ -1,7 +1,6 @@
 <?php
 
 use TwigBridge\Twig\Loader\Filesystem;
-use Twig_Error_Loader;
 
 class FilesystemTest extends PHPUnit_Framework_TestCase
 {

@@ -1,7 +1,5 @@
 <?php
 
-use Exception;
-use InvalidArgumentException;
 use TwigBridge\Twig\Lexer;
 use TwigBridge\Twig\Loader\Filesystem;
 
