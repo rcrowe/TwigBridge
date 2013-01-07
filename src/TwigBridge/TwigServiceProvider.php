@@ -36,9 +36,9 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerEngineResolver()
     {
-        list($me, $app) = array($this, $this->app);
+        $me = $this;
 
-        $app['view.engine.resolver'] = $app->share(function($app) use ($me)
+        $this->app['view.engine.resolver'] = $this->app->share(function($app) use ($me)
         {
             $resolver = new EngineResolver;
 
@@ -63,37 +63,20 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerTwigEngine($resolver)
     {
-        $bridge = new TwigBridge($this->app);
-
-        $twig = $bridge->getTwig();
-
-        // // Alias loader
-        // // We look for the Twig function in our aliases
-        // // It takes the pattern alias_function(...)
-        // $aliases   = $this->app['config']->get('app.aliases', array());
-        // $shortcuts = $this->app['config']->get('twigbridge::alias_shortcuts', array());
-
-        // // Allow alias functions to be disabled
-        // if (!$this->app['config']->get('twigbridge::disable_aliases', false)) {
-        //     $twig->registerUndefinedFunctionCallback(function($name) use($aliases, $shortcuts) {
-        //         // Allow any method on aliased classes
-        //         // Classes are aliased in your config/app.php file
-        //         $alias = new Extensions\AliasLoader($aliases, $shortcuts);
-        //         return $alias->getFunction($name);
-        //     });
-        // }
-
-        // Register twig engine
         $app = $this->app;
 
-        $resolver->register('twig', function() use($app, $twig)
+        $resolver->register('twig', function() use($app)
         {
-            // Give anyone listening the chance to alter Twig
-            // Perfect example is adding Twig extensions.
-            // Another package can automatically add Twig function support.
+            // Grab Twig
+            $bridge = new TwigBridge($app);
+            $twig   = $bridge->getTwig();
+
             $app['events']->fire('twigbridge.twig', array($twig));
 
-            return new Engines\TwigEngine($twig);
+            // Get any global variables
+            $globals = $app['config']->get('twigbridge::globals', array());
+
+            return new Engines\TwigEngine($twig, $globals);
         });
     }
 

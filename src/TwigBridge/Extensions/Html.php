@@ -3,6 +3,7 @@
 namespace TwigBridge\Extensions;
 
 use Illuminate\Foundation\Application;
+use Twig_Environment;
 use Twig_Function_Method;
 use Meido\HTML\HTML as Meido_HTML;
 use Meido\Form\Form as Meido_Form;
@@ -29,12 +30,12 @@ class Html extends Extension
         'opensecureforfiles' => 'openSecureForFiles',
     );
 
-    public function setApp(Application $app)
+    public function __construct(Application $app, Twig_Environment $twig)
     {
         $app['html'] = new Meido_HTML($app['url']);
         $app['form'] = new Meido_Form($app['url']);
 
-        parent::setApp($app);
+        $this->app  = $app;
     }
 
     public function getName()

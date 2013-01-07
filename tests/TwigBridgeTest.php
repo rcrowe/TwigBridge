@@ -77,6 +77,21 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testSetAliases()
+    {
+
+    }
+
+    public function testSetShortCuts()
+    {
+
+    }
+
+    public function testDisableAliasLoader()
+    {
+
+    }
+
     public function getApplication(array $twig_options = array())
     {
         $app = new Application;

@@ -77,6 +77,36 @@ return array(
     */
     // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
+        'TwigBridge\Extensions\AliasLoader',
         'TwigBridge\Extensions\Html',
+        // function($app) {
+        //     $factory = new Assetic\Factory\AssetFactory($app['path'].'/../public/assets/');
+        //     $factory->setDebug(false);
+        //     // etc.....
+        //     return new Assetic\Extension\Twig\AsseticExtension($factory);
+        // }
     ),
+
+    'alias_shortcuts' => array(
+        'config'    => 'config_get',
+        'logged_in' => 'auth_check',
+        'url'       => 'url_to',
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Global variables
+    |--------------------------------------------------------------------------
+    |
+    | These will always be passed in and can be accessed as Twig variables. Note, these will
+    | be overwritten if you pass data into the view with the same key.
+    |
+    */
+    'globals' => array(
+        // {{ site.name }}
+        // 'site' => array(
+        //    'name' => 'TwigBridge Test'
+        //),
+    ),
+
 );

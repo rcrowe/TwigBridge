@@ -8,19 +8,40 @@ use Twig_Environment;
 class TwigEngine implements EngineInterface
 {
     /**
+     * @var array Set global variables that are always set.
+     */
+    protected $global_data = array();
+
+    /**
      * Create a new instance of the Twig engine.
      *
      * @param Twig_Environment $twig
      * @return void
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Twig_Environment $twig, array $global_data = array())
     {
-        $this->twig = $twig;
+        $this->twig        = $twig;
+        $this->global_data = $global_data;
     }
 
     public function getTwig()
     {
         return $this->twig;
+    }
+
+    public function setGlobalData(array $data)
+    {
+        $this->global_data = $data;
+    }
+
+    public function getGlobalData()
+    {
+        return $this->global_data;
+    }
+
+    public function getData(array $data)
+    {
+        return array_merge($this->getGlobalData(), $data);
     }
 
     /**
@@ -43,6 +64,6 @@ class TwigEngine implements EngineInterface
             }
         }
 
-        return $this->twig->loadTemplate($path)->render($data);
+        return $this->twig->loadTemplate($path)->render($this->getData($data));
     }
 }

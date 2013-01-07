@@ -105,16 +105,29 @@ class TwigBridge
         // Load extensions
         foreach ($this->getExtensions() as $extension) {
 
-            // Create a new instance of the extension
-            $obj = new $extension;
+            // We support both a closure and class based extension
+            $extension = (!is_callable($extension)) ? new $extension($this->app, $twig) : $extension($this->app, $twig);
 
-            // If of correct type, set the application object on the extension
-            if (get_parent_class($obj) === 'TwigBridge\Extensions\Extension') {
-                $obj->setApp($this->app);
-            }
-
-            $twig->addExtension($obj);
+            // Add extension to twig
+            $twig->addExtension($extension);
         }
+
+        // Alias loader
+        // We look for the Twig function in our aliases
+        // $aliases   = $this->app['config']->get('app.aliases', array());
+        // $shortcuts = $this->app['config']->get('twigbridge::alias_shortcuts', array());
+
+        // // Allow alias functions to be disabled
+        // if (!$this->app['config']->get('twigbridge::disable_aliases', false)) {
+
+        //     $loader = new Extensions\AliasLoader($aliases, $shortcuts);
+
+        //     $twig->registerUndefinedFunctionCallback(function($name) use($loader, $aliases, $shortcuts) {
+        //         // Allow any method on aliased classes
+        //         // Classes are aliased in your config/app.php file
+        //         return $loader->getFunction($name);
+        //     });
+        // }
 
         return $twig;
     }

@@ -32,4 +32,9 @@ HTML;
 
         $this->assertEquals($engine->get('child', array('name' => 'Rob')), $html);
     }
+
+    public function testGlobalConfigData()
+    {
+
+    }
 }
