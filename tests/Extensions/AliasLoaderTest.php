@@ -4,7 +4,6 @@ use TwigBridge\Extensions\AliasLoader;
 use Mockery as m;
 use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
-use Twig_Environment;
 
 class AliasLoaderTest extends PHPUnit_Framework_TestCase
 {

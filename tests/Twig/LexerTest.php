@@ -2,7 +2,6 @@
 
 use Exception;
 use InvalidArgumentException;
-use Twig_Environment;
 use TwigBridge\Twig\Lexer;
 use TwigBridge\Twig\Loader\Filesystem;
 

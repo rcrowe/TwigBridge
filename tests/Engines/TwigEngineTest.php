@@ -1,7 +1,6 @@
 <?php
 
 use TwigBridge\Engines\TwigEngine;
-use Twig_Environment;
 use TwigBridge\Twig\Loader\Filesystem;
 
 class TwigEngineTest extends PHPUnit_Framework_TestCase
