@@ -1,11 +1,21 @@
 <?php
 
+/**
+ * Brings Twig to Laravel 4.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge;
 
 use Twig_Extension;
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 
+/**
+ * All extensions should extend this class.
+ */
 abstract class Extension extends Twig_Extension
 {
     /**
