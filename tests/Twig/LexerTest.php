@@ -116,13 +116,13 @@ class LexerTest extends PHPUnit_Framework_TestCase
         $lexer = new Lexer(
             array('{#', '#}'),
             array('{%', '%}'),
-            array('{{', '}}')
+            array('{#', '/}')
         );
 
         $this->assertEquals($lexer->getTags(), array(
             'tag_comment'  => array('{#', '#}'),
             'tag_block'    => array('{%', '%}'),
-            'tag_variable' => array('{{', '}}'),
+            'tag_variable' => array('{#', '/}'),
         ));
     }
 
