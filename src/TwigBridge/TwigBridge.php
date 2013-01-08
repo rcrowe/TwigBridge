@@ -30,14 +30,30 @@ class TwigBridge
     protected $app;
 
     /**
-     * @var array
+     * @var array Twig environment options.
      */
-    protected $paths = array();
     protected $options = array();
+
+    /**
+     * @var string Twig template extension.
+     */
     protected $extension;
-    protected $extensions;
+
+    /**
+     * @var array Extensions to add to Twig.
+     */
+    protected $extensions = array();
+
+    /**
+     * @var TwigBridge\Twig\Lexer Twig_Lexer wrapper.
+     */
     protected $lexer;
 
+    /**
+     * Create a new instance.
+     *
+     * @param Illuminate\Foundation\Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app        = $app;
@@ -47,6 +63,15 @@ class TwigBridge
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
 
+    /**
+     * Get the view paths that Twig should search on.
+     *
+     * Currently this is hacked to work, but hopefully my pull request gets accepted
+     * soon as I can change some of this code out.
+     *
+     * @param array $extra_paths Add any paths to search at runtime. Will look in these first.
+     * @return array Merged paths to look on.
+     */
     public function getPaths(array $extra_paths = array())
     {
         $finder = $this->app['view']->getFinder();
@@ -76,14 +101,27 @@ class TwigBridge
 
         // Combine package and view paths
         // View paths take precedence
-        return array_merge($paths, $namespace_paths, $extra_paths);
+        return array_merge($extra_paths, $paths, $namespace_paths);
     }
 
-    public function getOptions()
+    /**
+     * Get options passed to Twig_Environment.
+     *
+     * @return array
+     */
+    public function getTwigOptions()
     {
         return $this->options;
     }
 
+    /**
+     * Set options passed to Twig_Environment.
+     *
+     * Will set the cache path for you if one is not set.
+     *
+     * @param array $options Twig options.
+     * @return void
+     */
     public function setOptions(array $options)
     {
         // Check whether we have the cache path set
@@ -96,26 +134,50 @@ class TwigBridge
         $this->options = $options;
     }
 
+    /**
+     * Get Twig template extension.
+     *
+     * @return string
+     */
     public function getExtension()
     {
         return $this->extension;
     }
 
+    /**
+     * Set the extension of Twig templates.
+     *
+     * @param string $extension File extension without leading dot.
+     * @return void
+     */
     public function setExtension($extension)
     {
         $this->extension = $extension;
     }
 
+    /**
+     * Get extensions that Twig should add.
+     */
     public function getExtensions()
     {
         return $this->extensions;
     }
 
+    /**
+     * Set the extensions that Twig should add.
+     */
     public function setExtensions(array $extensions)
     {
         $this->extensions = $extensions;
     }
 
+    /**
+     * Get the lexer for Twig to use.
+     *
+     * @param Twig_Environment $twig
+     * @param array            $delimiters Opening & closing tags for comments, blocks & variables.
+     * @return Twig_Lexer
+     */
     public function getLexer(Twig_Environment $twig, array $delimiters = null)
     {
         if ($this->lexer !== null) {
@@ -139,11 +201,21 @@ class TwigBridge
         return $lexer->getLexer($twig);
     }
 
+    /**
+     * Set the lexer Twig should use.
+     *
+     * @param Twig_Lexer $lexer
+     */
     public function setLexer(Twig_Lexer $lexer)
     {
         $this->lexer = $lexer;
     }
 
+    /**
+     * Gets an instance of Twig that can be used to render a view.
+     *
+     * @return Twig_Environment
+     */
     public function getTwig()
     {
         $loader = new Twig\Loader\Filesystem($this->getPaths(), $this->extension);
@@ -153,13 +225,13 @@ class TwigBridge
         $twig->setLexer($this->getLexer($twig));
 
         // Load extensions
-        foreach ($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $twig_extension) {
 
             // We support both a closure and class based extension
-            $extension = (!is_callable($extension)) ? new $extension($this->app, $twig) : $extension($this->app, $twig);
+            $twig_extension = (!is_callable($twig_extension)) ? new $twig_extension($this->app, $twig) : $twig_extension($this->app, $twig);
 
             // Add extension to twig
-            $twig->addExtension($extension);
+            $twig->addExtension($twig_extension);
         }
 
         return $twig;
