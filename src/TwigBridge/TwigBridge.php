@@ -52,7 +52,7 @@ class TwigBridge
     {
         // Super hack until pull-request gets accepted
         // This will work for now
-        // Need to get all paths for packages
+        // Get all paths for registered namespaces
         $finder = $this->app['view']->getFinder();
 
         $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'hints');

@@ -26,6 +26,16 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($options['cache'], __DIR__.'/storage/views/twig');
     }
 
+    public function testGetPaths()
+    {
+
+    }
+
+    public function testSetPaths()
+    {
+
+    }
+
     public function testSetOptions()
     {
         // $bridge = new TwigBridge($this->getApplication());
@@ -96,6 +106,16 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
     {
         $app = new Application;
         $app->instance('path', __DIR__);
+
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->hints = array();
+        // $finder->shouldReceive('getHints')->andReturn(array());
+
+        $app['view'] = new Illuminate\View\Environment(
+            m::mock('Illuminate\View\Engines\EngineResolver'),
+            $finder,
+            m::mock('Illuminate\Events\Dispatcher')
+        );
 
         $config  = new Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
 
