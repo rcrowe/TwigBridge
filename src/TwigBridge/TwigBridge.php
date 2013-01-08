@@ -60,7 +60,7 @@ class TwigBridge
         $this->extension  = $app['config']->get('twigbridge::extension');
         $this->extensions = $app['config']->get('twigbridge::extensions', array());
 
-        $this->setOptions($app['config']->get('twigbridge::twig', array()));
+        $this->setTwigOptions($app['config']->get('twigbridge::twig', array()));
     }
 
     /**
@@ -84,7 +84,7 @@ class TwigBridge
         $prop->setAccessible(true);
 
         // $paths = $finder->getPaths();
-        $paths = $prop->getValue($finder);
+        $view_paths = $prop->getValue($finder);
 
         // Get all paths for registered namespaces
         $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'hints');
@@ -101,7 +101,7 @@ class TwigBridge
 
         // Combine package and view paths
         // View paths take precedence
-        return array_merge($extra_paths, $paths, $namespace_paths);
+        return array_merge($extra_paths, $view_paths, $namespace_paths);
     }
 
     /**
@@ -122,7 +122,7 @@ class TwigBridge
      * @param array $options Twig options.
      * @return void
      */
-    public function setOptions(array $options)
+    public function setTwigOptions(array $options)
     {
         // Check whether we have the cache path set
         if (!isset($options['cache']) OR $options['cache'] === null) {
