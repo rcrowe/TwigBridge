@@ -1,11 +1,22 @@
 <?php
 
+/**
+ * Brings Twig to Laravel 4.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Lexer;
+use ReflectionProperty;
 
+/**
+ * Provides Laravel with an instance of Twig in order to render Twig templates.
+ */
 class TwigBridge
 {
     /**
@@ -13,7 +24,14 @@ class TwigBridge
      */
     const VERSION = '0.1.0';
 
+    /**
+     * @var Illuminate\Foundation\Application
+     */
     protected $app;
+
+    /**
+     * @var array
+     */
     protected $paths = array();
     protected $options = array();
     protected $extension;
@@ -32,7 +50,25 @@ class TwigBridge
 
     public function getPaths()
     {
-        return $this->paths;
+        // Super hack until pull-request gets accepted
+        // This will work for now
+        // Need to get all paths for packages
+        $finder = $this->app['view']->getFinder();
+
+        $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'hints');
+        $prop->setAccessible(true);
+
+        $namespace_paths = array();
+
+        foreach ($prop->getValue($finder) as $namespace => $paths) {
+            foreach ($paths as $path) {
+                $namespace_paths[] = $path;
+            }
+        }
+
+        // Combine package and view paths
+        // View paths take precedence
+        return array_merge($this->paths, $namespace_paths);
     }
 
     public function setPaths(array $paths)
@@ -77,31 +113,37 @@ class TwigBridge
         $this->extensions = $extensions;
     }
 
-    public function getLexer(Twig_Environment $twig)
+    public function getLexer(Twig_Environment $twig, array $delimiters = null)
     {
         if ($this->lexer !== null) {
             return $this->lexer;
         }
 
-        $delimiters = $this->app['config']->get('twigbridge::delimiters', array(
-            'tag_comment'  => array('{#', '#}'),
-            'tag_block'    => array('{%', '%}'),
-            'tag_variable' => array('{{', '}}'),
-        ));
+        if ($delimiters === null) {
+            $delimiters = $this->app['config']->get('twigbridge::delimiters', array(
+                'tag_comment'  => array('{#', '#}'),
+                'tag_block'    => array('{%', '%}'),
+                'tag_variable' => array('{{', '}}'),
+            ));
+        }
 
-        $this->setLexer($twig, $delimiters);
+        $lexer = new Twig\Lexer(
+            $delimiters['tag_comment'],
+            $delimiters['tag_block'],
+            $delimiters['tag_variable']
+        );
 
-        return $this->lexer;
+        return $lexer->getLexer($twig);
     }
 
-    public function setLexer(Twig_Environment $twig, array $delimiters)
+    public function setLexer(Twig_Lexer $lexer)
     {
-        $this->lexer = new Twig_Lexer($twig, $delimiters);
+        $this->lexer = $lexer;
     }
 
     public function getTwig()
     {
-        $loader = new Twig\Loader\Filesystem($this->paths, $this->extension);
+        $loader = new Twig\Loader\Filesystem($this->getPaths(), $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
 
         // Allow template tags to be changed
