@@ -8,6 +8,11 @@ use Twig_Lexer;
 
 class TwigBridge
 {
+    /**
+     * @var string TwigBridge version
+     */
+    const VERSION = '0.1.0';
+
     protected $app;
     protected $paths = array();
     protected $options = array();
