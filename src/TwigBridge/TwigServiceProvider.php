@@ -10,11 +10,6 @@ use Twig_Lexer;
 class TwigServiceProvider extends ViewServiceProvider
 {
     /**
-     * @var string TwigBridge version
-     */
-    const VERSION = '0.1.0';
-
-    /**
      * Register the service provider.
      *
      * @return void
