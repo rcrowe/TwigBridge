@@ -41,23 +41,31 @@ class TwigBridge
     public function __construct(Application $app)
     {
         $this->app        = $app;
-        $this->paths      = $app['config']->get('view.paths', array());
         $this->extension  = $app['config']->get('twigbridge::extension');
         $this->extensions = $app['config']->get('twigbridge::extensions', array());
 
         $this->setOptions($app['config']->get('twigbridge::twig', array()));
     }
 
-    public function getPaths()
+    public function getPaths(array $extra_paths = array())
     {
-        // Super hack until pull-request gets accepted
-        // This will work for now
-        // Get all paths for registered namespaces
         $finder = $this->app['view']->getFinder();
 
+        // FIXME: Super hack until pull-request gets accepted
+        // This will work for now
+
+        // Get view paths
+        $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'paths');
+        $prop->setAccessible(true);
+
+        // $paths = $finder->getPaths();
+        $paths = $prop->getValue($finder);
+
+        // Get all paths for registered namespaces
         $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'hints');
         $prop->setAccessible(true);
 
+        // $namespace_paths = $finder->getHints();
         $namespace_paths = array();
 
         foreach ($prop->getValue($finder) as $namespace => $paths) {
@@ -68,12 +76,7 @@ class TwigBridge
 
         // Combine package and view paths
         // View paths take precedence
-        return array_merge($this->paths, $namespace_paths);
-    }
-
-    public function setPaths(array $paths)
-    {
-        $this->paths = $paths;
+        return array_merge($paths, $namespace_paths, $extra_paths);
     }
 
     public function getOptions()
