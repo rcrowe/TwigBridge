@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "twig/twig": "dev-master",
+        "twig/twig": "1.12.*",
         "illuminate/foundation": "1.2.*",
         "meido/html": "1.0.*",
         "meido/form": "1.0.*"
