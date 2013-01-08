@@ -6,7 +6,7 @@ Add `rcrowe\twigbridge` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "rcrowe\twigbridge": "dev-master"
+        "rcrowe/twigbridge": "dev-master"
     }
 }
 ```
