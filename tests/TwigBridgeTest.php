@@ -160,6 +160,17 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $bridge->getTwig();
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testUnsupportedExceptionType()
+    {
+        $bridge = new TwigBridge($this->getApplication());
+        $bridge->setExtensions(array(12345));
+
+        $bridge->getTwig();
+    }
+
     public function getApplication(array $twig_options = array(), array $paths = array(), array $hints = array())
     {
         $app = new Application;
