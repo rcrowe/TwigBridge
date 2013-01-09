@@ -96,7 +96,11 @@ HTML;
 
     public function testCompilePackageSingleView()
     {
-        $finder     = $this->getFinder(array(), array(__DIR__.'/../fixtures/Engine'));
+        $hints = array(
+            'twigbridge' => array(__DIR__.'/../fixtures/Engine')
+        );
+
+        $finder     = $this->getFinder(array(), $hints);
         $filesystem = $this->getFilesystem($finder);
         $engine     = $this->getEngine($filesystem);
 
@@ -112,7 +116,11 @@ HTML;
 
     public function testCompileSingleViewWithPackageParent()
     {
-        $finder = $this->getFinder(array(), array(__DIR__.'/../fixtures/Engine/package'));
+        $hints = array(
+            'twigbridge' => array(__DIR__.'/../fixtures/Engine/package')
+        );
+
+        $finder = $this->getFinder(array(), $hints);
         $finder->shouldReceive('find')->times(3)->andReturn(__DIR__.'/../fixtures/Engine/package/parent.twig');
 
         $filesystem = $this->getFilesystem($finder);

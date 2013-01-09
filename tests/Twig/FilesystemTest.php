@@ -27,7 +27,11 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 
     public function testNamespacePaths()
     {
-        $finder     = $this->getFinder(array(), array(__DIR__.'/../Extensions'));
+        $hints = array(
+            'twigbridge' => array(__DIR__.'/../Extensions')
+        );
+
+        $finder     = $this->getFinder(array(), $hints);
         $filesystem = $this->getFilesystem($finder);
         $paths      = $filesystem->getPaths();
 
@@ -37,7 +41,11 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 
     public function testPathsMerged()
     {
-        $finder     = $this->getFinder(array(__DIR__.'/../fixtures'), array(__DIR__.'/../Extensions'));
+        $hints = array(
+            'twigbridge' => array(__DIR__.'/../Extensions')
+        );
+
+        $finder     = $this->getFinder(array(__DIR__.'/../fixtures'), $hints);
         $filesystem = new Filesystem($finder);
         $paths      = $filesystem->getPaths();
 
@@ -48,7 +56,11 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 
     public function testPathsMergeConflict()
     {
-        $finder     = $this->getFinder(array(__DIR__.'/../fixtures'), array(__DIR__.'/../Extensions', __DIR__.'/../fixtures'));
+        $hints = array(
+            'twigbridge' => array(__DIR__.'/../Extensions', __DIR__.'/../fixtures')
+        );
+
+        $finder     = $this->getFinder(array(__DIR__.'/../fixtures'), $hints);
         $filesystem = new Filesystem($finder);
         $paths      = $filesystem->getPaths();
 

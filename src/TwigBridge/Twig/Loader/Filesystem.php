@@ -38,7 +38,15 @@ class Filesystem extends Twig_Loader_Filesystem
         $this->finder    = $finder;
         $this->extension = $extension;
         $view_paths      = $this->finder->getPaths();
-        $namespace_paths = $this->finder->getHints();
+
+        // Extract paths from namespaces
+        $namespace_paths = array();
+
+        foreach ($this->finder->getHints() as $namespace => $paths) {
+            foreach ($paths as $path) {
+                $namespace_paths[] = $path;
+            }
+        }
 
         // Combine package and view paths
         // View paths take precedence
