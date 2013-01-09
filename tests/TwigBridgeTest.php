@@ -205,8 +205,8 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
     private function getFinder(array $paths = array(), array $hints = array())
     {
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->paths = $paths;
-        $finder->hints = $hints;
+        $finder->shouldReceive('getPaths')->andReturn($paths);
+        $finder->shouldReceive('getHints')->andReturn($hints);
 
         return $finder;
     }
