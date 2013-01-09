@@ -179,7 +179,7 @@ class TwigBridge
      *
      * @return Twig_Environment
      */
-    public function getTwig($die = false)
+    public function getTwig()
     {
         $loader = new Twig\Loader\Filesystem($this->app['view']->getFinder(), $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
