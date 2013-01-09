@@ -18,6 +18,11 @@ use Twig_Environment;
 class TwigEngine implements EngineInterface
 {
     /**
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
      * @var array Global data that is always passed to the template.
      */
     protected $global_data = array();
