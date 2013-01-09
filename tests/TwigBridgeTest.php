@@ -2,6 +2,7 @@
 
 use Mockery as m;
 use TwigBridge\TwigBridge;
+use TwigBridge\Twig\Loader\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
 
@@ -27,32 +28,6 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $options = $bridge->getTwigOptions();
 
         $this->assertEquals($options['cache'], 't/e/s/t');
-    }
-
-    public function testGetPathsMergeHints()
-    {
-        $paths = array(__DIR__.'/views');
-        $hints = array(
-            array(
-                __DIR__.'/test/path',
-                __DIR__.'/path/test'
-            )
-        );
-
-        $bridge = new TwigBridge($this->getApplication(array(), $paths, $hints));
-        $paths  = $bridge->getPaths();
-
-        $this->assertTrue(count($paths) === 3);
-    }
-
-    public function testGetPathsMergeCustom()
-    {
-        $bridge = new TwigBridge($this->getApplication());
-        $this->assertTrue(count($bridge->getPaths()) === 0);
-
-        $paths = $bridge->getPaths(array(__DIR__.'/test'));
-        $this->assertTrue(count($paths) === 1);
-        $this->assertEquals($paths[0], __DIR__.'/test');
     }
 
     public function testGetExtension()
@@ -86,17 +61,103 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
     public function testGetLexer()
     {
+        $bridge = new TwigBridge($this->getApplication());
+        $lexer  = $bridge->getLexer(new Twig_Environment);
 
+        $this->assertEquals(get_class($lexer), 'Twig_Lexer');
+    }
+
+    public function testGetLexerWithCustomDelimiters()
+    {
+        $bridge     = new TwigBridge($this->getApplication());
+        $delimiters = array(
+            'tag_comment'  => array('{@', '@}'),
+            'tag_block'    => array('{#', '#}'),
+            'tag_variable' => array('{/', '/}'),
+        );
+
+        $lexer = $bridge->getLexer(new Twig_Environment, $delimiters);
+
+        $prop = new ReflectionProperty('Twig_Lexer', 'options');
+        $prop->setAccessible(true);
+        $options = $prop->getValue($lexer);
+
+        // Comment
+        $this->assertEquals('{@', $options['tag_comment'][0]);
+        $this->assertEquals('@}', $options['tag_comment'][1]);
+
+        // Block
+        $this->assertEquals('{#', $options['tag_block'][0]);
+        $this->assertEquals('#}', $options['tag_block'][1]);
+
+        // Variable
+        $this->assertEquals('{/', $options['tag_variable'][0]);
+        $this->assertEquals('/}', $options['tag_variable'][1]);
+    }
+
+    public function testGetLexerWithoutTwig()
+    {
+        $bridge = new TwigBridge($this->getApplication());
+
+        try {
+            $bridge->getLexer();
+            $this->assertFalse(true);
+        } catch (InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        } catch (Exception $ex) {
+            $this->assertFalse(true);
+        }
     }
 
     public function testSetLexer()
     {
+        $bridge     = new TwigBridge($this->getApplication());
+        $delimiters = array(
+            'tag_comment'  => array('*', '*/'),
+            'tag_block'    => array('%', '%/'),
+            'tag_variable' => array('!', '!/'),
+        );
 
+        $bridge->setLexer(new Twig_Lexer(new Twig_Environment, $delimiters));
+        $lexer = $bridge->getLexer();
+
+        $prop = new ReflectionProperty('Twig_Lexer', 'options');
+        $prop->setAccessible(true);
+        $options = $prop->getValue($lexer);
+
+        // Comment
+        $this->assertEquals('*', $options['tag_comment'][0]);
+        $this->assertEquals('*/', $options['tag_comment'][1]);
+
+        // Block
+        $this->assertEquals('%', $options['tag_block'][0]);
+        $this->assertEquals('%/', $options['tag_block'][1]);
+
+        // Variable
+        $this->assertEquals('!', $options['tag_variable'][0]);
+        $this->assertEquals('!/', $options['tag_variable'][1]);
     }
 
-    public function testGetTwig()
+    public function testGetTwigExtensionLoading()
     {
+        $mockAliasLoader = m::mock('TwigBridge\Extensions\AliasLoader');
+        $mockAliasLoader->shouldReceive('getName')->twice()->andReturn('AliasLoader');
+        $mockAliasLoader->shouldReceive('getFilters')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getFunctions')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getTests')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getTokenParsers')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getNodeVisitors')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getOperators')->once()->andReturn(array());
 
+        $bridge = new TwigBridge($this->getApplication());
+        $bridge->setExtensions(array(
+            $mockAliasLoader,
+            function() use($mockAliasLoader) {
+                return $mockAliasLoader;
+            },
+        ));
+
+        $bridge->getTwig();
     }
 
     public function getApplication(array $twig_options = array(), array $paths = array(), array $hints = array())
@@ -105,10 +166,8 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $app->instance('path', __DIR__);
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->paths = $paths;
-        $finder->hints = $hints;
-        // $finder->shouldReceive('getPaths')->andReturn($paths);
-        // $finder->shouldReceive('getHints')->andReturn($hints);
+        $finder->shouldReceive('getPaths')->andReturn($paths);
+        $finder->shouldReceive('getHints')->andReturn($hints);
 
         $app['view'] = new Illuminate\View\Environment(
             m::mock('Illuminate\View\Engines\EngineResolver'),
@@ -121,16 +180,18 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
 
         $config->getLoader()->shouldReceive('addNamespace')->with('twigbridge', __DIR__);
         $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(function($env, $package, $group, $items) { return $items; });
-        $config->getLoader()->shouldReceive('exists')->once()->with('extension', 'twigbridge')->andReturn(false);
-        $config->getLoader()->shouldReceive('exists')->once()->with('extensions', 'twigbridge')->andReturn(false);
-        $config->getLoader()->shouldReceive('exists')->once()->with('twig', 'twigbridge')->andReturn(false);
-        $config->getLoader()->shouldReceive('load')->once()->with('production', 'config', 'twigbridge')->andReturn(
+        $config->getLoader()->shouldReceive('exists')->with('extension', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn(
             array(
                 'extension'  => 'twig',
                 'twig'       => $twig_options,
                 'extensions' => array(
                     'TwigBridge\Extensions\Html',
                 ),
+                // 'delimiters' => array()
             )
         );
 
@@ -139,5 +200,28 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $app['config'] = $config;
 
         return $app;
+    }
+
+    private function getFinder(array $paths = array(), array $hints = array())
+    {
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->paths = $paths;
+        $finder->hints = $hints;
+
+        return $finder;
+    }
+
+    private function getFilesystem($finder = null, $extension = null)
+    {
+        $finder OR $finder = $this->getFinder();
+
+        $finder     = ($finder !== null) ? $finder : $this->getFinder();
+        $filesystem = new Filesystem($finder);
+
+        if ($extension !== null) {
+            $filesystem->setExtension($extension);
+        }
+
+        return $filesystem;
     }
 }

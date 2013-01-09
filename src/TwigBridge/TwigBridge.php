@@ -12,6 +12,7 @@ namespace TwigBridge;
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Lexer;
+use InvalidArgumentException;
 use ReflectionProperty;
 
 /**
@@ -61,47 +62,6 @@ class TwigBridge
         $this->extensions = $app['config']->get('twigbridge::extensions', array());
 
         $this->setTwigOptions($app['config']->get('twigbridge::twig', array()));
-    }
-
-    /**
-     * Get the view paths that Twig should search on.
-     *
-     * Currently this is hacked to work, but hopefully my pull request gets accepted
-     * soon as I can change some of this code out.
-     *
-     * @param array $extra_paths Add any paths to search at runtime. Will look in these first.
-     * @return array Merged paths to look on.
-     */
-    public function getPaths(array $extra_paths = array())
-    {
-        $finder = $this->app['view']->getFinder();
-
-        // FIXME: Super hack until pull-request gets accepted
-        // This will work for now
-
-        // Get view paths
-        $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'paths');
-        $prop->setAccessible(true);
-
-        // $paths = $finder->getPaths();
-        $view_paths = $prop->getValue($finder);
-
-        // Get all paths for registered namespaces
-        $prop = new ReflectionProperty('Illuminate\View\FileViewFinder', 'hints');
-        $prop->setAccessible(true);
-
-        // $namespace_paths = $finder->getHints();
-        $namespace_paths = array();
-
-        foreach ($prop->getValue($finder) as $namespace => $paths) {
-            foreach ($paths as $path) {
-                $namespace_paths[] = $path;
-            }
-        }
-
-        // Combine package and view paths
-        // View paths take precedence
-        return array_merge($extra_paths, $view_paths, $namespace_paths);
     }
 
     /**
@@ -178,10 +138,13 @@ class TwigBridge
      * @param array            $delimiters Opening & closing tags for comments, blocks & variables.
      * @return Twig_Lexer
      */
-    public function getLexer(Twig_Environment $twig, array $delimiters = null)
+    public function getLexer(Twig_Environment $twig = null, array $delimiters = null)
     {
         if ($this->lexer !== null) {
             return $this->lexer;
+        } elseif ($twig === null) {
+            // You must pass in an instance of Twig if the lexer has not already been set
+            throw new InvalidArgumentException('No lexer set, you must pass an instance of Twig_Environment in!');
         }
 
         if ($delimiters === null) {
@@ -193,9 +156,9 @@ class TwigBridge
         }
 
         $lexer = new Twig\Lexer(
-            $delimiters['tag_comment'],
-            $delimiters['tag_block'],
-            $delimiters['tag_variable']
+            (isset($delimiters['tag_comment'])) ? $delimiters['tag_comment'] : array(),
+            (isset($delimiters['tag_block'])) ? $delimiters['tag_block'] : array(),
+            (isset($delimiters['tag_variable'])) ? $delimiters['tag_variable'] : array()
         );
 
         return $lexer->getLexer($twig);
@@ -216,23 +179,30 @@ class TwigBridge
      *
      * @return Twig_Environment
      */
-    public function getTwig()
+    public function getTwig($die = false)
     {
-        $loader = new Twig\Loader\Filesystem($this->getPaths(), $this->extension);
+        $loader = new Twig\Loader\Filesystem($this->app['view']->getFinder(), $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
-
-        // Allow template tags to be changed
-        $twig->setLexer($this->getLexer($twig));
 
         // Load extensions
         foreach ($this->getExtensions() as $twig_extension) {
 
-            // We support both a closure and class based extension
-            $twig_extension = (!is_callable($twig_extension)) ? new $twig_extension($this->app, $twig) : $twig_extension($this->app, $twig);
+            // Get an instance of the extension
+            // Support for string, closure and an object
+            if (is_string($twig_extension)) {
+                $twig_extension = new $twig_extension($this->app, $twig);
+            } elseif (is_callable($twig_extension)) {
+                $twig_extension = $twig_extension($this->app, $twig);
+            } elseif (!is_object($twig_extension)) {
+                throw new InvalidArgumentException('Incorrect extension type');
+            }
 
             // Add extension to twig
             $twig->addExtension($twig_extension);
         }
+
+        // Allow template tags to be changed
+        $twig->setLexer($this->getLexer($twig));
 
         return $twig;
     }

@@ -22,6 +22,8 @@ class TwigServiceProvider extends ViewServiceProvider
         $this->registerEngineResolver();
         $this->registerEnvironment();
         $this->registerCommands();
+
+        $this->app['view']->addNamespace('pagination', '/Users/rcrowe/Documents/Projects/flags/vendor/illuminate/pagination/src/Illuminate/Pagination/views');
     }
 
     /**

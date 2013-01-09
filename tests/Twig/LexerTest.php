@@ -1,101 +1,78 @@
 <?php
 
+use Mockery as m;
 use TwigBridge\Twig\Lexer;
 use TwigBridge\Twig\Loader\Filesystem;
 
 class LexerTest extends PHPUnit_Framework_TestCase
 {
-    public function testArrayParams()
+    public function tearDown()
+    {
+        m::close();
+    }
+
+    private function param($callback)
     {
         try {
-            $lexer = new Lexer(
-                array(),
-                array(),
-                array()
-            );
+            $callback();
             $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
+        } catch (InvalidArgumentException $ex) {
             $this->assertTrue(true);
         }
         catch (Exception $ex) {
             $this->assertFalse(true);
         }
+    }
 
-        try {
+    public function testArrayParams()
+    {
+        $this->param(function() {
+            $lexer = new Lexer(
+                array(),
+                array(),
+                array()
+            );
+        });
+
+        $this->param(function() {
             $lexer = new Lexer(
                 array('{#'),
                 array(),
                 array()
             );
-            $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
-            $this->assertTrue(true);
-        }
-        catch (Exception $ex) {
-            $this->assertFalse(true);
-        }
+        });
 
-        try {
+        $this->param(function() {
             $lexer = new Lexer(
                 array('{#', '#}'),
                 array(),
                 array()
             );
-            $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
-            $this->assertTrue(true);
-        }
-        catch (Exception $ex) {
-            $this->assertFalse(true);
-        }
+        });
 
-        try {
+        $this->param(function() {
             $lexer = new Lexer(
                 array('{#', '#}'),
                 array('{%'),
                 array()
             );
-            $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
-            $this->assertTrue(true);
-        }
-        catch (Exception $ex) {
-            $this->assertFalse(true);
-        }
+        });
 
-        try {
+        $this->param(function() {
             $lexer = new Lexer(
                 array('{#', '#}'),
                 array('{%', '%}'),
                 array()
             );
-            $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
-            $this->assertTrue(true);
-        }
-        catch (Exception $ex) {
-            $this->assertFalse(true);
-        }
+        });
 
-        try {
+        $this->param(function() {
             $lexer = new Lexer(
                 array('{#', '#}'),
                 array('{%', '%}'),
                 array('{{')
             );
-            $this->assertFalse(true);
-        }
-        catch (InvalidArgumentException $ex) {
-            $this->assertTrue(true);
-        }
-        catch (Exception $ex) {
-            $this->assertFalse(true);
-        }
+        });
 
         // Make sure it goes through cleanly
         try {
@@ -126,19 +103,38 @@ class LexerTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-    public function testGetLexer()
+    public function testTwigLexerDelimiters()
     {
-        $loader = new Filesystem(array(), 'twig');
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('getPaths')->once()->andReturn(array());
+        $finder->shouldReceive('getHints')->once()->andReturn(array());
+
+        $loader = new Filesystem($finder, 'twig');
         $twig   = new Twig_Environment($loader, array());
 
         $lexer = new Lexer(
-            array('{#', '#}'),
-            array('{%', '%}'),
-            array('{{', '}}')
+            array('{@', '@}'),
+            array('{*', '*}'),
+            array('{#', '/}')
         );
 
         $lexer = $lexer->getLexer($twig);
-
         $this->assertEquals(get_class($lexer), 'Twig_Lexer');
+
+        $prop = new ReflectionProperty('Twig_Lexer', 'options');
+        $prop->setAccessible(true);
+        $options = $prop->getValue($lexer);
+
+        // Comment
+        $this->assertEquals('{@', $options['tag_comment'][0]);
+        $this->assertEquals('@}', $options['tag_comment'][1]);
+
+        // Block
+        $this->assertEquals('{*', $options['tag_block'][0]);
+        $this->assertEquals('*}', $options['tag_block'][1]);
+
+        // Variable
+        $this->assertEquals('{#', $options['tag_variable'][0]);
+        $this->assertEquals('/}', $options['tag_variable'][1]);
     }
 }

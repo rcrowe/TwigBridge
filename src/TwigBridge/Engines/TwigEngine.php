@@ -85,17 +85,17 @@ class TwigEngine implements EngineInterface
      */
     public function get($path, array $data = array())
     {
-        $paths = $this->twig->getLoader()->getPaths();
+        // File we want to load
+        $file = pathinfo($path, PATHINFO_BASENAME);
 
-        // Look for file in the search paths
-        // Finds the first occurrence. Search path order is FIFO.
-        foreach ($paths as $search_path) {
-            if (strpos($path, $search_path) !== false) {
-                $path = substr($path, strlen($search_path));
-                break;
-            }
-        }
+        // We need to move the directory requested as the first search path
+        // this stops conflicts. For example, with packages
+        $paths[] = pathinfo($path, PATHINFO_DIRNAME);
+        $paths   = array_merge($paths, $this->twig->getLoader()->getPaths());
 
-        return $this->twig->loadTemplate($path)->render($this->getData($data));
+        $this->twig->getLoader()->setPaths($paths);
+
+        // Render template
+        return $this->twig->loadTemplate($file)->render($this->getData($data));
     }
 }

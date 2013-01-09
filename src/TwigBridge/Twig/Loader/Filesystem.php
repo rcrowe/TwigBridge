@@ -9,7 +9,9 @@
 
 namespace TwigBridge\Twig\Loader;
 
+use ReflectionProperty;
 use Twig_Loader_Filesystem;
+use Illuminate\View\ViewFinderInterface;
 
 /**
  * Extends the Twig filesystem to remove the need to add
@@ -28,14 +30,23 @@ class Filesystem extends Twig_Loader_Filesystem
     /**
      * Create a new instance.
      *
-     * @param string|array $paths     A path or an array of paths where to look for templates.
-     * @param string       $extension Twig file extension.
+     * @param Illuminate\View\ViewFinderInterface $finder
+     * @param string                              $extension Twig file extension.
      */
-    public function __construct($paths, $extension = 'twig')
+    public function __construct(ViewFinderInterface $finder, $extension = 'twig')
     {
-        parent::__construct($paths);
-
+        $this->finder    = $finder;
         $this->extension = $extension;
+        $view_paths      = $this->finder->getPaths();
+        $namespace_paths = $this->finder->getHints();
+
+        // Combine package and view paths
+        // View paths take precedence
+        $paths = array_merge($view_paths, $namespace_paths);
+        $paths = array_unique($paths);
+
+        // Setup twig with all the search paths
+        parent::__construct($paths);
     }
 
     /**
@@ -64,8 +75,13 @@ class Filesystem extends Twig_Loader_Filesystem
      * @param string $name Template file name.
      * @return string Path to template.
      */
-    protected function findTemplate($name)
+    protected function findTemplate($name, $abort = false)
     {
+        if (strpos($name, '::') !== false) {
+            // File is namespaced, use finder to lookup the file
+            return $this->finder->find($name);
+        }
+
         // Append twig file extension
         // Make things nicer in the templates
         $extension = '.'.$this->extension;
