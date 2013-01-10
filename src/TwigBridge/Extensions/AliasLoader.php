@@ -1,62 +1,221 @@
 <?php
 
+/**
+ * Brings Twig to Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge\Extensions;
 
+use TwigBridge\Extension;
+use Illuminate\Foundation\Application;
+use Twig_Environment;
 use Twig_Function_Function;
 
 /**
- * If enabled, when a function used in a Twig template can not be found
- * we fall back to calling those classes defined in the alias array.
+ * Handles undefined function calls in a Twig template by checking
+ * if the function corresponds to an aliased class defined in your
+ * app config file.
  *
- * These means we get nicer integration with Laravel functions.
+ * {{ auth_check() }} would call Auth::check()
  */
-class AliasLoader
+class AliasLoader extends Extension
 {
+    /**
+     * @var array Lookup cache
+     */
+    protected $lookup = array();
+
     /**
      * @var array Aliases loaded by Illuminate.
      */
     protected $aliases;
 
     /**
-     * @var array Shortcuts to alias functions.
+     * @var array Shortcut to alias map.
      */
     protected $shortcuts;
 
-    public function __construct(array $aliases = array(), array $shortcuts = array())
+    /**
+     * Returns the name of the extension.
+     *
+     * @return string Extension name.
+     */
+    public function getName()
     {
-        $this->aliases   = array_change_key_case($aliases, CASE_LOWER);
-        $this->shortcuts = array_change_key_case($shortcuts, CASE_LOWER);
+        return 'AliasLoader';
     }
 
     /**
-     * Get the function responsible for the Twig function.
+     * Create a new extension instance. Registers Twig undefined function callback.
      *
-     * @param string $name Name of the Twig function.
-     * @return Twig_Function_Function|false False if the function can not be found.
+     * @param Illuminate\Foundation\Application $app
+     * @param Twig_Environment                  $twig
+     */
+    public function __construct(Application $app, Twig_Environment $twig)
+    {
+        parent::__construct($app, $twig);
+
+        $aliases   = $app['config']->get('app.aliases', array());
+        $shortcuts = $app['config']->get('twigbridge::alias_shortcuts', array());
+
+        $this->setAliases($aliases);
+        $this->setShortcuts($shortcuts);
+
+        $loader = $this;
+
+        // Register Twig callback to handle undefined functions
+        $twig->registerUndefinedFunctionCallback(function($name) use($loader) {
+            // Allow any method on aliased classes
+            return $loader->getFunction($name);
+        });
+    }
+
+    /**
+     * Sets those classes that have been Aliased.
+     *
+     * @param array $aliases Aliased classes.
+     * @return void
+     */
+    public function setAliases(array $aliases)
+    {
+        $this->aliases = array_change_key_case($aliases, CASE_LOWER);
+    }
+
+    /**
+     * Get aliased classes.
+     *
+     * @return array
+     */
+    public function getAliases()
+    {
+        return $this->aliases;
+    }
+
+    /**
+     * Set shortcuts to aliased classes.
+     *
+     * @param array $shortcuts Shortcut to alias map.
+     * @return void
+     */
+    public function setShortcuts(array $shortcuts)
+    {
+        $lowered = array();
+
+        foreach ($shortcuts as $from => $to) {
+            $lowered[strtolower($from)] = strtolower($to);
+        }
+
+        $this->shortcuts = $lowered;
+    }
+
+    /**
+     * Get alias shortcuts.
+     *
+     * @return array
+     */
+    public function getShortcuts()
+    {
+        return $this->shortcuts;
+    }
+
+    /**
+     * Get the alias the shortcut points to.
+     *
+     * @param string $name Twig function name.
+     * @return string Either the alias or the name passed in if not found.
+     */
+    public function getShortcut($name)
+    {
+        $name = strtolower($name);
+        return (array_key_exists($name, $this->shortcuts)) ? $this->shortcuts[$name] : $name;
+    }
+
+    /**
+     * Gets the class and method from the function name.
+     *
+     * For the AliasLoader to handle the undefined function, the function must
+     * be in the format class_method(). This function checks whether the function
+     * meets that format.
+     *
+     * @param string $name Function name.
+     * @return array|bool Array containing class and method or FALSE if incorrect format.
+     */
+    public function getAliasParts($name)
+    {
+        $name = strtolower($name);
+
+        if (strpos($name, '_') !== false) {
+            $parts = explode('_', $name);
+            $parts = array_filter($parts); // Remove empty elements
+            return (count($parts) < 2) ? false : $parts;
+        }
+
+        return false;
+    }
+
+    /**
+     * Looks in the lookup cache for the function.
+     *
+     * Repeat calls to an undefined function are cached.
+     *
+     * @param string $name Function name.
+     * @return Twig_Function_Function|false
+     */
+    public function getLookup($name)
+    {
+        $name = strtolower($name);
+        return (array_key_exists($name, $this->lookup)) ? $this->lookup[$name] : false;
+    }
+
+    /**
+     * Add undefined function to the cache.
+     *
+     * @param string                 $name     Function name.
+     * @param Twig_Function_Function $function Function to cache.
+     * @return void
+     */
+    public function setLookup($name, Twig_Function_Function $function)
+    {
+        $this->lookup[strtolower($name)] = $function;
+    }
+
+    /**
+     * Allow Twig to call Aliased function from an undefined function.
+     *
+     * @param string $name Undefined function name.
+     * @return Twig_Function_Function|false
      */
     public function getFunction($name)
     {
-        // Check for user defined alias of Twig functions
-        // Not currently implemented
-        if (array_key_exists($name, $this->shortcuts)) {
-            $name = $this->shortcuts[$name];
+        $name = $this->getShortcut(strtolower($name));
+
+        // Check if we have looked this alias up before
+        if ($function = $this->getLookup($name)) {
+            return $function;
         }
 
-        // Using alias loader, twig function must follow the pattern: class_method
-        // Check for this pattern
-        if (strpos($name, '_') !== false) {
+        // Get the class / method we are trying to call
+        $parts = $this->getAliasParts($name);
 
-            list($class, $method) = explode('_', $name);
-            $class = strtolower($class);
+        if ($parts === false) {
+            return false;
+        }
 
-            // Does that alias exist
-            if (array_key_exists($class, $this->aliases)) {
+        list($class, $method) = $parts;
 
-                $class = $this->aliases[$class];
+        // Does that alias exist
+        if (array_key_exists($class, $this->aliases)) {
 
-                if (is_callable($class.'::'.$method)) {
-                    return new Twig_Function_Function($class.'::'.$method);
-                }
+            $class = $this->aliases[$class];
+
+            if (is_callable($class.'::'.$method)) {
+
+                $function = new Twig_Function_Function($class.'::'.$method);
+                $this->setLookup($name, $function);
+                return $function;
             }
         }
 

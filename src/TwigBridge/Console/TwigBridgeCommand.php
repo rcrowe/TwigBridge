@@ -3,7 +3,7 @@
 namespace TwigBridge\Console;
 
 use Illuminate\Console\Command;
-use TwigBridge\TwigServiceProvider;
+use TwigBridge\TwigBridge;
 use Twig_Environment;
 
 class TwigBridgeCommand extends Command
@@ -30,6 +30,6 @@ class TwigBridgeCommand extends Command
     public function fire()
     {
         $this->line('<info>Twig</info> version <comment>'.Twig_Environment::VERSION.'</comment>');
-        $this->line('<info>Twig Bridge</info> version <comment>'.TwigServiceProvider::VERSION.'</comment>');
+        $this->line('<info>Twig Bridge</info> version <comment>'.TwigBridge::VERSION.'</comment>');
     }
 }

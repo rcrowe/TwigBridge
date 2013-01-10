@@ -4,6 +4,16 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Extension
+    |--------------------------------------------------------------------------
+    |
+    | File extension for Twig view files.
+    |
+    */
+    'extension' => 'twig',
+
+    /*
+    |--------------------------------------------------------------------------
     | Delimiters
     |--------------------------------------------------------------------------
     |
@@ -18,13 +28,13 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Accepts all Twig configuration options
+    | Accepts all Twig environment configuration options
     |--------------------------------------------------------------------------
     |
     | http://twig.sensiolabs.org/doc/api.html#environment-options
     |
     */
-    'environment' => array(
+    'twig' => array(
 
         // When set to true, the generated templates have a __toString() method that you can use to display the generated nodes.
         // default: false
@@ -66,39 +76,39 @@ return array(
     |--------------------------------------------------------------------------
     |
     | List of Twig extensions that are made available to your Twig templates.
-    | When an unknown function is called within your templates, Twig looks to these
-    | extensions first.
+    | Supports string or closure.
+    | NOTE: If you change this, make sure you clear your cache
     |
     */
-    // NOTE: If you change this, make sure you clear your cache
     'extensions' => array(
+        'TwigBridge\Extensions\AliasLoader',
         'TwigBridge\Extensions\Html',
     ),
 
     /*
     |--------------------------------------------------------------------------
-    | Alias Extensions
+    | Alias shortcuts
     |--------------------------------------------------------------------------
     |
-    | TwigBridge automatically gives you access to all classes and public methods
-    | that you define as aliases in app/config/app.php
+    | Call these shortcuts in your Twig files. A shortcut is always a shortcut
+    | to an alias.
     |
-    | It follows the format of class_method(...). So for example:
-    |
-    | hash_make -> calls Hash::make(...)
-    | url_to    -> calls URL::to(...)
-    |
-    | These are called last, after built-in functions and extensions defined above.
     */
-    // Do not allow all aliases to be accessed as Twig functions
-    // NOTE: If you change this, make sure you clear your cache
-    'disable_aliases' => false,
-
-    // Give aliases shortcuts
-    // Key   -> shortcut
-    // Value -> alias
     'alias_shortcuts' => array(
-        'url'    => 'url_to',
-        'config' => 'config_get',
+        'config'    => 'config_get',
+        'logged_in' => 'auth_check',
+        'url'       => 'url_to',
     ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Global variables
+    |--------------------------------------------------------------------------
+    |
+    | These will always be passed in and can be accessed as Twig variables.
+    | NOTE: these will be overwritten if you pass data into the view with the same key.
+    |
+    */
+    'globals' => array(),
+
 );

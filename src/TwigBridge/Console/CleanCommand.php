@@ -29,10 +29,10 @@ class CleanCommand extends Command
     public function fire()
     {
         // Get the path to where Twig cache lives
-        $cache_path = $this->laravel['config']->get('twigbridge::environment.cache', NULL);
+        $cache_path = $this->laravel['config']->get('twigbridge::twig.cache');
 
         if ($cache_path === null OR !file_exists($cache_path)) {
-            $cache_path = $this->laravel['config']->get('cache.path').'/twig';
+            $cache_path = $this->laravel['path'].'/storage/views/twig';
         }
 
         if (file_exists($cache_path)) {

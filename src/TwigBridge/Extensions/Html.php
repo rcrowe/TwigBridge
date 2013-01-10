@@ -1,12 +1,24 @@
 <?php
 
+/**
+ * Brings Twig to Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge\Extensions;
 
+use TwigBridge\Extension;
 use Illuminate\Foundation\Application;
+use Twig_Environment;
 use Twig_Function_Method;
 use Meido\HTML\HTML as Meido_HTML;
 use Meido\Form\Form as Meido_Form;
 
+/**
+ * Adds HTML & Form functions to Twig.
+ */
 class Html extends Extension
 {
     /**
@@ -29,19 +41,33 @@ class Html extends Extension
         'opensecureforfiles' => 'openSecureForFiles',
     );
 
-    public function setApp(Application $app)
+    /**
+     * Create a new extension instance.
+     *
+     * @param Illuminate\Foundation\Application $app
+     * @param Twig_Environment                  $twig
+     */
+    public function __construct(Application $app, Twig_Environment $twig)
     {
         $app['html'] = new Meido_HTML($app['url']);
         $app['form'] = new Meido_Form($app['url']);
 
-        parent::setApp($app);
+        parent::__construct($app, $twig);
     }
 
+    /**
+     * Returns the name of the extension.
+     *
+     * @return string Extension name.
+     */
     public function getName()
     {
         return 'Html';
     }
 
+    /**
+     * Returns which functions this extension supports.
+     */
     public function getFunctions()
     {
         return array(
@@ -91,6 +117,9 @@ class Html extends Extension
         );
     }
 
+    /**
+     * Call the HTML\Form library.
+     */
     public function __call($name, $arguments)
     {
         $type = substr($name, 0, 4);          // html or form
