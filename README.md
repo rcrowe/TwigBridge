@@ -116,7 +116,25 @@ which will then output the following HTML:
 Events
 ======
 
+TwigBridge fires the `twigbridge.twig` event just before the TwigEngine is registered, this gives other packages or your application time to alter Twigs behaviour; maybe another package wants to add an extension or change the lexer used. To do this just register and event handler:
 
-Artisan (CLI)
-=============
+```php
+Event::listen('twigbridge.twig', function($twig) {
+    $twig->addExtension( new TwigBridge\Extensions\Example );
+});
+```
 
+Artisan Commands
+================
+
+TwigBridge offers a number of CLI interactions.
+
+List Twig & Bridge versions:
+```
+$ php artisan twig
+```
+
+Empty the Twig cache:
+```
+$ php artisan twig:clean
+```
