@@ -23,6 +23,5 @@
         "psr-0": {
             "TwigBridge": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
