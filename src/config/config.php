@@ -76,18 +76,13 @@ return array(
     |--------------------------------------------------------------------------
     |
     | List of Twig extensions that are made available to your Twig templates.
+    | Supports string or closure.
     | NOTE: If you change this, make sure you clear your cache
     |
     */
     'extensions' => array(
         'TwigBridge\Extensions\AliasLoader',
         'TwigBridge\Extensions\Html',
-        // function($app) {
-        //     $factory = new Assetic\Factory\AssetFactory($app['path'].'/../public/assets/');
-        //     $factory->setDebug(false);
-        //     // etc.....
-        //     return new Assetic\Extension\Twig\AsseticExtension($factory);
-        // }
     ),
 
     /*
@@ -114,11 +109,6 @@ return array(
     | NOTE: these will be overwritten if you pass data into the view with the same key.
     |
     */
-    'globals' => array(
-        // {{ site.name }}
-        // 'site' => array(
-        //    'name' => 'TwigBridge Test'
-        //),
-    ),
+    'globals' => array(),
 
 );
