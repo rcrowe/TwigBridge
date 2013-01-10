@@ -201,8 +201,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
                 'twig'       => $twig_options,
                 'extensions' => array(
                     'TwigBridge\Extensions\Html',
-                ),
-                // 'delimiters' => array()
+                )
             )
         );
 
