@@ -1,7 +1,7 @@
 Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](http://laravel.com/).
 
 Installation
-------------
+============
 
 
 Add `rcrowe\twigbridge` as a requirement to composer.json:
@@ -21,3 +21,78 @@ Once Composer has installed or updated your packages you need to register TwigBr
 ```php
 'TwigBridge\TwigServiceProvider'
 ```
+
+Configuration
+=============
+
+TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/twigbridge.php.
+
+You can quickly publish a configuration file by running the following Artisan command.
+
+```
+$ php artisan config:publish rcrowe/twigbridge
+```
+
+Usage
+=====
+
+Extensions
+==========
+
+Sometimes you want to extend / add new functions for use in Twig templates. Add to the `exensions` array a list of extensions for Twig to load.
+
+```php
+'extensions' => array(
+    'TwigBridge\Extensions\Example'
+)
+```
+
+TwigBridge supports both a string or a closure as a callback, so for example you might implement the [Assetic](https://github.com/kriswallsmith/assetic) Twig extension as follows:
+
+```php
+'extensions' => array(
+    function($app) {
+        $factory = new Assetic\Factory\AssetFactory($app['path'].'/../some/path/');
+        $factory->setDebug(false);
+        // etc.....
+        return new Assetic\Extension\Twig\AsseticExtension($factory);
+    }
+)
+```
+
+TwigBridge comes with the following extensions:
+
+- TwigBridge\Extensions\AliasLoader
+- TwigBridge\Extensions\Html
+
+AliasLoader
+-----------
+
+The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates intergration with any Laravel call as well as any other classes you alias.
+
+To use the Laravel intergration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
+
+You can define shortcuts to these by changing the `alias_shortcuts` config parameter. For example, calling `url(...)` is actually an alias to `url_to(...)`.
+
+Html
+----
+
+Intergrates Meido [HTML](https://github.com/meido/html) and [Form](https://github.com/meido/form), which means you can for example do the following:
+
+```html
+{{ form_open() }}
+```
+
+which will then output the following HTML:
+
+```html
+<form method="POST" action="http://example.com/current/uri" accept-charset="utf-8">
+```
+
+Events
+======
+
+
+Artisan (CLI)
+=============
+
