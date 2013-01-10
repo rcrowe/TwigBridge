@@ -1,7 +1,12 @@
 <?php
 
+namespace TwigBridgeTests\Twig;
+
+use PHPUnit_Framework_TestCase;
 use Mockery as m;
 use TwigBridge\Twig\Loader\Filesystem;
+use ReflectionMethod;
+use Twig_Error_Loader;
 
 class FilesystemTest extends PHPUnit_Framework_TestCase
 {

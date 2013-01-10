@@ -1,8 +1,12 @@
 <?php
 
+namespace TwigBridgeTests\Engines;
+
+use PHPUnit_Framework_TestCase;
 use Mockery as m;
 use TwigBridge\Engines\TwigEngine;
 use TwigBridge\Twig\Loader\Filesystem;
+use Twig_Environment;
 
 class TwigEngineTest extends PHPUnit_Framework_TestCase
 {

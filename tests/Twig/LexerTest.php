@@ -1,8 +1,15 @@
 <?php
 
+namespace TwigBridgeTests\Twig;
+
+use PHPUnit_Framework_TestCase;
 use Mockery as m;
 use TwigBridge\Twig\Lexer;
 use TwigBridge\Twig\Loader\Filesystem;
+use Twig_Environment;
+use ReflectionProperty;
+use InvalidArgumentException;
+use Exception;
 
 class LexerTest extends PHPUnit_Framework_TestCase
 {

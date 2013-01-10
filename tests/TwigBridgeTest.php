@@ -1,10 +1,19 @@
 <?php
 
+namespace TwigBridgeTests;
+
+use PHPUnit_Framework_TestCase;
 use Mockery as m;
 use TwigBridge\TwigBridge;
 use TwigBridge\Twig\Loader\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
+use Illuminate\View\Environment;
+use Twig_Environment;
+use Twig_Lexer;
+use ReflectionProperty;
+use InvalidArgumentException;
+use Exception;
 
 class TwigBridgeTest extends PHPUnit_Framework_TestCase
 {
@@ -180,7 +189,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $finder->shouldReceive('getPaths')->andReturn($paths);
         $finder->shouldReceive('getHints')->andReturn($hints);
 
-        $app['view'] = new Illuminate\View\Environment(
+        $app['view'] = new Environment(
             m::mock('Illuminate\View\Engines\EngineResolver'),
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
@@ -210,28 +219,5 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $app['config'] = $config;
 
         return $app;
-    }
-
-    private function getFinder(array $paths = array(), array $hints = array())
-    {
-        $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->shouldReceive('getPaths')->andReturn($paths);
-        $finder->shouldReceive('getHints')->andReturn($hints);
-
-        return $finder;
-    }
-
-    private function getFilesystem($finder = null, $extension = null)
-    {
-        $finder OR $finder = $this->getFinder();
-
-        $finder     = ($finder !== null) ? $finder : $this->getFinder();
-        $filesystem = new Filesystem($finder);
-
-        if ($extension !== null) {
-            $filesystem->setExtension($extension);
-        }
-
-        return $filesystem;
     }
 }

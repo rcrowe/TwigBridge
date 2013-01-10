@@ -1,7 +1,11 @@
 <?php
 
+namespace TwigBridgeTests;
+
+use PHPUnit_Framework_TestCase;
 use TwigBridge\Extension;
 use Illuminate\Foundation\Application;
+use Twig_Environment;
 
 class mockExtension extends Extension
 {
