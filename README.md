@@ -3,7 +3,6 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 Installation
 ============
 
-
 Add `rcrowe\twigbridge` as a requirement to composer.json:
 
 ```javascript
@@ -35,6 +34,29 @@ $ php artisan config:publish rcrowe/twigbridge
 
 Usage
 =====
+
+You call the Twig template like you would any other view:
+
+```php
+View::make('i_am_twig.twig', array(...))
+
+// You don't even need to pass the extension
+View::make('i_am_twig', array(...))
+```
+
+TwigBridge also supports views in other packages:
+
+```php
+View::make('pagination::simple')
+```
+
+The above rules continue when extending another Twig template:
+
+```html
+{% extend "parent.twig" %}
+{% extend "parent" %}
+{% extend "pagination::parent" %}
+```
 
 Extensions
 ==========
