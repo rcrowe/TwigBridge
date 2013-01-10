@@ -2,7 +2,7 @@
     "name": "rcrowe/twigbridge",
     "description": "Adds the power of Twig to Illuminate / Laravel 4",
     "keywords": ["laravel", "twig"],
-    "license": "BSD",
+    "license": "MIT",
     "authors": [
         {
             "name": "Rob Crowe",
