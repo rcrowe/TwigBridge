@@ -45,8 +45,8 @@ return array(
         'charset' => 'utf-8',
 
         // The base template class to use for generated templates.
-        // default: Twig_Template
-        'base_template_class' => 'Twig_Template',
+        // default: EloquentTemplate
+        'base_template_class' => 'TwigBridge\EloquentTemplate',
 
         // An absolute path where to store the compiled templates, or false to disable caching. If null
         // then the cache file path is used.
