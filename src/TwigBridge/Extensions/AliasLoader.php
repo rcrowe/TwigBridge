@@ -67,10 +67,12 @@ class AliasLoader extends Extension
         $loader = $this;
 
         // Register Twig callback to handle undefined functions
-        $twig->registerUndefinedFunctionCallback(function($name) use($loader) {
-            // Allow any method on aliased classes
-            return $loader->getFunction($name);
-        });
+        $twig->registerUndefinedFunctionCallback(
+            function ($name) use ($loader) {
+                // Allow any method on aliased classes
+                return $loader->getFunction($name);
+            }
+        );
     }
 
     /**

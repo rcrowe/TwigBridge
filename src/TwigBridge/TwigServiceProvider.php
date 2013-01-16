@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Brings Twig to Laravel 4.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
@@ -33,20 +40,21 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $me = $this;
 
-        $this->app['view.engine.resolver'] = $this->app->share(function($app) use ($me)
-        {
-            $resolver = new EngineResolver;
+        $this->app['view.engine.resolver'] = $this->app->share(
+            function ($app) use ($me) {
 
-            // Next we will register the various engines with the resolver so that the
-            // environment can resolve the engines it needs for various views based
-            // on the extension of view files. We call a method for each engines.
-            foreach (array('php', 'blade', 'twig') as $engine)
-            {
-                $me->{'register'.ucfirst($engine).'Engine'}($resolver);
+                $resolver = new EngineResolver;
+
+                // Next we will register the various engines with the resolver so that the
+                // environment can resolve the engines it needs for various views based
+                // on the extension of view files. We call a method for each engines.
+                foreach (array('php', 'blade', 'twig') as $engine) {
+                    $me->{'register'.ucfirst($engine).'Engine'}($resolver);
+                }
+
+                return $resolver;
             }
-
-            return $resolver;
-        });
+        );
     }
 
     /**
@@ -60,19 +68,21 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $app = $this->app;
 
-        $resolver->register('twig', function() use($app)
-        {
-            // Grab Twig
-            $bridge = new TwigBridge($app);
-            $twig   = $bridge->getTwig();
+        $resolver->register(
+            'twig',
+            function () use ($app) {
+                // Grab Twig
+                $bridge = new TwigBridge($app);
+                $twig   = $bridge->getTwig();
 
-            $app['events']->fire('twigbridge.twig', array($twig));
+                $app['events']->fire('twigbridge.twig', array($twig));
 
-            // Get any global variables
-            $globals = $app['config']->get('twigbridge::globals', array());
+                // Get any global variables
+                $globals = $app['config']->get('twigbridge::globals', array());
 
-            return new Engines\TwigEngine($twig, $globals);
-        });
+                return new Engines\TwigEngine($twig, $globals);
+            }
+        );
     }
 
     /**
@@ -95,16 +105,18 @@ class TwigServiceProvider extends ViewServiceProvider
     public function registerCommands()
     {
         // Info command
-        $this->app['command.twigbridge'] = $this->app->share(function($app)
-        {
-            return new Console\TwigBridgeCommand;
-        });
+        $this->app['command.twigbridge'] = $this->app->share(
+            function ($app) {
+                return new Console\TwigBridgeCommand;
+            }
+        );
 
         // Empty Twig cache command
-        $this->app['command.twigbridge.clean'] = $this->app->share(function($app)
-        {
-            return new Console\CleanCommand;
-        });
+        $this->app['command.twigbridge.clean'] = $this->app->share(
+            function ($app) {
+                return new Console\CleanCommand;
+            }
+        );
 
         $this->commands('command.twigbridge', 'command.twigbridge.clean');
     }

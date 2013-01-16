@@ -148,11 +148,14 @@ class TwigBridge
         }
 
         if ($delimiters === null) {
-            $delimiters = $this->app['config']->get('twigbridge::delimiters', array(
-                'tag_comment'  => array('{#', '#}'),
-                'tag_block'    => array('{%', '%}'),
-                'tag_variable' => array('{{', '}}'),
-            ));
+            $delimiters = $this->app['config']->get(
+                'twigbridge::delimiters',
+                array(
+                    'tag_comment'  => array('{#', '#}'),
+                    'tag_block'    => array('{%', '%}'),
+                    'tag_variable' => array('{{', '}}'),
+                )
+            );
         }
 
         $lexer = new Twig\Lexer(

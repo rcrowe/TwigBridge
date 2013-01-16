@@ -22,8 +22,14 @@ abstract class Template extends Twig_Template
      *
      * Allows Eloquent results to work properly.
      */
-    protected function getAttribute($object, $item, array $arguments = array(), $type = Twig_TemplateInterface::ANY_CALL, $isDefinedTest = false, $ignoreStrictCheck = false)
-    {
+    protected function getAttribute(
+        $object,
+        $item,
+        array $arguments = array(),
+        $type = Twig_TemplateInterface::ANY_CALL,
+        $isDefinedTest = false,
+        $ignoreStrictCheck = false
+    ) {
         $ret = parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
 
         // We need to handle relations differently when dealing with Eloquent objects
