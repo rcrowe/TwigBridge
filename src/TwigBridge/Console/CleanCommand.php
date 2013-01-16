@@ -3,7 +3,7 @@
 namespace TwigBridge\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem;
+use Illuminate\Filesystem\Filesystem;
 
 class CleanCommand extends Command
 {
