@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "rcrowe/twigbridge",
     "description": "Adds the power of Twig to Illuminate / Laravel 4",
     "keywords": ["laravel", "twig"],
@@ -14,8 +13,8 @@
         "php": ">=5.3.0",
         "twig/twig": "1.12.*@stable",
         "illuminate/foundation": "4.0.*",
-        "meido/html": ">=1.0.7@stable",
-        "meido/form": ">=1.0.4@stable"
+        "meido/html": "1.1.*@stable",
+        "meido/form": "1.1.*@stable"
     },
     "require-dev": {
         "mockery/mockery": "0.7.2"
@@ -24,5 +23,6 @@
         "psr-0": {
             "TwigBridge": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
