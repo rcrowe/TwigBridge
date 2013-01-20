@@ -35,8 +35,9 @@ class PrecompileCommand extends Command
 
         $paths = $twig->getLoader()->getPaths();
 
+        $ext = $this->laravel['config']->get('twigbridge::extension');
         $finder = new Finder();
-        $finder->files()->in($this->laravel['path'])->name('*.twig');
+        $finder->files()->in($this->laravel['path'])->name('*.'.$ext);
 
         $count = 0;
         foreach ($finder as $file) {
