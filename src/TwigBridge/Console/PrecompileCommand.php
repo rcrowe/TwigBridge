@@ -3,7 +3,6 @@
 namespace TwigBridge\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use TwigBridge\TwigBridge;
 use Twig_Error_Loader;
@@ -35,7 +34,6 @@ class PrecompileCommand extends Command
         $twig = $twig->getTwig();
 
         $paths = $twig->getLoader()->getPaths();
-        
 
         $finder = new Finder();
         $finder->files()->in($this->laravel['path'])->name('*.twig');

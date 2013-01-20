@@ -4,7 +4,7 @@ namespace TwigBridgeTests;
 
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Illuminate\Foundation\Application; 
+use Illuminate\Foundation\Application;
 use Illuminate\Container\Container;
 use TwigBridge\Console\PrecompileCommand;
 use Mockery as m;
@@ -34,7 +34,7 @@ class Console_PrecompileCommand extends PHPUnit_Framework_TestCase
 
             return array_pop($args);
         });
-        
+
         $finder = new \Illuminate\View\FileViewFinder(
             new \Illuminate\Filesystem\Filesystem(),
             array($mock_dir)
@@ -49,10 +49,9 @@ class Console_PrecompileCommand extends PHPUnit_Framework_TestCase
         $app->shouldReceive('offsetGet')->with('view')->andReturn($view);
         // End mocking.
 
-
         $command = new PrecompileCommand();
         $command->setLaravel($app);
-        
+
         $tester = new CommandTester($command);
         $tester->execute(array());
         $this->assertContains('1 Twig templates precompiled', $tester->getDisplay());
