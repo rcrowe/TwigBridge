@@ -183,15 +183,10 @@ class TwigBridge
      *
      * @return Twig_Environment
      */
-    public function getTwig(Twig_Loader_Filesystem $loader = null)
+    public function getTwig()
     {
-        // Allow us to change which paths Twig looks on
-        // Default is for Twig to look on all
-        if ($loader === null) {
-            $loader = new Twig\Loader\Filesystem($this->app['view']->getFinder(), $this->extension);
-        }
-
-        $twig = new Twig_Environment($loader, $this->options);
+        $loader = new Twig\Loader\Filesystem($this->app['view']->getFinder(), $this->extension);
+        $twig   = new Twig_Environment($loader, $this->options);
 
         // Load extensions
         foreach ($this->getExtensions() as $twig_extension) {

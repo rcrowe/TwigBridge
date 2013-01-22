@@ -26,36 +26,49 @@ class CompileCommand extends Command
     protected $description = '(Pre) Compile templates';
 
     /**
+     * @var int Number of files processed
+     */
+    protected $count;
+
+    /**
      * Execute the console command.
      *
      * @return void
      */
     public function fire()
     {
-        $bridge = new TwigBridge($this->laravel);
-        $count  = 0;
+        $view_paths      = $this->laravel['view']->getFinder()->getPaths();
+        $namespace_paths = $this->laravel['view']->getFinder()->getHints();
 
-        // Process one folder at a time
-        // Gets around the issue where files were clashing and not being compiled
-        // when the file name existed in more than one path.
-        foreach ($bridge->getTwig()->getLoader()->getPaths() as $path) {
+        foreach ($view_paths as $path) {
+            $this->processPath($path);
+        }
 
-            $twig = $bridge->getTwig(new Twig_Loader_Filesystem($path));
-
-            $finder = new Finder();
-            $finder->files()->in($path)->name('*.'.$bridge->getExtension());
-
-            foreach ($finder as $file) {
-                $file     = $file->getRealPath();
-                $path     = pathinfo($file, PATHINFO_DIRNAME);
-                $basename = pathinfo($file, PATHINFO_BASENAME);
-
-                $twig->loadTemplate($basename);
-
-                $count++;
+        foreach ($namespace_paths as $namespace => $paths) {
+            foreach ($paths as $path) {
+                $this->processPath($path, $namespace);
             }
         }
 
-        $this->info("{$count} Twig templates precompiled");
+        $this->info($this->count.' Twig templates compiled');
+    }
+
+    protected function processPath($path, $namespace = null)
+    {
+        $path = realpath($path);
+
+        $bridge = new TwigBridge($this->laravel);
+        $finder = new Finder();
+        $finder->files()->in($path)->name('*.'.$bridge->getExtension());
+
+        foreach ($finder as $file) {
+
+            $file = $file->getRealPath();
+            $file = pathinfo($file, PATHINFO_FILENAME);
+            $file = ($namespace === null) ? $file : $namespace.'::'.$file;
+
+            $this->laravel['view']->make($file)->render();
+            $this->count++;
+        }
     }
 }
