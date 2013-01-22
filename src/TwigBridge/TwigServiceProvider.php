@@ -119,15 +119,15 @@ class TwigServiceProvider extends ViewServiceProvider
         );
 
         // Precompile command
-        $this->app['command.twigbridge.precompile'] = $this->app->share(function($app)
+        $this->app['command.twigbridge.compile'] = $this->app->share(function($app)
         {
-            return new Console\PrecompileCommand;
+            return new Console\CompileCommand;
         });
 
         $this->commands(
-            'command.twigbridge', 
+            'command.twigbridge',
             'command.twigbridge.clean',
-            'command.twigbridge.precompile'
+            'command.twigbridge.compile'
         );
     }
 }

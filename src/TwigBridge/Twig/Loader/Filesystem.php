@@ -50,6 +50,7 @@ class Filesystem extends Twig_Loader_Filesystem
 
         // Combine package and view paths
         // View paths take precedence
+        // $paths = array_merge($view_paths, $namespace_paths);
         $paths = array_merge($view_paths, $namespace_paths);
         $paths = array_unique($paths);
 
