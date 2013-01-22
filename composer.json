@@ -12,12 +12,16 @@
     "require": {
         "php": ">=5.3.0",
         "twig/twig": "1.12.*@stable",
-        "illuminate/foundation": "4.0.*",
+        "illuminate/foundation": "4.0.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.7.2",
         "meido/html": "1.1.*@stable",
         "meido/form": "1.1.*@stable"
     },
-    "require-dev": {
-        "mockery/mockery": "0.7.2"
+    "suggest": {
+        "meido/html": "A port of Laravel 3's HTML class",
+        "meido/form": "A port of Laravel 3's Form class"
     },
     "autoload": {
         "psr-0": {
