@@ -13,6 +13,8 @@ class Console_PrecompileCommand extends PHPUnit_Framework_TestCase
 {
     public function teardown()
     {
+        $this->markTestIncomplete();
+
         $mock_dir = __DIR__.'/../fixtures/Console/';
         // Remove the cached templates directory.
         shell_exec('rm -rf '.$mock_dir.'/storage');
@@ -20,6 +22,8 @@ class Console_PrecompileCommand extends PHPUnit_Framework_TestCase
 
     public function testPrecompile()
     {
+        $this->markTestIncomplete();
+
         // Begin mocking:
         $mock_dir = __DIR__.'/../fixtures/Console/';
 
