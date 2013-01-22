@@ -5,9 +5,6 @@ namespace TwigBridge\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
 use TwigBridge\TwigBridge;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
-use Twig_Error_Loader;
 
 class CompileCommand extends Command
 {
