@@ -20,8 +20,8 @@
         "meido/form": "1.1.*@stable"
     },
     "suggest": {
-        "meido/html": "A port of Laravel 3's HTML class",
-        "meido/form": "A port of Laravel 3's Form class"
+        "meido/html": "1.1.*@stable",
+        "meido/form": "1.1.*@stable"
     },
     "autoload": {
         "psr-0": {
