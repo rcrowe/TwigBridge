@@ -138,3 +138,13 @@ Empty the Twig cache:
 ```
 $ php artisan twig:clean
 ```
+
+Pre-compile Twig templates:
+```
+$ php artisan twig:compile
+```
+
+Check syntax of Twig templates:
+```
+$ php artisan twig:lint
+```
