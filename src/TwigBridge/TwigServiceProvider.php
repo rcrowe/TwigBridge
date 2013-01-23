@@ -14,6 +14,9 @@ use Illuminate\View\Engines\EngineResolver;
 use Twig_Environment;
 use Twig_Lexer;
 
+/**
+ * Bootstrap TwigBridge with Laravel.
+ */
 class TwigServiceProvider extends ViewServiceProvider
 {
     /**
