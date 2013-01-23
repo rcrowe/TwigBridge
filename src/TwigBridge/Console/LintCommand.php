@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Brings Twig to Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge\Console;
 
 use Illuminate\Console\Command;
@@ -83,20 +90,34 @@ class LintCommand extends Command
         return ($fail === 0) ? 0 : 1;
     }
 
-    protected function processFile($path)
+    /**
+     * Lint check specific file.
+     *
+     * @param string $file Path to file.
+     * @return bool Did the file pass syntax check.
+     */
+    protected function processFile($file)
     {
-        $template = file_get_contents($path);
-        $basename = pathinfo($path, PATHINFO_BASENAME);
+        $template = file_get_contents($file);
+        $basename = pathinfo($file, PATHINFO_BASENAME);
 
         try {
             $this->twig->parse($this->twig->tokenize($template, $basename));
             return true;
         } catch (Twig_Error $e) {
-            $this->renderException($e, $template, $path);
+            $this->renderException($e, $template, $file);
             return false;
         }
     }
 
+    /**
+     * Output to console the failure.
+     *
+     * @param Twig_Error $exception Exception raised from failed parsing.
+     * @param string     $template  Contents of Twig template.
+     * @param string     $file      File name.
+     * @param void
+     */
     protected function renderException(Twig_Error $exception, $template, $file)
     {
         $line  = $exception->getTemplateLine();
@@ -118,6 +139,14 @@ class LintCommand extends Command
         }
     }
 
+    /**
+     * Grabs the surrounding lines around the exception.
+     *
+     * @param string     $template Contents of Twig template.
+     * @param string|int $line     Line where the exception occurred.
+     * @param int        $context  Number of lines around the line where the exception occurred.
+     * @return array
+     */
     protected function getContext($template, $line, $context = 3)
     {
         $lines    = explode("\n", $template);
