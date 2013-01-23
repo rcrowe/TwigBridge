@@ -1,11 +1,21 @@
 <?php
 
+/**
+ * Brings Twig to Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace TwigBridge\Console;
 
 use Illuminate\Console\Command;
 use TwigBridge\TwigBridge;
 use Twig_Environment;
 
+/**
+ * Displays version information on Twig & the bridge its self.
+ */
 class TwigBridgeCommand extends Command
 {
     /**
