@@ -126,12 +126,14 @@ class LintCommand extends Command
         $this->line(sprintf('<error>Fail</error> in %s (line %s)', $file, $line));
 
         foreach ($lines as $no => $code) {
-            $this->line(sprintf(
-                "%s %-6s %s",
-                $no == $line ? '<error>>></error>' : '  ',
-                $no,
-                $code
-            ));
+            $this->line(
+                sprintf(
+                    "%s %-6s %s",
+                    $no == $line ? '<error>>></error>' : '  ',
+                    $no,
+                    $code
+                )
+            );
 
             if ($no == $line) {
                 $this->line(sprintf('<error>>> %s</error> ', $exception->getRawMessage()));
