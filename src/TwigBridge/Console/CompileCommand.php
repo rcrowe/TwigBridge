@@ -56,7 +56,10 @@ class CompileCommand extends Command
             }
         }
 
-        $this->info($this->count.' Twig templates compiled');
+        $msg = ($this->count > 1) ? 'templates' : 'template';
+        $msg = sprintf('%s Twig %s compiled', $this->count, $msg);
+
+        $this->info($msg);
     }
 
     /**
