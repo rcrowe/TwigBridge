@@ -35,7 +35,7 @@ class CompileCommand extends Command
     /**
      * @var int Number of files processed
      */
-    protected $count;
+    protected $count = 0;
 
     /**
      * Execute the console command.
@@ -56,7 +56,7 @@ class CompileCommand extends Command
             }
         }
 
-        $msg = ($this->count > 1) ? 'templates' : 'template';
+        $msg = ($this->count > 1 OR $this->count === 0) ? 'templates' : 'template';
         $msg = sprintf('%s Twig %s compiled', $this->count, $msg);
 
         $this->info($msg);
