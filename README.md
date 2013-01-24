@@ -26,7 +26,7 @@ Once Composer has installed or updated your packages you need to register TwigBr
 Configuration
 =============
 
-TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/twigbridge.php.
+TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/config.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/config.php.
 
 You can quickly publish a configuration file by running the following Artisan command.
 
