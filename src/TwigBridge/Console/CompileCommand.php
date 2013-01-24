@@ -80,9 +80,15 @@ class CompileCommand extends Command
         foreach ($finder as $file) {
 
             $file = $file->getRealPath();
-            $file = pathinfo($file, PATHINFO_FILENAME);
-            $file = ($namespace === null) ? $file : $namespace.'::'.$file;
 
+            // Handle files found in sub-folders
+            $file = str_replace($path, '', $file);
+            $file = ($file{0} === '/') ? substr($file, 1) : $file;
+            $dir  = pathinfo($file, PATHINFO_DIRNAME);
+            $dir  = ($dir !== '.') ? $dir.'/' : '';
+            $file = $dir.pathinfo($file, PATHINFO_FILENAME);
+
+            // Let Twig compile the view
             $this->laravel['view']->make($file)->render();
             $this->count++;
         }
