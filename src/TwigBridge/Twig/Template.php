@@ -30,6 +30,14 @@ abstract class Template extends Twig_Template
         $isDefinedTest = false,
         $ignoreStrictCheck = false
     ) {
+        // We need to handle accessing attributes of an Eloquent model differently
+        if (is_a($object, 'Illuminate\Database\Eloquent\Model')) {
+            $ret = $object->getAttribute($item);
+
+            return ($ret AND $isDefinedTest) ? true : $ret;
+        }
+
+        // Grab the value
         $ret = parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
 
         // We need to handle relations differently when dealing with Eloquent objects
