@@ -20,6 +20,7 @@
         "meido/form": "1.1.*@stable"
     },
     "suggest": {
+        "twig/extensions": "1.0.*",
         "meido/html": "1.1.*@stable",
         "meido/form": "1.1.*@stable"
     },
