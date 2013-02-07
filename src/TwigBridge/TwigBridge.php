@@ -205,6 +205,8 @@ class TwigBridge
             $twig->addExtension($twig_extension);
         }
 
+        $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
+
         // Allow template tags to be changed
         $twig->setLexer($this->getLexer($twig));
 
