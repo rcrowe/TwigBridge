@@ -78,8 +78,6 @@ class TwigServiceProvider extends ViewServiceProvider
                 $bridge = new TwigBridge($app);
                 $twig   = $bridge->getTwig();
 
-                $app['events']->fire('twigbridge.twig', array($twig));
-
                 // Get any global variables
                 $globals = $app['config']->get('twigbridge::globals', array());
 
