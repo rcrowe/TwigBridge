@@ -190,7 +190,6 @@ class TwigBridge
 
         // Load extensions
         foreach ($this->getExtensions() as $twig_extension) {
-
             // Get an instance of the extension
             // Support for string, closure and an object
             if (is_string($twig_extension)) {
@@ -203,6 +202,10 @@ class TwigBridge
 
             // Add extension to twig
             $twig->addExtension($twig_extension);
+        }
+
+        if ( array_key_exists('debug', $this->options) && ($this->options['debug'] === true) ) {
+            $twig->addExtension(new \Twig_Extension_Debug());
         }
 
         $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
