@@ -16,13 +16,13 @@
     },
     "require-dev": {
         "mockery/mockery": "0.7.2",
-        "meido/html": "1.1.*@stable",
-        "meido/form": "1.1.*@stable"
+        "meido/html": "1.1.*",
+        "meido/form": "1.1.*"
     },
     "suggest": {
         "twig/extensions": "1.0.*",
-        "meido/html": "1.1.*@stable",
-        "meido/form": "1.1.*@stable"
+        "meido/html": "1.1.*",
+        "meido/form": "1.1.*"
     },
     "autoload": {
         "psr-0": {

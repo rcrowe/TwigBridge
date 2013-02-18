@@ -89,6 +89,11 @@ TwigBridge comes with the following extensions:
 - TwigBridge\Extensions\AliasLoader
 - TwigBridge\Extensions\Html
 
+These extensions are configured by default:
+
+- [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
+- TwigBridge\Extensions\AliasLoader
+
 AliasLoader
 -----------
 
