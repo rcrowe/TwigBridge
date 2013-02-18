@@ -36,11 +36,14 @@ abstract class Template extends Twig_Template
             if (method_exists($object, $item)) {
                 $ret = call_user_func_array(array($object, $item), $arguments);
             } else {
-                $ret = $object->getAttribute($item);
-            }
 
-            if ($ret AND $isDefinedTest) {
-                return true;
+                // Calling getAttributes lets us deal with accessors, mutators & relations
+                $ret = $object->getAttribute($item);
+
+                // getAttributes doesn't deal with attributes that aren't part of the models data
+                if ($ret === null AND isset($object->$item)) {
+                    $ret = $object->$item;
+                }
             }
 
         } else {
@@ -52,10 +55,10 @@ abstract class Template extends Twig_Template
 
             // Grab the value from the relation
             $ret = $object->getAttribute($item);
+        }
 
-            if ($ret AND $isDefinedTest) {
-                return true;
-            }
+        if ($ret AND $isDefinedTest) {
+            return true;
         }
 
         return $ret;
