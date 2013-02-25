@@ -94,7 +94,7 @@ These extensions are configured by default:
 AliasLoader
 -----------
 
-The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates intergration with any Laravel call as well as any other classes you alias.
+The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates intergration with any Laravel class as well as any other classes you alias.
 
 To use the Laravel intergration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
 
@@ -113,6 +113,13 @@ which will then output the following HTML:
 
 ```html
 <form method="POST" action="http://example.com/current/uri" accept-charset="utf-8">
+```
+
+To use this functionality you will need to add the following to your composer.json dependencies:
+
+```javascript
+"meido/html": "1.1.*",
+"meido/form": "1.1.*"
 ```
 
 Events
