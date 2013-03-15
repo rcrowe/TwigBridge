@@ -87,7 +87,6 @@ return array(
     'extensions' => array(
         'Twig_Extension_Debug',
         'TwigBridge\Extensions\AliasLoader',
-        // 'TwigBridge\Extensions\Html',
     ),
 
     /*
