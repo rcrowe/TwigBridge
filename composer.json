@@ -11,13 +11,11 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "twig/twig": "1.12.*@stable",
-        "laravel/framework": "4.0.*"
+        "twig/twig": "1.12.*@stable"
     },
     "require-dev": {
-        "mockery/mockery": "0.7.2",
-        "meido/html": "1.1.*",
-        "meido/form": "1.1.*"
+        "laravel/framework": "4.0.*",
+        "mockery/mockery": "0.7.2"
     },
     "suggest": {
         "twig/extensions": "1.0.*",
