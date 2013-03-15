@@ -84,7 +84,6 @@ TwigBridge supports both a string or a closure as a callback, so for example you
 TwigBridge comes with the following extensions:
 
 - TwigBridge\Extensions\AliasLoader
-- TwigBridge\Extensions\Html
 
 These extensions are configured by default:
 
@@ -99,28 +98,6 @@ The AliasLoader extension allows you to call any class that has been aliased in 
 To use the Laravel intergration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
 
 You can define shortcuts to these by changing the `alias_shortcuts` config parameter. For example, calling `url(...)` is actually an alias to `url_to(...)`.
-
-Html
-----
-
-Intergrates Meido [HTML](https://github.com/meido/html) and [Form](https://github.com/meido/form), which means you can for example do the following:
-
-```html
-{{ form_open() }}
-```
-
-which will then output the following HTML:
-
-```html
-<form method="POST" action="http://example.com/current/uri" accept-charset="utf-8">
-```
-
-To use this functionality you will need to add the following to your composer.json dependencies:
-
-```javascript
-"meido/html": "1.1.*",
-"meido/form": "1.1.*"
-```
 
 Events
 ======
