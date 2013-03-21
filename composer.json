@@ -14,7 +14,8 @@
         "twig/twig": "1.*"
     },
     "require-dev": {
-        "laravel/framework": "4.0.*",
+        "illuminate/foundation": "4.0.*",
+        "illuminate/filesystem": "4.0.*",
         "mockery/mockery": "0.7.2"
     },
     "suggest": {
@@ -24,5 +25,6 @@
         "psr-0": {
             "TwigBridge": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
