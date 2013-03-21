@@ -100,6 +100,7 @@ return array(
     */
     'alias_shortcuts' => array(
         'config'    => 'config_get',
+        'lang'      => 'lang_get',
         'logged_in' => 'auth_check',
         'url'       => 'url_to',
     ),
