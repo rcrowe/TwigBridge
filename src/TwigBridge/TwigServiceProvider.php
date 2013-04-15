@@ -41,23 +41,7 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerEngineResolver()
     {
-        $me = $this;
-
-        $this->app['view.engine.resolver'] = $this->app->share(
-            function ($app) use ($me) {
-
-                $resolver = new EngineResolver;
-
-                // Next we will register the various engines with the resolver so that the
-                // environment can resolve the engines it needs for various views based
-                // on the extension of view files. We call a method for each engines.
-                foreach (array('php', 'blade', 'twig') as $engine) {
-                    $me->{'register'.ucfirst($engine).'Engine'}($resolver);
-                }
-
-                return $resolver;
-            }
-        );
+        $this->registerTwigEngine($this->app['view.engine.resolver']);
     }
 
     /**
