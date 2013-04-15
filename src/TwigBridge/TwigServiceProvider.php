@@ -29,19 +29,9 @@ class TwigServiceProvider extends ViewServiceProvider
         // Register the package configuration with the loader.
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
 
-        $this->registerEngineResolver();
+        $this->registerTwigEngine();
         $this->registerEnvironment();
         $this->registerCommands();
-    }
-
-    /**
-     * Register the engine resolver instance.
-     *
-     * @return void
-     */
-    public function registerEngineResolver()
-    {
-        $this->registerTwigEngine($this->app['view.engine.resolver']);
     }
 
     /**
@@ -51,23 +41,21 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerTwigEngine($resolver)
+    public function registerTwigEngine()
     {
         $app = $this->app;
 
-        $resolver->register(
-            'twig',
-            function () use ($app) {
-                // Grab Twig
-                $bridge = new TwigBridge($app);
-                $twig   = $bridge->getTwig();
+        $app['view']->addExtension('twig', 'twig', function () use ($app)
+        {
+            // Grab Twig
+            $bridge = new TwigBridge($app);
+            $twig   = $bridge->getTwig();
 
-                // Get any global variables
-                $globals = $app['config']->get('twigbridge::globals', array());
+            // Get any global variables
+            $globals = $app['config']->get('twigbridge::globals', array());
 
-                return new Engines\TwigEngine($twig, $globals);
-            }
-        );
+            return new Engines\TwigEngine($twig, $globals);
+        });
     }
 
     /**
