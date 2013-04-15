@@ -30,7 +30,6 @@ class TwigServiceProvider extends ViewServiceProvider
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
 
         $this->registerTwigEngine();
-        $this->registerEnvironment();
         $this->registerCommands();
     }
 
@@ -45,7 +44,7 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $app = $this->app;
 
-        $app['view']->addExtension('twig', 'twig', function () use ($app)
+        $app['view']->addExtension($app['config']->get('twigbridge::extension', 'twig'), 'twig', function () use ($app)
         {
             // Grab Twig
             $bridge = new TwigBridge($app);
@@ -56,17 +55,6 @@ class TwigServiceProvider extends ViewServiceProvider
 
             return new Engines\TwigEngine($twig, $globals);
         });
-    }
-
-    /**
-     * Register the view environment.
-     *
-     * @param  Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    public function registerEnvironment()
-    {
-        $this->app['view']->addExtension($this->app['config']->get('twigbridge::extension', 'twig'), 'twig');
     }
 
     /**
