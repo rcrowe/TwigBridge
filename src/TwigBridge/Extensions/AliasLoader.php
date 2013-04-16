@@ -207,15 +207,8 @@ class AliasLoader extends Extension
             return false;
         }
 
-        if (count($parts) > 2)
-        {
-            $class = array_shift($parts);
-            $method = Str::camel(implode('_', $parts));
-        }
-        else
-        {
-            list($class, $method) = $parts;
-        }
+        $class  = array_shift($parts);
+        $method = Str::camel(implode('_', $parts));
 
         // Does that alias exist
         if (array_key_exists($class, $this->aliases)) {
