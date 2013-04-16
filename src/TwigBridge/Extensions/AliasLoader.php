@@ -10,6 +10,7 @@
 namespace TwigBridge\Extensions;
 
 use TwigBridge\Extension;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Function_Function;
@@ -206,7 +207,8 @@ class AliasLoader extends Extension
             return false;
         }
 
-        list($class, $method) = $parts;
+        $class  = array_shift($parts);
+        $method = Str::camel(implode('_', $parts));
 
         // Does that alias exist
         if (array_key_exists($class, $this->aliases)) {
