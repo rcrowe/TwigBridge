@@ -29,35 +29,8 @@ class TwigServiceProvider extends ViewServiceProvider
         // Register the package configuration with the loader.
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
 
-        $this->registerEngineResolver();
-        $this->registerEnvironment();
+        $this->registerTwigEngine();
         $this->registerCommands();
-    }
-
-    /**
-     * Register the engine resolver instance.
-     *
-     * @return void
-     */
-    public function registerEngineResolver()
-    {
-        $me = $this;
-
-        $this->app['view.engine.resolver'] = $this->app->share(
-            function ($app) use ($me) {
-
-                $resolver = new EngineResolver;
-
-                // Next we will register the various engines with the resolver so that the
-                // environment can resolve the engines it needs for various views based
-                // on the extension of view files. We call a method for each engines.
-                foreach (array('php', 'blade', 'twig') as $engine) {
-                    $me->{'register'.ucfirst($engine).'Engine'}($resolver);
-                }
-
-                return $resolver;
-            }
-        );
     }
 
     /**
@@ -67,34 +40,21 @@ class TwigServiceProvider extends ViewServiceProvider
      * @param  Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerTwigEngine($resolver)
+    public function registerTwigEngine()
     {
         $app = $this->app;
 
-        $resolver->register(
-            'twig',
-            function () use ($app) {
-                // Grab Twig
-                $bridge = new TwigBridge($app);
-                $twig   = $bridge->getTwig();
+        $app['view']->addExtension($app['config']->get('twigbridge::extension', 'twig'), 'twig', function () use ($app)
+        {
+            // Grab Twig
+            $bridge = new TwigBridge($app);
+            $twig   = $bridge->getTwig();
 
-                // Get any global variables
-                $globals = $app['config']->get('twigbridge::globals', array());
+            // Get any global variables
+            $globals = $app['config']->get('twigbridge::globals', array());
 
-                return new Engines\TwigEngine($twig, $globals);
-            }
-        );
-    }
-
-    /**
-     * Register the view environment.
-     *
-     * @param  Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    public function registerEnvironment()
-    {
-        $this->app['view']->addExtension($this->app['config']->get('twigbridge::extension', 'twig'), 'twig');
+            return new Engines\TwigEngine($twig, $globals);
+        });
     }
 
     /**
