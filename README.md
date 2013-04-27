@@ -10,7 +10,7 @@ Add `rcrowe\twigbridge` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "rcrowe/twigbridge": "0.1.*"
+        "rcrowe/twigbridge": "0.2.*"
     }
 }
 ```
