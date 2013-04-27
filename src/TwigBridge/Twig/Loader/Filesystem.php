@@ -91,13 +91,15 @@ class Filesystem extends Twig_Loader_Filesystem
             return $this->finder->find($name);
         }
 
-        // Append twig file extension
-        // Make things nicer in the templates
         $extension = '.'.$this->extension;
 
-        if (strtolower(substr($name, -strlen($extension))) !== $extension) {
-            $name .= $extension;
+        // Remove the extension
+        if (strtolower(substr($name, -strlen($extension))) == $extension) {
+            $name = substr($name, 0, -strlen($extension));
         }
+
+        // Replace dot-notation
+        $name = str_replace('.', '/', $name).$extension;
 
         return parent::findTemplate($name);
     }
