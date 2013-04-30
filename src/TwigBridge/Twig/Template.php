@@ -22,7 +22,7 @@ abstract class Template extends Twig_Template
         // Deal with view composers
         if (\App::make('events')->hasListeners('composing: '.$this->getTemplateName())) {
 
-            $env  = App::make('view');
+            $env  = \App::make('view');
             $view = new \Illuminate\View\View($env, $env->getEngineResolver()->resolve('twig'), null, null, array());
 
             // Fire composer event

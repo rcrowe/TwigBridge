@@ -1,6 +1,6 @@
 <?php
 
-namespace TwigBridge;
+namespace TwigBridge\View;
 
 class View extends \Illuminate\View\View
 {
