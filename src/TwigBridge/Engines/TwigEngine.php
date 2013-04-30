@@ -93,10 +93,11 @@ class TwigEngine implements EngineInterface
         // We need to move the directory requested as the first search path
         // this stops conflicts. For example, with packages
         $view_tmp = explode('/', str_replace('.', '/', $view));
-        $path     = explode('/', pathinfo($path, PATHINFO_DIRNAME));
-        $path     = array_slice($path, 0, -(count($view_tmp)-1));
+        $path_tmp = explode('/', pathinfo($path, PATHINFO_DIRNAME));
+        $path_tmp_slice = array_slice($path_tmp, 0, -(count($view_tmp)-1));
+        $path_tmp_slice = implode('/', $path_tmp);
 
-        $paths[] = implode('/', $path);
+        $paths[] = (strlen($path_tmp_slice) > 0) ? $path_tmp_slice : $path;
         $paths   = array_merge($paths, $this->twig->getLoader()->getPaths());
 
         // Set new ordered paths

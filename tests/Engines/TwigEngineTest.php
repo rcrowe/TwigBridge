@@ -65,7 +65,23 @@ class TwigEngineTest extends PHPUnit_Framework_TestCase
             'site' => array(
                 'name' => 'TwigBridge'
             )
-        ));
+        ), 'single');
+
+        $this->assertEquals($output, 'Hello Rob Crowe, welcome to TwigBridge!');
+    }
+
+    public function testCompileSingleFileFullPath()
+    {
+        $finder     = $this->getFinder(array(__DIR__.'/../fixtures'));
+        $filesystem = $this->getFilesystem($finder);
+        $engine     = $this->getEngine($filesystem);
+
+        $output = $engine->get(__DIR__.'/../fixtures/Engine', array(
+            'name' => 'Rob Crowe',
+            'site' => array(
+                'name' => 'TwigBridge'
+            )
+        ), 'Engine.single');
 
         $this->assertEquals($output, 'Hello Rob Crowe, welcome to TwigBridge!');
     }
@@ -76,7 +92,7 @@ class TwigEngineTest extends PHPUnit_Framework_TestCase
         $filesystem = $this->getFilesystem($finder);
         $engine     = $this->getEngine($filesystem, array('name' => 'rcrowe'));
 
-        $output = $engine->get('single', array('site' => array('name' => 'TwigBridge')));
+        $output = $engine->get('single', array('site' => array('name' => 'TwigBridge')), 'single');
 
         $this->assertEquals($output, 'Hello rcrowe, welcome to TwigBridge!');
     }
@@ -87,7 +103,7 @@ class TwigEngineTest extends PHPUnit_Framework_TestCase
         $filesystem = $this->getFilesystem($finder);
         $engine     = $this->getEngine($filesystem, array('name' => 'Rob'));
 
-        $output = $engine->get('child');
+        $output = $engine->get(__DIR__.'/../fixtures/Engine', array(), 'child');
         $check  = <<<HTML
 <h1>Hello Rob</h1>
 
@@ -113,7 +129,7 @@ HTML;
             'site' => array(
                 'name' => 'TwigBridge'
             )
-        ));
+        ), 'single');
 
         $this->assertEquals($output, 'Hello Rob Crowe, welcome to TwigBridge!');
     }
@@ -130,7 +146,7 @@ HTML;
         $filesystem = $this->getFilesystem($finder);
         $engine     = $this->getEngine($filesystem);
 
-        $output = $engine->get('child', array('name' => 'Rob'));
+        $output = $engine->get('child', array('name' => 'Rob'), 'child');
         $check  = <<<HTML
 <h1>Hello Rob</h1>
 
