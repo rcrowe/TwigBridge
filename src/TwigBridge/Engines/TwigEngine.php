@@ -95,9 +95,8 @@ class TwigEngine implements EngineInterface
         $view_tmp = explode('/', str_replace('.', '/', $view));
         $path     = explode('/', pathinfo($path, PATHINFO_DIRNAME));
         $path     = array_slice($path, 0, -(count($view_tmp)-1));
-        $path     = implode('/', $path);
 
-        $paths[] = $path;
+        $paths[] = implode('/', $path);
         $paths   = array_merge($paths, $this->twig->getLoader()->getPaths());
 
         // Set new ordered paths
