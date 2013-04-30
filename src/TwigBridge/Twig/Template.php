@@ -11,12 +11,38 @@ namespace TwigBridge\Twig;
 
 use Twig_Template;
 use Twig_TemplateInterface;
+use App;
+use TwigBridge\View\View;
 
 /**
  * This class is extended by the generated templates.
  */
 abstract class Template extends Twig_Template
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function display(array $context, array $blocks = array())
+    {
+        $template_name = $this->getTemplateName();
+
+        // Deal with view composers
+        if (App::make('events')->hasListeners('composing: '.$template_name)) {
+
+            // Create dummy view object to hold the data from the event we are about to fire
+            $env  = App::make('view');
+            $view = new View($env, $env->getEngineResolver()->resolve('twig'), null, null, array());
+
+            // Fire composer event
+            App::make('events')->fire('composing: '.$template_name, array($view));
+
+            // Merge composer data with context passed in
+            $context = array_merge($view->getData(), $context);
+        }
+
+        parent::display($context, $blocks);
+    }
+
     /**
      * Returns the attribute value for a given array/object.
      *
