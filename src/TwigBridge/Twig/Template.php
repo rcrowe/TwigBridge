@@ -19,18 +19,22 @@ use TwigBridge\View\View;
  */
 abstract class Template extends Twig_Template
 {
+    /**
+     * {@inheritdoc}
+     */
     public function display(array $context, array $blocks = array())
     {
+        $template_name = $this->getTemplateName();
+
         // Deal with view composers
-        // Does the view have an composer event set on it?
-        if (App::make('events')->hasListeners('composing: '.$this->getTemplateName())) {
+        if (App::make('events')->hasListeners('composing: '.$template_name)) {
 
             // Create dummy view object to hold the data from the event we are about to fire
             $env  = App::make('view');
             $view = new View($env, $env->getEngineResolver()->resolve('twig'), null, null, array());
 
             // Fire composer event
-            App::make('events')->fire('composing: '.$this->getTemplateName(), array($view));
+            App::make('events')->fire('composing: '.$template_name, array($view));
 
             // Merge composer data with context passed in
             $context = array_merge($view->getData(), $context);

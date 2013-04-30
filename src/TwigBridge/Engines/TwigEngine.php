@@ -86,6 +86,7 @@ class TwigEngine implements EngineInterface
      *
      * @param  string  $path
      * @param  array   $data
+     * @param  string  $view Original view passed View::make.
      * @return string
      */
     public function get($path, array $data = array(), $view = null)
