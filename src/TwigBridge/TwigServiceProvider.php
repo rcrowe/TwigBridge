@@ -29,6 +29,18 @@ class TwigServiceProvider extends ViewServiceProvider
         // Register the package configuration with the loader.
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
 
+        // Override Environment
+        // We need to do this in order to set the name of the generated/compiled twig templates
+        // Laravel by default only passes the full path to the requested view, we also need the view name
+        // that relates to defined view composers.
+        $this->app['view'] = $this->app->share(function($app) {
+            $env = new View\Environment($app['view.engine.resolver'], $app['view.finder'], $app['events']);
+            $env->setContainer($app);
+            $env->share('app', $app);
+
+            return $env;
+        });
+
         $this->registerTwigEngine();
         $this->registerCommands();
     }
