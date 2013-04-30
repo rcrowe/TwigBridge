@@ -17,6 +17,24 @@ use Twig_TemplateInterface;
  */
 abstract class Template extends Twig_Template
 {
+    public function display(array $context, array $blocks = array())
+    {
+        // Deal with view composers
+        if (\App::make('events')->hasListeners('composing: '.$this->getTemplateName())) {
+
+            $env  = App::make('view');
+            $view = new \Illuminate\View\View($env, $env->getEngineResolver()->resolve('twig'), null, null, array());
+
+            // Fire composer event
+            \Event::fire('composing: '.$this->getTemplateName(), array($view));
+
+            // Merge composer data with context passed in
+            $context = array_merge($view->getData(), $context);
+        }
+
+        parent::display($context, $blocks);
+    }
+
     /**
      * Returns the attribute value for a given array/object.
      *

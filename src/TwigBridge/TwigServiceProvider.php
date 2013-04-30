@@ -29,6 +29,15 @@ class TwigServiceProvider extends ViewServiceProvider
         // Register the package configuration with the loader.
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
 
+        // Override Environment
+        $this->app['view'] = $this->app->share(function($app) {
+            $env = new View\Environment($app['view.engine.resolver'], $app['view.finder'], $app['events']);
+            $env->setContainer($app);
+            $env->share('app', $app);
+
+            return $env;
+        });
+
         $this->registerTwigEngine();
         $this->registerCommands();
     }
