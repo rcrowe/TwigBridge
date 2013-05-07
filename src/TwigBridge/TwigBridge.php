@@ -89,7 +89,7 @@ class TwigBridge
         if (!isset($options['cache']) OR $options['cache'] === null) {
 
             // No cache path set for Twig, lets set to the Laravel views storage folder
-            $options['cache'] = $this->app['path'].'/storage/views/twig';
+            $options['cache'] = storage_path().'/views/twig';
         }
 
         $this->options = $options;
