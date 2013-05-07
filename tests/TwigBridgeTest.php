@@ -185,6 +185,8 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $app = new Application;
         $app->instance('path', __DIR__);
 
+        $app['path.storage'] = __DIR__.'/storage';
+
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('getPaths')->andReturn($paths);
         $finder->shouldReceive('getHints')->andReturn($hints);

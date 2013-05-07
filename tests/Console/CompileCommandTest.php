@@ -71,6 +71,9 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
         $app = new Application;
         $app->instance('path', __DIR__.'/../fixtures/Console/');
 
+        // Storage path
+        $app['path.storage'] = __DIR__;
+
         // Finder
         $finder = new FileViewFinder(new Filesystem(), $paths);
 
