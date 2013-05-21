@@ -93,9 +93,9 @@ These extensions are configured by default:
 AliasLoader
 -----------
 
-The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates intergration with any Laravel class as well as any other classes you alias.
+The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
-To use the Laravel intergration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
+To use the Laravel integration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
 
 You can define shortcuts to these by changing the `alias_shortcuts` config parameter. For example, calling `url(...)` is actually an alias to `url_to(...)`.
 
