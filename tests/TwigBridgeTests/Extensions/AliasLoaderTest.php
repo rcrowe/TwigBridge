@@ -88,6 +88,11 @@ class AliasLoaderTest extends PHPUnit_Framework_TestCase
         $loader->getFunction('lookup_snake_case');
         $this->assertEquals('Twig_Function_Function', get_class($loader->getFunction('lookup_snake_case')));
         $this->assertEquals('TwigBridgeTests\Fixtures\Extension\Lookup::snake_case', $loader->getFunction('lookup_snake_case')->getCallable());
+
+        $this->assertFalse($loader->getLookup('lookup_snake_case_that_is_really_long'));
+        $loader->getFunction('lookup_snake_case_that_is_really_long');
+        $this->assertEquals('Twig_Function_Function', get_class($loader->getFunction('lookup_snake_case_that_is_really_long')));
+        $this->assertEquals('TwigBridgeTests\Fixtures\Extension\Lookup::snake_case_that_is_really_long', $loader->getFunction('lookup_snake_case_that_is_really_long')->getCallable());
     }
 
     public function testLookupCamelCase()
@@ -98,6 +103,11 @@ class AliasLoaderTest extends PHPUnit_Framework_TestCase
         $loader->getFunction('lookup_camelCase');
         $this->assertEquals('Twig_Function_Function', get_class($loader->getFunction('lookup_camelCase')));
         $this->assertEquals('TwigBridgeTests\Fixtures\Extension\Lookup::camelCase', $loader->getFunction('lookup_camelCase')->getCallable());
+
+        $this->assertFalse($loader->getLookup('lookup_camelCaseThatIsReallyLong'));
+        $loader->getFunction('lookup_camelCaseThatIsReallyLong');
+        $this->assertEquals('Twig_Function_Function', get_class($loader->getFunction('lookup_camelCaseThatIsReallyLong')));
+        $this->assertEquals('TwigBridgeTests\Fixtures\Extension\Lookup::camelCaseThatIsReallyLong', $loader->getFunction('lookup_camelCaseThatIsReallyLong')->getCallable());
     }
 
     private function getLoader()
