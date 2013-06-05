@@ -132,8 +132,8 @@ class AliasLoader extends Extension
      */
     public function getShortcut($name)
     {
-        $name = strtolower($name);
-        return (array_key_exists($name, $this->shortcuts)) ? $this->shortcuts[$name] : $name;
+        $key = strtolower($name);
+        return (array_key_exists($key, $this->shortcuts)) ? $this->shortcuts[$key] : $name;
     }
 
     /**
@@ -148,12 +148,19 @@ class AliasLoader extends Extension
      */
     public function getAliasParts($name)
     {
-        $name = strtolower($name);
-
         if (strpos($name, '_') !== false) {
+
             $parts = explode('_', $name);
             $parts = array_filter($parts); // Remove empty elements
-            return (count($parts) < 2) ? false : $parts;
+
+            if (count($parts) < 2) {
+                return false;
+            }
+
+            return [
+                $parts[0],
+                implode('_', array_slice($parts, 1))
+            ];
         }
 
         return false;
@@ -193,7 +200,7 @@ class AliasLoader extends Extension
      */
     public function getFunction($name)
     {
-        $name = $this->getShortcut(strtolower($name));
+        $name = $this->getShortcut($name);
 
         // Check if we have looked this alias up before
         if ($function = $this->getLookup($name)) {
@@ -207,20 +214,18 @@ class AliasLoader extends Extension
             return false;
         }
 
-        $class  = array_shift($parts);
-        $method = Str::camel(implode('_', $parts));
+        list($class, $method) = $parts;
+        $class = strtolower($class);
 
         // Does that alias exist
         if (array_key_exists($class, $this->aliases)) {
 
-            $class = $this->aliases[$class];
+            $class    = $this->aliases[$class];
+            $function = new Twig_Function_Function($class.'::'.$method);
 
-            if (is_callable($class.'::'.$method)) {
+            $this->setLookup($name, $function);
 
-                $function = new Twig_Function_Function($class.'::'.$method);
-                $this->setLookup($name, $function);
-                return $function;
-            }
+            return $function;
         }
 
         return false;

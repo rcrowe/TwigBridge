@@ -23,8 +23,8 @@
     },
     "autoload": {
         "psr-0": {
-            "TwigBridge": "src/"
+            "TwigBridge": "src/",
+            "TwigBridgeTests": "tests/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
