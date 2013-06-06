@@ -157,10 +157,10 @@ class AliasLoader extends Extension
                 return false;
             }
 
-            return [
+            return array(
                 $parts[0],
                 implode('_', array_slice($parts, 1))
-            ];
+            );
         }
 
         return false;
