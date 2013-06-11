@@ -90,6 +90,29 @@ These extensions are configured by default:
 - [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extensions\AliasLoader
 
+Functions
+=========
+
+Allows publishing functions to the templates. (e.g. Laravel´s helpers).
+
+```php
+'functions' => array(
+    'base_path',
+    'app_path',
+    'camel_case',
+)
+```
+
+TwigBridge also supports closures as callbacks:
+
+```php
+'functions' => array(
+    'bond' => function($name, $lastname) {
+        return "My name is {$lastname}, {$name} {$lastname}...";
+    },
+)
+```
+
 AliasLoader
 -----------
 
