@@ -103,7 +103,9 @@ Allows publishing functions to the templates. (e.g. Laravel´s helpers).
 )
 ```
 
-TwigBridge also supports closures as callbacks:
+TwigBridge also supports closures as callbacks. In this case, the array key will
+be used as the function name to be invoked in the templates:
+`{{ bond("James", "Bond") }}`.
 
 ```php
 'functions' => array(
