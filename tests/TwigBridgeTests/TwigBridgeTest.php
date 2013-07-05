@@ -204,6 +204,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(function($env, $package, $group, $items) { return $items; });
         $config->getLoader()->shouldReceive('exists')->with('extension', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('functions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn(
