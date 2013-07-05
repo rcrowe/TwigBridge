@@ -13,6 +13,7 @@ use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Lexer;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFunction;
 use InvalidArgumentException;
 use ReflectionProperty;
 
@@ -264,10 +265,12 @@ class TwigBridge
                 throw new InvalidArgumentException('Incorrect function type');
             }
 
-            $function = new \Twig_SimpleFunction($methodName, function() use ($twigFunction)
-            {
-                return call_user_func_array($twigFunction, func_get_args());
-            });
+            $function = new Twig_SimpleFunction(
+                $methodName,
+                function() use ($twigFunction) {
+                    return call_user_func_array($twigFunction, func_get_args());
+                }
+            );
 
             // Add function to twig
             $twig->addFunction($function);

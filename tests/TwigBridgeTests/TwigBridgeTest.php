@@ -10,7 +10,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
 use Illuminate\View\Environment;
 use Twig_Environment;
+use Twig_SimpleFunction;
 use Twig_Lexer;
+use ReflectionClass;
 use ReflectionProperty;
 use InvalidArgumentException;
 use Exception;
@@ -178,6 +180,44 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $bridge->setExtensions(array(12345));
 
         $bridge->getTwig();
+    }
+
+    public function testGetTwigFunctionsForStringAndClosures()
+    {
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]', $this->getApplication());
+        $bridge->shouldReceive('getFunctions')->once()->andReturn(
+            array(
+                'explode',
+                'custom' => function() { return 1; }
+            )
+        );
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigFunctions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addFunction')->twice()->with(m::any());
+
+        $method->invokeArgs($bridge, array($twig));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetTwigFunctionsUnsupportedConfigValue()
+    {
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]', $this->getApplication());
+        $bridge->shouldReceive('getFunctions')->once()->andReturn(array(12345));
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigFunctions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addFunction')->never();
+
+        $method->invokeArgs($bridge, array($twig));
     }
 
     public function getApplication(array $twig_options = array(), array $paths = array(), array $hints = array())
