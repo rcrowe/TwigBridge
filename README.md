@@ -93,13 +93,12 @@ These extensions are configured by default:
 Functions
 =========
 
-Allows publishing functions to the templates. (e.g. Laravel´s helpers).
+Allows publishing functions to the templates. (e.g. Laravel's helpers).
 
 ```php
 'functions' => array(
     'base_path',
     'app_path',
-    'camel_case',
 )
 ```
 
