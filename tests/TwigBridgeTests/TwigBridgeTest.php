@@ -4,6 +4,7 @@ namespace TwigBridgeTests;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
+use TwigBridge\Extension;
 use TwigBridge\TwigBridge;
 use TwigBridge\Twig\Loader\Filesystem;
 use Illuminate\Foundation\Application;
@@ -16,6 +17,14 @@ use ReflectionClass;
 use ReflectionProperty;
 use InvalidArgumentException;
 use Exception;
+
+class TestExtensionObject extends Extension
+{
+    public function getName()
+    {
+        return 'test_extension_object';
+    }
+}
 
 class TwigBridgeTest extends PHPUnit_Framework_TestCase
 {
@@ -182,9 +191,24 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $bridge->getTwig();
     }
 
+    public function testGetTwigExtensions()
+    {
+        $bridge = new TwigBridge($this->getApplication());
+        $bridge->setExtensions(array('TwigBridgeTests\TestExtensionObject'));
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigExtensions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addExtension')->once()->with(m::any());
+
+        $method->invokeArgs($bridge, array($twig));
+    }
+
     public function testGetTwigFunctionsForStringAndClosures()
     {
-        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]', $this->getApplication());
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]');
         $bridge->shouldReceive('getFunctions')->once()->andReturn(
             array(
                 'explode',
@@ -207,7 +231,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
      */
     public function testGetTwigFunctionsUnsupportedConfigValue()
     {
-        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]', $this->getApplication());
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]');
         $bridge->shouldReceive('getFunctions')->once()->andReturn(array(12345));
 
         $reflected = new ReflectionClass($bridge);
