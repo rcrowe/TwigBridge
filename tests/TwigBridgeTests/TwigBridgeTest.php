@@ -11,7 +11,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
 use Illuminate\View\Environment;
 use Twig_Environment;
-use Twig_SimpleFunction;
 use Twig_Lexer;
 use ReflectionClass;
 use ReflectionProperty;
