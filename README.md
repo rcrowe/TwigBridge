@@ -97,8 +97,9 @@ Allows publishing functions to the templates. (e.g. Laravel's helpers).
 
 ```php
 'functions' => array(
-    'base_path',
     'app_path',
+    'base_path',
+    //...
 )
 ```
 
@@ -114,8 +115,23 @@ be used as the function name to be invoked in the templates:
 )
 ```
 
+The following [Laravel 4 helpers](http://laravel.com/docs/helpers) are included
+by default in the configuration:
+
+* Paths:
+
+    `app_path` `base_path` `public_path` `storage_path`
+
+* Urls:
+
+    `action` `asset` `link_to` `link_to_asset` `link_to_route` `link_to_action` `secure_asset` `secure_url` `url`
+
+* Miscellaneous:
+
+    `csrf_token`
+
 AliasLoader
------------
+===========
 
 The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
