@@ -99,12 +99,8 @@ return array(
     |
     */
     'functions' => array(
-        // Paths
-        'app_path',
-        'base_path',
-        'public_path',
-        'storage_path',
         // Urls
+        'route',
         'action',
         'asset',
         'link_to',
@@ -113,7 +109,9 @@ return array(
         'link_to_action',
         'secure_asset',
         'secure_url',
-        'url',
+        // Translation
+        'trans',
+        'trans_choice',
         // Miscellaneous
         'csrf_token',
     ),
