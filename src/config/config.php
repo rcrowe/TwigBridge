@@ -91,6 +91,33 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Functions
+    |--------------------------------------------------------------------------
+    |
+    | List of Functions that are made available to your Twig templates.
+    | Supports string or closure.
+    |
+    */
+    'functions' => array(
+        // Urls
+        'route',
+        'action',
+        'asset',
+        'link_to',
+        'link_to_asset',
+        'link_to_route',
+        'link_to_action',
+        'secure_asset',
+        'secure_url',
+        // Translation
+        'trans',
+        'trans_choice',
+        // Miscellaneous
+        'csrf_token',
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Alias shortcuts
     |--------------------------------------------------------------------------
     |

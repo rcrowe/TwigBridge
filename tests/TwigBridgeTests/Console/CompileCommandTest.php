@@ -108,7 +108,7 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
             }
 
             return array_pop($args);
-        })->times(count($paths)*3);
+        })->times(count($paths) * 4);
 
         $app['config'] = $config;
 

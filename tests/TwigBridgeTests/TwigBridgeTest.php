@@ -4,6 +4,7 @@ namespace TwigBridgeTests;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
+use TwigBridge\Extension;
 use TwigBridge\TwigBridge;
 use TwigBridge\Twig\Loader\Filesystem;
 use Illuminate\Foundation\Application;
@@ -11,9 +12,18 @@ use Illuminate\Config\Repository;
 use Illuminate\View\Environment;
 use Twig_Environment;
 use Twig_Lexer;
+use ReflectionClass;
 use ReflectionProperty;
 use InvalidArgumentException;
 use Exception;
+
+class TestExtensionObject extends Extension
+{
+    public function getName()
+    {
+        return 'test_extension_object';
+    }
+}
 
 class TwigBridgeTest extends PHPUnit_Framework_TestCase
 {
@@ -180,6 +190,59 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $bridge->getTwig();
     }
 
+    public function testGetTwigExtensions()
+    {
+        $bridge = new TwigBridge($this->getApplication());
+        $bridge->setExtensions(array('TwigBridgeTests\TestExtensionObject'));
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigExtensions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addExtension')->once()->with(m::any());
+
+        $method->invokeArgs($bridge, array($twig));
+    }
+
+    public function testGetTwigFunctionsForStringAndClosures()
+    {
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]');
+        $bridge->shouldReceive('getFunctions')->once()->andReturn(
+            array(
+                'explode',
+                'custom' => function() { return 1; }
+            )
+        );
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigFunctions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addFunction')->twice()->with(m::any());
+
+        $method->invokeArgs($bridge, array($twig));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetTwigFunctionsUnsupportedConfigValue()
+    {
+        $bridge = m::mock('TwigBridge\TwigBridge[getFunctions]');
+        $bridge->shouldReceive('getFunctions')->once()->andReturn(array(12345));
+
+        $reflected = new ReflectionClass($bridge);
+        $method = $reflected->getMethod('getTwigFunctions');
+        $method->setAccessible(true);
+
+        $twig = m::mock('Twig_Environment');
+        $twig->shouldReceive('addFunction')->never();
+
+        $method->invokeArgs($bridge, array($twig));
+    }
+
     public function getApplication(array $twig_options = array(), array $paths = array(), array $hints = array())
     {
         $app = new Application;
@@ -204,6 +267,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(function($env, $package, $group, $items) { return $items; });
         $config->getLoader()->shouldReceive('exists')->with('extension', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('functions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn(

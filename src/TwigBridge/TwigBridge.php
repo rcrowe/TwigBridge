@@ -13,6 +13,7 @@ use Illuminate\Foundation\Application;
 use Twig_Environment;
 use Twig_Lexer;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFunction;
 use InvalidArgumentException;
 use ReflectionProperty;
 
@@ -47,6 +48,11 @@ class TwigBridge
     protected $extensions = array();
 
     /**
+     * @var array Functions to add to Twig.
+     */
+    protected $functions = array();
+
+    /**
      * @var TwigBridge\Twig\Lexer Twig_Lexer wrapper.
      */
     protected $lexer;
@@ -61,6 +67,7 @@ class TwigBridge
         $this->app        = $app;
         $this->extension  = $app['config']->get('twigbridge::extension');
         $this->extensions = $app['config']->get('twigbridge::extensions', array());
+        $this->functions  = $app['config']->get('twigbridge::functions', array());
 
         $this->setTwigOptions($app['config']->get('twigbridge::twig', array()));
     }
@@ -133,6 +140,22 @@ class TwigBridge
     }
 
     /**
+     * Get functions that Twig should add.
+     */
+    public function getFunctions()
+    {
+        return $this->functions;
+    }
+
+    /**
+     * Set the functions that Twig should add.
+     */
+    public function setFunctions(array $functions)
+    {
+        $this->functions = $functions;
+    }
+
+    /**
      * Get the lexer for Twig to use.
      *
      * @param Twig_Environment $twig
@@ -188,11 +211,29 @@ class TwigBridge
         $loader = new Twig\Loader\Filesystem($this->app['view']->getFinder(), $this->extension);
         $twig   = new Twig_Environment($loader, $this->options);
 
-        // Load extensions
+        $this->getTwigExtensions($twig);
+
+        $this->getTwigFunctions($twig);
+
+        $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
+
+        // Allow template tags to be changed
+        $twig->setLexer($this->getLexer($twig));
+
+        return $twig;
+    }
+
+    /**
+     * Add all configured extensions to environment.
+     * Support for string, closure and an object.
+     *
+     * @param  Twig_Environment $twig
+     * @return void
+     */
+    protected function getTwigExtensions($twig)
+    {
         foreach ($this->getExtensions() as $twig_extension) {
 
-            // Get an instance of the extension
-            // Support for string, closure and an object
             if (is_string($twig_extension)) {
                 $twig_extension = new $twig_extension($this->app, $twig);
             } elseif (is_callable($twig_extension)) {
@@ -204,12 +245,35 @@ class TwigBridge
             // Add extension to twig
             $twig->addExtension($twig_extension);
         }
+    }
 
-        $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
+    /**
+     * Add all configured functions to environment.
+     * Support for string and closures.
+     *
+     * @param  Twig_Environment $twig
+     * @return void
+     */
+    protected function getTwigFunctions($twig)
+    {
+        foreach ($this->getFunctions() as $method => $twigFunction) {
+            if (is_string($twigFunction)) {
+                $methodName = $twigFunction;
+            } elseif (is_callable($twigFunction)) {
+                $methodName = $method;
+            } else {
+                throw new InvalidArgumentException('Incorrect function type');
+            }
 
-        // Allow template tags to be changed
-        $twig->setLexer($this->getLexer($twig));
+            $function = new Twig_SimpleFunction(
+                $methodName,
+                function() use ($twigFunction) {
+                    return call_user_func_array($twigFunction, func_get_args());
+                }
+            );
 
-        return $twig;
+            // Add function to twig
+            $twig->addFunction($function);
+        }
     }
 }

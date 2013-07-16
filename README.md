@@ -90,8 +90,49 @@ These extensions are configured by default:
 - [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extensions\AliasLoader
 
+Functions
+=========
+
+Allows publishing functions to the templates. (e.g. Laravel's helpers).
+
+```php
+'functions' => array(
+    'app_path',
+    'base_path',
+    //...
+)
+```
+
+TwigBridge also supports closures as callbacks. In this case, the array key will
+be used as the function name to be invoked in the templates:
+`{{ bond("James", "Bond") }}`.
+
+```php
+'functions' => array(
+    'bond' => function($name, $lastname) {
+        return "My name is {$lastname}, {$name} {$lastname}...";
+    },
+)
+```
+
+The following [Laravel 4 helpers](http://laravel.com/docs/helpers) are included
+by default in the configuration:
+
+* Urls:
+
+    `route` `action` `asset` `link_to` `link_to_asset` `link_to_route`
+    `link_to_action` `secure_asset` `secure_url`
+
+* Translation:
+
+    `trans` `trans_choice`
+
+* Miscellaneous:
+
+    `csrf_token`
+
 AliasLoader
------------
+===========
 
 The AliasLoader extension allows you to call any class that has been aliased in your `app/config/app.php` file. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
