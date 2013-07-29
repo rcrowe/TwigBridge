@@ -12,6 +12,7 @@ namespace TwigBridge\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Finder\Finder;
 use TwigBridge\TwigBridge;
+use TwigBridge\Engines\TwigEngine;
 
 /**
  * Pre-compile Twig templates so it doesn't have to be done at runtime.
@@ -44,6 +45,8 @@ class CompileCommand extends Command
      */
     public function fire()
     {
+        $this->line('Compiling Twig templates. Environment: <comment>'.$this->laravel->make('env').'</comment>');
+
         // Process view paths
         foreach ($this->laravel['view']->getFinder()->getPaths() as $path) {
             $this->processPath($path);
@@ -65,31 +68,31 @@ class CompileCommand extends Command
     /**
      * Compiles all Twig files under path to cache directory.
      *
-     * @param string $path      All twig files under this path are compiled.
-     * @param string $namespace If path is part of a package, then the name-space hint.
+     * @param string $path All twig files under this path are compiled.
      * @return void
      */
-    protected function processPath($path, $namespace = null)
+    protected function processPath($path)
     {
         $path = realpath($path);
 
         $bridge = new TwigBridge($this->laravel);
+        $engine = new TwigEngine($bridge->getTwig());
         $finder = new Finder();
         $finder->files()->in($path)->name('*.'.$bridge->getExtension());
 
         foreach ($finder as $file) {
 
-            $file = $file->getRealPath();
+            $full_path = $file->getRealPath();
 
             // Handle files found in sub-folders
-            $file = str_replace($path, '', $file);
-            $file = ($file{0} === '/') ? substr($file, 1) : $file;
-            $dir  = pathinfo($file, PATHINFO_DIRNAME);
+            $view = str_replace($path, '', $full_path);
+            $view = ($view{0} === '/') ? substr($view, 1) : $view;
+            $dir  = pathinfo($view, PATHINFO_DIRNAME);
             $dir  = ($dir !== '.') ? $dir.'/' : '';
-            $file = $dir.pathinfo($file, PATHINFO_FILENAME);
+            $view = $dir.pathinfo($view, PATHINFO_FILENAME);
 
             // Let Twig compile the view
-            $this->laravel['view']->make($file)->render();
+            $engine->load($full_path, $view);
             $this->count++;
         }
     }

@@ -19,3 +19,6 @@ tmtags
 ## Composer
 composer.lock
 vendor
+
+## Temp fix until I clean test logic up
+tests/TwigBridgeTests/Console/views/

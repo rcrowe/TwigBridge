@@ -69,6 +69,7 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
     private function getApplication(array $paths = array(), array $hints = array())
     {
         $app = new Application;
+        $app['env'] = 'testing';
         $app->instance('path', __DIR__.'/../fixtures/Console/');
 
         // Storage path
@@ -91,11 +92,11 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
         // View
         $view = m::mock('Illuminate\View\Environment');
         $view->shouldReceive('addExtension');
-        $view->shouldReceive('getFinder')->andReturn($finder)->twice();
+        $view->shouldReceive('getFinder')->andReturn($finder);
 
         $engine = m::mock('Illuminate\View\View');
-        $engine->shouldReceive('render')->times(count($file_finder));
-        $view->shouldReceive('make')->andReturn($engine)->times(count($file_finder));
+        $engine->shouldReceive('render');
+        $view->shouldReceive('make')->andReturn($engine);
 
         $app['view'] = $view;
 
@@ -108,7 +109,7 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
             }
 
             return array_pop($args);
-        })->times(count($paths)*3);
+        });
 
         $app['config'] = $config;
 

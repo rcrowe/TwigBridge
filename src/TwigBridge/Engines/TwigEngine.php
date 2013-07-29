@@ -82,14 +82,13 @@ class TwigEngine implements EngineInterface
     }
 
     /**
-     * Get the evaluated contents of the view.
+     * Load a Twig template (Does not render).
      *
-     * @param  string  $path
-     * @param  array   $data
+     * @param  string  $path Full file path to Twig template.
      * @param  string  $view Original view passed View::make.
-     * @return string
+     * @return object  \Twig_TemplateInterface
      */
-    public function get($path, array $data = array(), $view = null)
+    public function load($path, $view)
     {
         // We need to move the directory requested as the first search path
         // this stops conflicts. For example, with packages
@@ -104,7 +103,20 @@ class TwigEngine implements EngineInterface
         // Set new ordered paths
         $this->twig->getLoader()->setPaths($paths);
 
+        return $this->twig->loadTemplate($view);
+    }
+
+    /**
+     * Get the evaluated contents of the view.
+     *
+     * @param  string  $path Full file path to Twig template
+     * @param  array   $data
+     * @param  string  $view Original view passed View::make.
+     * @return string
+     */
+    public function get($path, array $data = array(), $view = null)
+    {
         // Render template
-        return $this->twig->loadTemplate($view)->render($this->getData($data));
+        return $this->load($path, $view)->render($this->getData($data));
     }
 }
