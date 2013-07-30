@@ -42,7 +42,7 @@ class CleanCommand extends Command
         $cache_path = $this->laravel['config']->get('twigbridge::twig.cache');
 
         if ($cache_path === null OR !file_exists($cache_path)) {
-            $cache_path = $this->laravel['path'].'/storage/views/twig';
+            $cache_path = $this->laravel['path.storage'].'/views/twig';
         }
 
         if (file_exists($cache_path)) {
