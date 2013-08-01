@@ -24,7 +24,7 @@ class TwigBridge
     /**
      * @var string TwigBridge version
      */
-    const VERSION = '0.4.0';
+    const VERSION = '0.5.0';
 
     /**
      * @var Illuminate\Foundation\Application
