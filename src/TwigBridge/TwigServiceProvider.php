@@ -20,15 +20,19 @@ use Twig_Lexer;
 class TwigServiceProvider extends ViewServiceProvider
 {
     /**
-     * Register the service provider.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function register()
     {
         // Register the package configuration with the loader.
         $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
         // Override Environment
         // We need to do this in order to set the name of the generated/compiled twig templates
         // Laravel by default only passes the full path to the requested view, we also need the view name
