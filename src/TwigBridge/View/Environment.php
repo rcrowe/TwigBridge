@@ -20,7 +20,7 @@ class Environment extends \Illuminate\View\Environment
     public function make($view, $data = array(), $mergeData = array())
     {
         $path = $this->finder->find($view);
-        $data = array_merge($data, $mergeData);
+        $data = array_merge($mergeData, $this->parseData($data));
 
         return new View($this, $this->getEngineFromPath($path), $view, $path, $data);
     }
