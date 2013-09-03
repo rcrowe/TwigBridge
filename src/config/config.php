@@ -87,6 +87,7 @@ return array(
     'extensions' => array(
         'Twig_Extension_Debug',
         'TwigBridge\Extensions\AliasLoader',
+        'TwigBridge\Extensions\HelperLoader',
     ),
 
     /*
@@ -102,7 +103,6 @@ return array(
         'config'    => 'config_get',
         'lang'      => 'lang_get',
         'logged_in' => 'auth_check',
-        'url'       => 'url_to',
     ),
 
     /*
@@ -115,5 +115,43 @@ return array(
     |
     */
     'globals' => array(),
+
+    /*
+   |--------------------------------------------------------------------------
+   | Functions & Filters
+   |--------------------------------------------------------------------------
+   |
+   | List of Functions & Filters that are made available to your Twig templates.
+   | Supports string or closure.
+   |
+   */
+    'functions' => array(
+        // Urls
+        'route',
+        'action',
+        'asset',
+        'url',
+        'link_to',
+        'link_to_asset',
+        'link_to_route',
+        'link_to_action',
+        'secure_asset',
+        'secure_url',
+        // Translation
+        'trans',
+        'trans_choice',
+        // Miscellaneous
+        'csrf_token',
+    ),
+
+    'filters' => array(
+        //Strings
+        'camel_case',
+        'snake_case',
+        'studly_case',
+        'str_finish',
+        'str_plural',
+        'str_singular'
+    )
 
 );
