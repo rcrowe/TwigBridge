@@ -85,11 +85,13 @@ TwigBridge supports both a string or a closure as a callback, so for example you
 TwigBridge comes with the following extensions:
 
 - TwigBridge\Extensions\AliasLoader
+- TwigBridge\Extensions\HelperLoader
 
 These extensions are configured by default:
 
 - [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extensions\AliasLoader
+- TwigBridge\Extensions\HelperLoader
 
 AliasLoader
 -----------
@@ -99,6 +101,13 @@ The AliasLoader extension allows you to call any class that has been aliased in 
 To use the Laravel integration (or indeed any aliased class and method), your function in Twig must use the format `class_method(...)`. So the Twig function {{ url_to(...) }} will call the class and method `URL::to(...)`.
 
 You can define shortcuts to these by changing the `alias_shortcuts` config parameter. For example, calling `url(...)` is actually an alias to `url_to(...)`.
+
+HelperLoader
+-----------
+
+The HelperLoader extension exposes Laravel helpers as both Twig functions and filters.
+
+Check out the config file to see a list of defined function / filters. You can also add your own.
 
 Events
 ======
