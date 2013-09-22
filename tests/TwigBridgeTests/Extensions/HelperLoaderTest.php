@@ -39,7 +39,7 @@ class HelperLoaderTest extends PHPUnit_Framework_TestCase
         // fooBar
         $this->assertInstanceOf('Twig_SimpleFunction', $functions[1]);
         $function = $functions[1];
-        $result   = call_user_func_array($function->getCallable(), []);
+        $result   = call_user_func_array($function->getCallable(), array());
         $this->assertEquals($result, 'FOOBAR');
     }
 
