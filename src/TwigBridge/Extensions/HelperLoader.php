@@ -45,8 +45,8 @@ class HelperLoader extends Extension
     {
         parent::__construct($app, $twig);
 
-        $this->functions = $app['config']->get('twigbridge::config.functions', array());
-        $this->filters   = $app['config']->get('twigbridge::config.filters', array());
+        $this->functions = $app['config']->get('twigbridge::functions', array());
+        $this->filters   = $app['config']->get('twigbridge::filters', array());
     }
 
     /**
@@ -69,6 +69,7 @@ class HelperLoader extends Extension
         $functions = array();
 
         foreach ($this->functions as $method => $twigFunction) {
+
             if (is_string($twigFunction)) {
                 $methodName = $twigFunction;
             } elseif (is_callable($twigFunction)) {
