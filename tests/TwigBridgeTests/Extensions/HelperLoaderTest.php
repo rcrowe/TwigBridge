@@ -27,11 +27,11 @@ class HelperLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Twig_SimpleFunction', $functions[0]);
         $function = $functions[0];
         $result   = call_user_func_array($function->getCallable(), array(
-            [
-                'user' => [
+            array(
+                'user' => array(
                     'name' => 'TwigBridge',
-                ],
-            ],
+                ),
+            ),
             'user.name',
         ));
         $this->assertEquals($result, 'TwigBridge');
