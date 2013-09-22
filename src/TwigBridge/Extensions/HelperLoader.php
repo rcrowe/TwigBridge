@@ -12,31 +12,41 @@ namespace TwigBridge\Extensions;
 use Illuminate\Foundation\Application;
 use TwigBridge\Extension;
 use Twig_Environment;
-use Twig_Function_Function;
+use Twig_SimpleFunction;
+use Twig_SimpleFilter;
 use InvalidArgumentException;
 
 /**
- * Handles easy usage of filters/functions in Twig
- *
+ * Lets Twig access configurable functions and filters.
  */
 class HelperLoader extends Extension
 {
-
-    protected $filters;
-    protected $functions;
     /**
-     * Create a new extension instance. Registers Twig undefined function callback.
+     * Twig filters.
+     *
+     * @var array
+     */
+    protected $filters;
+
+    /**
+     * Twig functions.
+     *
+     * @var array
+     */
+    protected $functions;
+
+    /**
+     * Create a new extension instance.
      *
      * @param \Illuminate\Foundation\Application|\Illuminate\Foundation\Application $app
-     * @param Twig_Environment $twig
+     * @param Twig_Environment                                                      $twig
      */
     public function __construct(Application $app, Twig_Environment $twig)
     {
         parent::__construct($app, $twig);
 
         $this->functions = $app['config']->get('twigbridge::config.functions', array());
-        $this->filters = $app['config']->get('twigbridge::config.filters', array());
-
+        $this->filters   = $app['config']->get('twigbridge::config.filters', array());
     }
 
     /**
@@ -49,8 +59,13 @@ class HelperLoader extends Extension
         return 'HelperLoader';
     }
 
-    public function getFunctions(){
-
+    /**
+     * Get functions this extensions provides.
+     *
+     * @return array
+     */
+    public function getFunctions()
+    {
         $functions = array();
 
         foreach ($this->functions as $method => $twigFunction) {
@@ -62,7 +77,7 @@ class HelperLoader extends Extension
                 throw new InvalidArgumentException('Incorrect function type');
             }
 
-            $function = new \Twig_SimpleFunction($methodName, function () use ($twigFunction) {
+            $function = new Twig_SimpleFunction($methodName, function () use ($twigFunction) {
                 return call_user_func_array($twigFunction, func_get_args());
             });
 
@@ -72,6 +87,11 @@ class HelperLoader extends Extension
         return $functions;
     }
 
+    /**
+     * Get filters this extensions provides.
+     *
+     * @return array
+     */
     public function getFilters()
     {
         $filters = array();
@@ -85,7 +105,7 @@ class HelperLoader extends Extension
                 throw new InvalidArgumentException('Incorrect function filter');
             }
 
-            $function = new \Twig_SimpleFilter($methodName, function () use ($twigFilter) {
+            $function = new Twig_SimpleFilter($methodName, function () use ($twigFilter) {
                 return call_user_func_array($twigFilter, func_get_args());
             });
 
@@ -94,6 +114,4 @@ class HelperLoader extends Extension
 
         return $filters;
     }
-
-
 }

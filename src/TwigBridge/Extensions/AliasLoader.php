@@ -185,6 +185,7 @@ class AliasLoader extends Extension
      *
      * @param string                 $name     Function name.
      * @param Twig_Function_Function $function Function to cache.
+     *
      * @return void
      */
     public function setLookup($name, Twig_Function_Function $function)
@@ -196,6 +197,7 @@ class AliasLoader extends Extension
      * Allow Twig to call Aliased function from an undefined function.
      *
      * @param string $name Undefined function name.
+     *
      * @return Twig_Function_Function|false
      */
     public function getFunction($name)
