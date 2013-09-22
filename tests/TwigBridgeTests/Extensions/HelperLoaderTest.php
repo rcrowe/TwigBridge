@@ -26,14 +26,14 @@ class HelperLoaderTest extends PHPUnit_Framework_TestCase
         // array_get
         $this->assertInstanceOf('Twig_SimpleFunction', $functions[0]);
         $function = $functions[0];
-        $result   = call_user_func_array($function->getCallable(), [
+        $result   = call_user_func_array($function->getCallable(), array(
             [
                 'user' => [
                     'name' => 'TwigBridge',
                 ],
             ],
             'user.name',
-        ]);
+        ));
         $this->assertEquals($result, 'TwigBridge');
 
         // fooBar
@@ -53,13 +53,13 @@ class HelperLoaderTest extends PHPUnit_Framework_TestCase
         // camel_case
         $this->assertInstanceOf('Twig_SimpleFilter', $filters[0]);
         $filter = $filters[0];
-        $result = call_user_func_array($filter->getCallable(), ['convert_this_string']);
+        $result = call_user_func_array($filter->getCallable(), array('convert_this_string'));
         $this->assertEquals($result, 'convertThisString');
 
         // snakeCase
         $this->assertInstanceOf('Twig_SimpleFilter', $filters[1]);
         $filter = $filters[1];
-        $result = call_user_func_array($filter->getCallable(), []);
+        $result = call_user_func_array($filter->getCallable(), array());
         $this->assertEquals($result, 'snakeCASE');
     }
 
