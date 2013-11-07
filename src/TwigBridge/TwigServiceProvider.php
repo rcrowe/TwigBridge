@@ -39,7 +39,7 @@ class TwigServiceProvider extends ViewServiceProvider
         $app = $this->app;
 
         // Extensions
-        $app['twig.extensions'] = $app->share(function() use ($app) {
+        $app['twig.extensions'] = $app->share(function () use ($app) {
             $extensions = $app['config']->get('twigbridge::extensions.enabled', array());
 
             // Is debug enabled?
@@ -54,25 +54,25 @@ class TwigServiceProvider extends ViewServiceProvider
         });
 
         // Loader
-        $app['twig.loader.path'] = $app->share(function() {
+        $app['twig.loader.path'] = $app->share(function () {
             return new Twig\Loader\Path;
         });
 
-        $app['twig.loader.viewfinder'] = $app->share(function() use ($app) {
+        $app['twig.loader.viewfinder'] = $app->share(function () use ($app) {
             return new Twig\Loader\Viewfinder(
                 $app['view']->getFinder(),
                 $app['twig.bridge']->getExtension()
             );
         });
 
-        $app['twig.loader.filesystem'] = $app->share(function() use ($app) {
+        $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
             return new Twig\Loader\Filesystem(
                 $app['view']->getFinder(),
                 $app['twig.bridge']->getExtension()
             );
         });
 
-        $app['twig.loader'] = $app->share(function() use ($app) {
+        $app['twig.loader'] = $app->share(function () use ($app) {
             return new Twig_Loader_Chain(array(
                 $app['twig.loader.path'],
                 $app['twig.loader.viewfinder'],
@@ -81,20 +81,20 @@ class TwigServiceProvider extends ViewServiceProvider
         });
 
         // Twig
-        $app['twig.options'] = $app->share(function() use ($app) {
+        $app['twig.options'] = $app->share(function () use ($app) {
             return $app['config']->get('twigbridge::twig', array());
         });
 
-        $app['twig.bridge'] = $app->share(function() use ($app) {
+        $app['twig.bridge'] = $app->share(function () use ($app) {
             return new TwigBridge($app);
         });
 
-        $app['twig'] = $app->share(function() use ($app) {
+        $app['twig'] = $app->share(function () use ($app) {
             return $app['twig.bridge']->getTwig();
         });
 
         // Engine
-        $app['twig.engine'] = $app->share(function() use ($app) {
+        $app['twig.engine'] = $app->share(function () use ($app) {
             return new Engine\Twig(
                 $app['twig'],
                 $app['config']->get('twigbridge::globals', array())
@@ -104,7 +104,7 @@ class TwigServiceProvider extends ViewServiceProvider
         $app['view']->addExtension(
             $app['config']->get('twigbridge::extension', 'twig'),
             'twig',
-            function() use ($app) {
+            function () use ($app) {
                 return $app['twig.engine'];
             }
         );

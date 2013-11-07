@@ -73,7 +73,11 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         $config = new Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
 
         $config->getLoader()->shouldReceive('addNamespace')->with('twigbridge', __DIR__);
-        $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(function($env, $package, $group, $items) { return $items; });
+        $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(
+            function ($env, $package, $group, $items) {
+                return $items;
+            }
+        );
         $config->getLoader()->shouldReceive('exists')->with('extension', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);

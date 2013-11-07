@@ -10,4 +10,6 @@ before_script:
   - php ./composer.phar install --dev --prefer-source
 
 script:
+  - ./vendor/bin/phpcs src/ --standard=PSR2 --report=summary
+  - ./vendor/bin/phpcs tests/ --standard=PSR2 --report=summary
   - ./vendor/bin/phpunit --configuration phpunit.xml.dist
