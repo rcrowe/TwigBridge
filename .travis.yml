@@ -10,5 +10,5 @@ before_script:
   - php ./composer.phar install --dev --prefer-source
 
 script:
-  - phpcs ./src/ --standard=PSR2 --extensions=php --ignore=*/vendor/* --report=summary --encoding=UTF-8
+  - phpcs ./src/ --standard=PSR2 --extensions=php --ignore=*/vendor/* --encoding=UTF-8
   - ./vendor/bin/phpunit --configuration phpunit.xml.dist
