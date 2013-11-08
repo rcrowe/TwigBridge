@@ -30,7 +30,7 @@
     </target>
 
     <target name="phpcs-ci">
-        <exec executable="${project.basedir}/vendor/bin/phpcs" output="/dev/null" checkreturn="true">
+        <exec executable="${project.basedir}/vendor/bin/phpcs" passthru="true" checkreturn="true">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${project.basedir}/build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
