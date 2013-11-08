@@ -17,6 +17,18 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
+    public function testConfigRegistered()
+    {
+        $app = $this->getApplication();
+
+        // Check that our register is registering our config path correctly
+        $dir = realpath(__DIR__.'/../../').'/src/TwigBridge/../config';
+        $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', $dir)->once();
+
+        $provider = new TwigServiceProvider($app);
+        $provider->register();
+    }
+
     public function testBound()
     {
         $bindings = array(
