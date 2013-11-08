@@ -84,11 +84,7 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn(
             array(
-                'extension'  => 'twig',
-                'twig'       => array(),
-                'extensions' => array(
-                    'TwigBridge\Extension\Dummy',
-                )
+                'extension' => 'twig',
             )
         );
 

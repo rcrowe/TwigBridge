@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TwigBridge" default="build">
+
+    <target name="build" depends="prepare,lint,phpcs,phpunit" />
+    <target name="build-ci" depends="prepare,lint,phpcs-ci,phpunit" />
+
+    <target name="clean">
+        <delete dir="${project.basedir}/build" quiet="true" includeemptydirs="true" />
+    </target>
+
+    <target name="prepare" depends="clean">
+        <mkdir dir="${project.basedir}/build/coverage" />
+        <mkdir dir="${project.basedir}/build/logs" />
+    </target>
+
+    <target name="lint">
+        <phplint haltonfailure="true">
+            <fileset dir="${project.basedir}/src">
+                <include name="**/*.php"/>
+            </fileset>
+        </phplint>
+    </target>
+
+    <target name="phpcs">
+        <exec executable="${project.basedir}/vendor/bin/phpcs" passthru="true" checkreturn="true">
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+
+    <target name="phpcs-ci">
+        <exec executable="${project.basedir}/vendor/bin/phpcs" output="/dev/null" checkreturn="true">
+            <arg value="--report=checkstyle" />
+            <arg value="--report-file=${project.basedir}/build/logs/checkstyle.xml" />
+            <arg value="--standard=PSR2" />
+            <arg value="--extensions=php" />
+            <arg path="${project.basedir}/src" />
+        </exec>
+    </target>
+
+    <target name="phpunit" description="Run unit tests with PHPUnit">
+        <exec executable="${project.basedir}/vendor/bin/phpunit" checkreturn="true" passthru="true">
+            <arg value="--configuration" />
+            <arg value="${project.basedir}/phpunit.xml" />
+        </exec>
+    </target>
+
+</project>

@@ -13,7 +13,7 @@ use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
 
 /**
- * Bootstrap TwigBridge with Laravel.
+ * Bootstrap Laravel Twig(Bridge).
  */
 class TwigServiceProvider extends ViewServiceProvider
 {
@@ -34,6 +34,11 @@ class TwigServiceProvider extends ViewServiceProvider
         $this->registerTwigEngine();
     }
 
+    /**
+     * Register the Twig engine.
+     *
+     * @return void
+     */
     public function registerTwigEngine()
     {
         $app = $this->app;
