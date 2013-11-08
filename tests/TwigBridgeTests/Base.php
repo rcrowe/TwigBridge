@@ -8,59 +8,14 @@ use Illuminate\Foundation\Application;
 use Illuminate\View\Environment;
 use Illuminate\Config\Repository;
 
-use TwigBridge\TwigServiceProvider;
-
-class ServiceProviderTest extends PHPUnit_Framework_TestCase
+abstract class Base extends PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
         m::close();
     }
 
-    public function testConfigPath()
-    {
-        $app = $this->getApplication();
-
-        // Check that our register is registering our config path correctly
-        $dir = realpath(__DIR__.'/../../').'/src/TwigBridge/../config';
-        $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', $dir)->once();
-
-        $provider = new TwigServiceProvider($app);
-        $provider->register();
-    }
-
-    public function testBindings()
-    {
-        $bindings = array(
-            'twig.extensions',
-            'twig.loader.path',
-            'twig.loader.viewfinder',
-            'twig.loader.filesystem',
-            'twig.loader',
-            'twig.options',
-            'twig.bridge',
-            'twig',
-            'twig.engine',
-        );
-
-        $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
-
-        // Make sure not found
-        foreach ($bindings as $binding) {
-            $this->assertFalse($app->bound($binding));
-        }
-
-        // Boot provider
-        $provider->boot();
-
-        // Now make sure bounded
-        foreach ($bindings as $binding) {
-            $this->assertTrue($app->bound($binding));
-        }
-    }
-
-    protected function getApplication()
+    protected function getApplication(array $customConfig = array())
     {
         $app = new Application;
         $app->instance('path', __DIR__);
@@ -94,11 +49,16 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
-        $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn(
-            array(
-                'extension' => 'twig',
-            )
+
+        // Get config data
+        $configData     = include __DIR__.'/../../src/config/config.php';
+        $extensionsData = include __DIR__.'/../../src/config/extensions.php';
+        $extensionsData = array(
+            'extensions' => $extensionsData,
         );
+        $configData = array_replace_recursive($configData, $extensionsData, $customConfig);
+
+        $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn($configData);
 
         $config->package('foo/twigbridge', __DIR__);
         $app['config'] = $config;
