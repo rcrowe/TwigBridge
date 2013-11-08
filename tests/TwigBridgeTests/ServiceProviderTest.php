@@ -17,7 +17,7 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testConfigRegistered()
+    public function testConfigPath()
     {
         $app = $this->getApplication();
 
@@ -29,7 +29,7 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         $provider->register();
     }
 
-    public function testBound()
+    public function testBindings()
     {
         $bindings = array(
             'twig.extensions',
