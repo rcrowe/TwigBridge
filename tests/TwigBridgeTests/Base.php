@@ -24,11 +24,11 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $app['path.storage'] = __DIR__.'/storage';
 
         // View
-        $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->shouldReceive('addExtension');
-
         $engine = m::mock('Illuminate\View\Engines\EngineResolver');
         $engine->shouldReceive('register');
+
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('addExtension');
 
         $app['view'] = new Environment(
             $engine,
