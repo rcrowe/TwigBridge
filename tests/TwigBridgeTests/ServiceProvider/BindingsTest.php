@@ -179,4 +179,31 @@ class BindingsTest extends Base
 
         $this->assertEquals($app['twig.bridge']->getExtension(), 'twig');
     }
+
+    public function testTwig()
+    {
+        $app      = $this->getApplication();
+        $provider = new TwigServiceProvider($app);
+        $provider->boot();
+
+        // Extensions
+        $app['twig.extensions'] = array();
+
+        // View
+        $engine = m::mock('Illuminate\View\Engines\EngineResolver');
+        $engine->shouldReceive('register');
+
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('addExtension');
+        $finder->shouldReceive('getPaths')->andReturn(array());
+        $finder->shouldReceive('getHints')->andReturn(array());
+
+        $app['view'] = new Environment(
+            $engine,
+            $finder,
+            m::mock('Illuminate\Events\Dispatcher')
+        );
+
+        $this->assertInstanceOf('Twig_Environment', $app['twig']);
+    }
 }

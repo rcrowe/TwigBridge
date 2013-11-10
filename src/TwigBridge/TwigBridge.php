@@ -90,16 +90,16 @@ class TwigBridge
         foreach ($this->app['twig.extensions'] as $extension) {
             // Get an instance of the extension
             // Support for string, closure and an object
-            if (is_string($twig_extension)) {
-                $twig_extension = new $twig_extension($this->app, $twig);
-            } elseif (is_callable($twig_extension)) {
-                $twig_extension = $twig_extension($this->app, $twig);
-            } elseif (!is_object($twig_extension)) {
+            if (is_string($extension)) {
+                $extension = new $extension($this->app, $twig);
+            } elseif (is_callable($extension)) {
+                $extension = $extension($this->app, $twig);
+            } elseif (!is_object($extension)) {
                 throw new InvalidArgumentException('Incorrect extension type');
             }
 
             // Add extension to twig
-            $twig->addExtension($twig_extension);
+            $twig->addExtension($extension);
         }
 
         $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
