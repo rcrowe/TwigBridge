@@ -15,7 +15,6 @@ class BindingsTest extends Base
             'twig.extensions',
             'twig.loader.path',
             'twig.loader.viewfinder',
-            'twig.loader.filesystem',
             'twig.loader',
             'twig.options',
             'twig.bridge',
@@ -104,35 +103,6 @@ class BindingsTest extends Base
         $this->assertInstanceOf('TwigBridge\Twig\Loader\Viewfinder', $app['twig.loader.viewfinder']);
     }
 
-    public function testLoaderFilesystem()
-    {
-        $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
-        $provider->boot();
-
-        // View
-        $engine = m::mock('Illuminate\View\Engines\EngineResolver');
-        $engine->shouldReceive('register');
-
-        $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->shouldReceive('addExtension');
-        $finder->shouldReceive('getPaths')->andReturn(array());
-        $finder->shouldReceive('getHints')->andReturn(array());
-
-        $app['view'] = new Environment(
-            $engine,
-            $finder,
-            m::mock('Illuminate\Events\Dispatcher')
-        );
-
-        // TwigBridge
-        $app['twig.bridge'] = m::mock('stdClass');
-        $app['twig.bridge']->shouldReceive('getExtension')->andReturn('twig');
-
-        // Filesystem loader
-        $this->assertInstanceOf('TwigBridge\Twig\Loader\Filesystem', $app['twig.loader.filesystem']);
-    }
-
     public function testLoaderChain()
     {
         $app      = $this->getApplication();
@@ -205,5 +175,59 @@ class BindingsTest extends Base
         );
 
         $this->assertInstanceOf('Twig_Environment', $app['twig']);
+    }
+
+    public function testTwigEngine()
+    {
+        $app      = $this->getApplication();
+        $provider = new TwigServiceProvider($app);
+        $provider->boot();
+
+        // Extensions
+        $app['twig.extensions'] = array();
+
+        // View
+        $engine = m::mock('Illuminate\View\Engines\EngineResolver');
+        $engine->shouldReceive('register');
+
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('addExtension');
+        $finder->shouldReceive('getPaths')->andReturn(array());
+        $finder->shouldReceive('getHints')->andReturn(array());
+
+        $app['view'] = new Environment(
+            $engine,
+            $finder,
+            m::mock('Illuminate\Events\Dispatcher')
+        );
+
+        $this->assertInstanceOf('TwigBridge\Engine\Twig', $app['twig.engine']);
+    }
+
+    public function testRegisteredEngine()
+    {
+        $app = $this->getApplication();
+
+        // View
+        $engine = new \Illuminate\View\Engines\EngineResolver;
+
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('addExtension');
+        $finder->shouldReceive('getPaths')->andReturn(array());
+        $finder->shouldReceive('getHints')->andReturn(array());
+
+        $app['view'] = new Environment(
+            $engine,
+            $finder,
+            m::mock('Illuminate\Events\Dispatcher')
+        );
+
+        $provider = new TwigServiceProvider($app);
+        $provider->boot();
+
+        $app['twig.extensions'] = array();
+
+
+        $this->assertInstanceOf('TwigBridge\Engine\Twig', $app['view']->getEngineResolver()->resolve('twig'));
     }
 }

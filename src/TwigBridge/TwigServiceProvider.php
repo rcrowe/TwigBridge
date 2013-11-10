@@ -70,18 +70,10 @@ class TwigServiceProvider extends ViewServiceProvider
             );
         });
 
-        $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
-            return new Twig\Loader\Filesystem(
-                $app['view']->getFinder(),
-                $app['twig.bridge']->getExtension()
-            );
-        });
-
         $app['twig.loader'] = $app->share(function () use ($app) {
             return new Twig_Loader_Chain(array(
                 $app['twig.loader.path'],
                 $app['twig.loader.viewfinder'],
-                $app['twig.loader.filesystem'],
             ));
         });
 

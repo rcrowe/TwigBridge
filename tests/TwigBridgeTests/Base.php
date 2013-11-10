@@ -48,6 +48,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('exists')->with('extension', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('delimiters', 'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('globals', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
 
         // Get config data
