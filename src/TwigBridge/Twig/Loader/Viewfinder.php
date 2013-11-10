@@ -10,6 +10,7 @@
 namespace TwigBridge\Twig\Loader;
 
 use Illuminate\View\ViewFinderInterface;
+use InvalidArgumentException;
 
 /**
  * Same as Path loader without the need to use an extension.
@@ -64,7 +65,11 @@ class Viewfinder extends Path
             }
 
             // Cache for the next lookup
-            $this->cache[$name] = realpath($this->finder->find($view));
+            try {
+                $this->cache[$name] = realpath($this->finder->find($view));
+            } catch (InvalidArgumentException $ex) {
+                return false;
+            }
 
             return $this->cache[$name];
         }
