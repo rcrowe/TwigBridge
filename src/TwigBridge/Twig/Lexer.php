@@ -15,9 +15,6 @@ use Twig_Lexer;
 
 /**
  * Deals with getting a new Twig_Lexer instance.
- *
- * Mainly just a wrapper at the moment to make sure everything
- * is set correctly.
  */
 class Lexer
 {
@@ -65,6 +62,7 @@ class Lexer
      * Get a new instance of Twig_Lexer.
      *
      * @param Twig_Environment $twig
+     *
      * @return Twig_Lexer
      */
     public function getLexer(Twig_Environment $twig)
