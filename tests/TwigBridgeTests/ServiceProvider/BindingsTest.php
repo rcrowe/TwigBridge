@@ -46,7 +46,18 @@ class BindingsTest extends Base
         $provider = new TwigServiceProvider($app);
         $provider->boot();
 
-        $this->assertSame($app['twig.options'], $app['config']->get('twigbridge::twig'));
+        $config  = $app['config']->get('twigbridge::twig');
+        $options = $app['twig.options'];
+
+        // Make sure that twig.options sets the storage path automatically
+        $this->assertEmpty($config['cache']);
+        $this->assertEquals($options['cache'], realpath(__DIR__.'/..').'/storage/views/twig');
+
+
+        // Make sure same config is returned
+        $options['cache'] = null;
+
+        $this->assertSame($options, $config);
     }
 
     public function testExtensions()
@@ -149,5 +160,23 @@ class BindingsTest extends Base
 
         // Loader
         $this->assertInstanceOf('Twig_Loader_Chain', $app['twig.loader']);
+    }
+
+    public function testTwigBridge()
+    {
+        $app      = $this->getApplication();
+        $provider = new TwigServiceProvider($app);
+        $provider->boot();
+
+        $this->assertInstanceOf('TwigBridge\TwigBridge', $app['twig.bridge']);
+    }
+
+    public function testTwigExtension()
+    {
+        $app      = $this->getApplication();
+        $provider = new TwigServiceProvider($app);
+        $provider->boot();
+
+        $this->assertEquals($app['twig.bridge']->getExtension(), 'twig');
     }
 }

@@ -87,7 +87,15 @@ class TwigServiceProvider extends ViewServiceProvider
 
         // Twig
         $app['twig.options'] = $app->share(function () use ($app) {
-            return $app['config']->get('twigbridge::twig', array());
+            $options = $app['config']->get('twigbridge::twig', array());
+
+            // Check whether we have the cache path set
+            if (empty($options['cache'])) {
+                // No cache path set for Twig, lets set to the Laravel views storage folder
+                $options['cache'] = $app['path.storage'].'/views/twig';
+            }
+
+            return $options;
         });
 
         $app['twig.bridge'] = $app->share(function () use ($app) {
