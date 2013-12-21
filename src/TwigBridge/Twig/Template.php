@@ -61,4 +61,18 @@ abstract class Template extends Twig_Template
         return !is_file($name);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAttribute($object, $item, array $arguments = array(), $type = Twig_Template::ANY_CALL, $isDefinedTest = false, $ignoreStrictCheck = false){
+        if(
+            $type !== Twig_Template::METHOD_CALL  //Don't handle Method Calls
+            and is_a($object,'Illuminate\Database\Eloquent\Model') //Only handle Models
+        ){
+            return $object->getAttribute($item);
+        }else{
+            return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
+        }
+    }
+
 }
