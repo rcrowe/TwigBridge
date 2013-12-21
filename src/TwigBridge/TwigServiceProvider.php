@@ -144,7 +144,7 @@ class TwigServiceProvider extends ViewServiceProvider
         return array(
             'twig',
             'twig.bridge', 'twig.engine', 'twig.extensions', 'twig.options',
-            'twig.loader', 'twig.loader.path', 'twig.loader.viewfinder', 
+            'twig.loader', 'twig.loader.path', 'twig.loader.viewfinder',
             'command.twig.clear'
         );
     }
