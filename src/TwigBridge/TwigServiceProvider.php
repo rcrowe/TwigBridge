@@ -133,4 +133,19 @@ class TwigServiceProvider extends ViewServiceProvider
             'command.twig.clear'
         );
     }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array(
+            'twig',
+            'twig.bridge', 'twig.engine', 'twig.extensions', 'twig.options',
+            'twig.loader', 'twig.loader.path', 'twig.loader.viewfinder', 
+            'command.twig.clear'
+        );
+    }
 }
