@@ -44,8 +44,8 @@ abstract class Template extends Twig_Template
 
         /** @var \Illuminate\View\Environment $env */
         $env  = $context['__env'];
-        \View::callCreator($view = new View($env, $env->getEngineResolver()->resolve('twig'), $this->getTemplateName(), null, $context));
-        \View::callComposer($view);
+        $env->callCreator($view = new View($env, $env->getEngineResolver()->resolve('twig'), $this->getTemplateName(), null, $context));
+        $env->callComposer($view);
 
         return $view->getData();
     }
