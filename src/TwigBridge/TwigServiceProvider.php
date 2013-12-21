@@ -32,6 +32,7 @@ class TwigServiceProvider extends ViewServiceProvider
     public function boot()
     {
         $this->registerTwigEngine();
+        $this->registerCommands();
     }
 
     /**
@@ -112,6 +113,24 @@ class TwigServiceProvider extends ViewServiceProvider
             function () use ($app) {
                 return $app['twig.engine'];
             }
+        );
+    }
+
+    /**
+     * Register the cache related console commands.
+     *
+     * @return void
+     */
+    public function registerCommands()
+    {
+        $this->app['command.twig.clear'] = $this->app->share(
+            function ($app) {
+                return new Console\ClearCommand($app['twig'], $app['files']);
+            }
+        );
+
+        $this->commands(
+            'command.twig.clear'
         );
     }
 }
