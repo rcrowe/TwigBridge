@@ -27,6 +27,14 @@ class View extends \Illuminate\View\View
         // which Illuminate\View\View does in order for Twig loader to get access
         // to view composers.
         //TODO: There must be a better way to do this?
+        
+        // Pass globals to Twig's global scope
+        $twig = $this->engine->getTwig();
+        foreach ($this->environment->getShared() as $key => $value)
+        {
+            $twig->addGlobal($key, $value);
+        }
+        
         return $this->engine->get($this->path, $this->gatherData(), $this->view);
     }
 }
