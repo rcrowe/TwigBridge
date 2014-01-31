@@ -9,6 +9,9 @@
 
 namespace TwigBridge\View;
 
+use Illuminate\View\View as BaseView;
+use TwigBridge\Engines\TwigEngine;
+
 /**
  * Pass to TwigEngine the request view, not just the path.
  *
@@ -16,7 +19,7 @@ namespace TwigBridge\View;
  * to set the correct template name when Twig compiles. This name is then
  * used to check for view composers.
  */
-class View extends \Illuminate\View\View
+class View extends BaseView
 {
     /**
      * {@inheritdoc}
@@ -29,7 +32,7 @@ class View extends \Illuminate\View\View
         //TODO: There must be a better way to do this?
 
         // Pass globals to Twig's global scope
-        if ($this->engine instanceof \TwigBridge\Engines\TwigEngine)
+        if ($this->engine instanceof TwigEngine)
         {
             $twig = $this->engine->getTwig();
             foreach ($this->environment->getShared() as $key => $value)
