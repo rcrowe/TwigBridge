@@ -4,7 +4,6 @@ namespace TwigBridgeTests\View;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
-
 use Illuminate\View\Environment;
 use TwigBridge\View\View;
 use TwigBridge\Engines\TwigEngine;
