@@ -46,7 +46,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $finder->shouldReceive('getHints')->andReturn(array());
         $finder->shouldReceive('getPaths')->andReturn(array(
             __DIR__.'/../fixtures/Filesystem'
-        );
+        ));
 
         return new Filesystem($finder);
     }
