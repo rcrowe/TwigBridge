@@ -43,10 +43,10 @@ class ViewTest extends PHPUnit_Framework_TestCase
     private function getFilesystem()
     {
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
-        $finder->shouldReceive('getHints')->andReturn([]);
-        $finder->shouldReceive('getPaths')->andReturn([
+        $finder->shouldReceive('getHints')->andReturn(array());
+        $finder->shouldReceive('getPaths')->andReturn(array(
             __DIR__.'/../fixtures/Filesystem'
-        ]);
+        );
 
         return new Filesystem($finder);
     }
@@ -55,6 +55,6 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $twig = new Twig_Environment($this->getFilesystem(), array());
 
-        return new TwigEngine($twig, []);
+        return new TwigEngine($twig, array());
     }
 }
