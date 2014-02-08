@@ -15,6 +15,3 @@ before_script:
   - php ./composer.phar install --dev --prefer-source
 
 script: ./vendor/bin/phpunit --configuration phpunit.xml.dist
-
-notifications:
-  email: false
