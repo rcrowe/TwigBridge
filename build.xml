@@ -2,7 +2,7 @@
 <project name="TwigBridge" default="build">
 
     <target name="build" depends="prepare,lint,phpcs,phpunit" />
-    <target name="build-ci" depends="prepare,lint,phpcs-ci,phpunit" />
+    <target name="build-ci" depends="prepare,lint,phpcs,phpunit" />
 
     <target name="clean">
         <delete dir="${project.basedir}/build" quiet="true" includeemptydirs="true" />
