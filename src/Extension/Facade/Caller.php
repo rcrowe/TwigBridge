@@ -37,7 +37,7 @@ class Caller
                 'is_safe' => null,
                 'charset' => null,
             ),
-            $options,
+            $options
         );
     }
 

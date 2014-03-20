@@ -75,7 +75,7 @@ class Filters extends Extension
                         'callback' => null,
                         'options'  => array(),
                     ),
-                    $value,
+                    $value
                 );
 
                 if (empty($options['callback'])) {
