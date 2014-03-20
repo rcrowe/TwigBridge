@@ -54,7 +54,7 @@ class ClearCommand extends Command
 
         $this->files->deleteDirectory($cacheDir);
 
-        if ($this->files->exists($cacheDir)){
+        if ($this->files->exists($cacheDir)) {
             $this->error('Could not clear Twig Cache..');
         } else {
             $this->info('Twig Cache cleared!');
