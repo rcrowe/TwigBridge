@@ -34,7 +34,7 @@ return array(
     | http://twig.sensiolabs.org/doc/api.html#environment-options
     |
     */
-    'twig' => array(
+    'environment' => array(
 
         // When set to true, the generated templates have a __toString() method
         // that you can use to display the generated nodes.

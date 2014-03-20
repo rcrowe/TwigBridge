@@ -34,7 +34,7 @@ class BindingsTest extends Base
         $provider = new TwigServiceProvider($app);
         $provider->boot();
 
-        $config  = $app['config']->get('twigbridge::twig');
+        $config  = $app['config']->get('twigbridge::twig.environment');
         $options = $app['twig.options'];
 
         // Make sure that twig.options sets the storage path automatically
@@ -61,7 +61,9 @@ class BindingsTest extends Base
     {
         $app = $this->getApplication(array(
             'twig' => array(
-                'debug' => true
+                'environment' => array(
+                    'debug' => true,
+                ),
             )
         ));
 

@@ -34,7 +34,7 @@ class TwigBridge
      */
     public function getExtension()
     {
-        return $this->app['config']->get('twigbridge::extension');
+        return $this->app['config']->get('twigbridge::twig.extension');
     }
 
     /**
@@ -66,7 +66,7 @@ class TwigBridge
      */
     public function getLexer(Twig_Environment $twig)
     {
-        $delimiters = $this->app['config']->get('twigbridge::delimiters');
+        $delimiters = $this->app['config']->get('twigbridge::twig.delimiters');
 
         $lexer = new Twig\Lexer(
             $delimiters['tag_comment'],

@@ -81,7 +81,7 @@ class TwigServiceProvider extends ViewServiceProvider
 
         // Twig
         $app['twig.options'] = $app->share(function () use ($app) {
-            $options = $app['config']->get('twigbridge::twig', array());
+            $options = $app['config']->get('twigbridge::twig.environment', array());
 
             // Check whether we have the cache path set
             if (empty($options['cache'])) {
@@ -104,12 +104,12 @@ class TwigServiceProvider extends ViewServiceProvider
         $app['twig.engine'] = $app->share(function () use ($app) {
             return new Engine\Twig(
                 $app['twig'],
-                $app['config']->get('twigbridge::globals', array())
+                $app['config']->get('twigbridge::twig.globals', array())
             );
         });
 
         $app['view']->addExtension(
-            $app['config']->get('twigbridge::extension', 'twig'),
+            $app['config']->get('twigbridge::twig.extension', 'twig'),
             'twig',
             function () use ($app) {
                 return $app['twig.engine'];
