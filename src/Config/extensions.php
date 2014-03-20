@@ -13,9 +13,7 @@ return array(
     |
     */
     'enabled' => array(
-        'TwigBridge\Extension\FunctionLoader',
-        'TwigBridge\Extension\FilterLoader',
-        'TwigBridge\Extension\FacadeLoader',
+        'TwigBridge\Extension\Loader',
     ),
 
     /*
@@ -55,8 +53,11 @@ return array(
     'functions' => array(
         'route',
         'action',
-        'asset',
-        'url',
+        'asset' => 'asset_url',
+        'url' => array(
+            'callback' => 'router_url',
+            'is_safe'  => true,
+        ),
         'link_to',
         'link_to_asset',
         'link_to_route',
@@ -78,16 +79,14 @@ return array(
     */
     'filters' => array(
         'camel_case',
-        'snake' => 'snake_case',
-        'studly_case' => array(
+        'snake_case',
+        'studly' => 'studly_case',
+        'str_finish' => array(
             'callback' => 'foo_bar',
-            'options'  => array(
-                // 'pre_escape' => 'html',
-                // 'is_safe' => array('html'),
-                'is_safe' => true,
-            ),
+            'is_safe'  => true,
+            // 'pre_escape' => 'html',
+            // 'is_safe'    => array('html'),
         ),
-        'str_finish',
         'str_plural',
         'str_singular',
     ),
