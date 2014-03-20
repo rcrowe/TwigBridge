@@ -11,7 +11,6 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
-use TwigBridge\Console\ClearCommand;
 
 /**
  * Bootstrap Laravel Twig(Bridge).
@@ -126,7 +125,7 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $this->app['command.twig.clear'] = $this->app->share(
             function ($app) {
-                return new ClearCommand($app['twig'], $app['files']);
+                return new Console\ClearCommand($app['twig'], $app['files']);
             }
         );
 
