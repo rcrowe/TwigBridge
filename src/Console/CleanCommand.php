@@ -14,17 +14,20 @@ use Illuminate\Console\Command;
 use Twig_Environment;
 use Illuminate\Filesystem\Filesystem;
 
-class ClearCommand extends Command
+/**
+ * Artisan command to clear the Twig cache.
+ */
+class CleanCommand extends Command
 {
     /**
      * {@inheritdoc}
      */
-    protected $name = 'twig:clear';
+    protected $name = 'twig:clean';
 
     /**
      * {@inheritdoc}
      */
-    protected $description = 'Clear the Twig Cache';
+    protected $description = 'Clean the Twig Cache';
 
     /**
      * @var \Illuminate\Filesystem\Filesystem
@@ -55,9 +58,9 @@ class ClearCommand extends Command
         $this->files->deleteDirectory($cacheDir);
 
         if ($this->files->exists($cacheDir)) {
-            $this->error('Could not clear Twig Cache..');
+            $this->error('Twig cache failed to be cleaned');
         } else {
-            $this->info('Twig Cache cleared!');
+            $this->info('Twig cache cleaned');
         }
     }
 }

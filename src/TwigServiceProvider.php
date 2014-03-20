@@ -123,14 +123,14 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function registerCommands()
     {
-        $this->app['command.twig.clear'] = $this->app->share(
+        $this->app['command.twig.clean'] = $this->app->share(
             function ($app) {
-                return new Console\ClearCommand($app['twig'], $app['files']);
+                return new Console\CleanCommand($app['twig'], $app['files']);
             }
         );
 
         $this->commands(
-            'command.twig.clear'
+            'command.twig.clean'
         );
     }
 
