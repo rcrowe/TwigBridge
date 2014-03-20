@@ -13,12 +13,11 @@
         "twig/twig": "1.*"
     },
     "require-dev": {
-        "illuminate/foundation": "4.0.*",
-        "illuminate/filesystem": "4.0.*",
-        "mockery/mockery": "~0.7",
-        "phing/phing": "2.6.*",
-        "phpunit/phpunit": "~3.7",
-        "squizlabs/php_codesniffer": "~1.4"
+        "laravel/framework": "~4.1.0",
+        "mockery/mockery": "~0.9.0",
+        "phing/phing": "~2.7.0",
+        "phpunit/phpunit": "~4.0.0",
+        "squizlabs/php_codesniffer": "~1.5.0"
     },
     "suggest": {
         "twig/extensions": "1.0.*"
