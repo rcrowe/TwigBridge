@@ -7,7 +7,7 @@
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @license MIT
  */
-namespace TwigBridge\Extension\Facade;
+namespace TwigBridge\Extension\Loader\Facade;
 
 use Twig_Markup;
 

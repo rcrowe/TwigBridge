@@ -13,7 +13,9 @@ return array(
     |
     */
     'enabled' => array(
-        'TwigBridge\Extension\Loader',
+        'TwigBridge\Extension\Loader\Facades',
+        'TwigBridge\Extension\Loader\Filters',
+        'TwigBridge\Extension\Loader\Functions',
     ),
 
     /*
@@ -30,16 +32,30 @@ return array(
         'Form' => array(
             'is_safe' => array(
                 'open',
-            ),
+            )
         ),
-        'HTML' => array(
-            'is_safe' => true,
-        ),
+        'HTML',
         'Input',
         'Lang',
         'Route',
         'Str',
         'URL',
+
+        // 'Auth',
+        // 'Config',
+        // 'Form' => array(
+        //     'is_safe' => array(
+        //         'open',
+        //     ),
+        // ),
+        // 'HTML' => array(
+        //     'is_safe' => true,
+        // ),
+        // 'Input',
+        // 'Lang',
+        // 'Route',
+        // 'Str',
+        // 'URL',
     ),
 
     /*
@@ -53,20 +69,34 @@ return array(
     'functions' => array(
         'route',
         'action',
-        'asset' => 'asset_url',
-        'url' => array(
-            'callback' => 'router_url',
-            'is_safe'  => true,
-        ),
-        'link_to',
-        'link_to_asset',
-        'link_to_route',
-        'link_to_action',
-        'secure_asset',
+        'asset',
+        'url',
+        'link_to' => array('is_safe' => array('html')),
+        'link_to_asset' => array('is_safe' => array('html')),
+        'link_to_route' => array('is_safe' => array('html')),
+        'link_to_action' => array('is_safe' => array('html')),
+        'secure_asset' => array('is_safe' => array('html')),
         'secure_url',
         'trans',
         'trans_choice',
         'csrf_token',
+
+        // 'route',
+        // 'action',
+        // 'asset' => 'asset_url',
+        // 'url' => array(
+        //     'callback' => 'router_url',
+        //     'is_safe'  => true,
+        // ),
+        // 'link_to',
+        // 'link_to_asset',
+        // 'link_to_route',
+        // 'link_to_action',
+        // 'secure_asset',
+        // 'secure_url',
+        // 'trans',
+        // 'trans_choice',
+        // 'csrf_token',
     ),
 
     /*
@@ -80,15 +110,22 @@ return array(
     'filters' => array(
         'camel_case',
         'snake_case',
-        'studly' => 'studly_case',
-        'str_finish' => array(
-            'callback' => 'foo_bar',
-            'is_safe'  => true,
-            // 'pre_escape' => 'html',
-            // 'is_safe'    => array('html'),
-        ),
+        'studly_case',
+        'str_finish',
         'str_plural',
         'str_singular',
+
+        // 'camel_case',
+        // 'snake_case',
+        // 'studly' => 'studly_case',
+        // 'str_finish' => array(
+        //     'callback' => 'foo_bar',
+        //     'is_safe'  => true,
+        //     // 'pre_escape' => 'html',
+        //     // 'is_safe'    => array('html'),
+        // ),
+        // 'str_plural',
+        // 'str_singular',
     ),
 
 );
