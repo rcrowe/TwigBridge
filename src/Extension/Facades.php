@@ -26,7 +26,7 @@ class Facades extends Extension
     /**
      * Registers a new Extension and loads the facades from the config.
      *
-     * @param Application $app
+     * @param Application      $app
      * @param Twig_Environment $twig
      */
     public function __construct(Application $app, Twig_Environment $twig)
@@ -55,9 +55,19 @@ class Facades extends Extension
     {
         $facades = array();
 
-        foreach ($this->facades as $facade) {
-            $caller           = new Facade\Caller($facade);
-            $facades[$facade] = $caller;
+        foreach ($this->facades as $key => $value) {
+            if (is_int($key)) {
+                $facade  = $value;
+                $options = array();
+            } elseif (is_array($value)) {
+                $facade  = $key;
+                $options = $value;
+            } else {
+                $facade  = $key;
+                $options = array();
+            }
+
+            $facades[$facade] = new Facade\Caller($facade, $options);
         }
 
         return $facades;

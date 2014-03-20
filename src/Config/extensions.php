@@ -13,9 +13,9 @@ return array(
     |
     */
     'enabled' => array(
-        // 'TwigBridge\Extension\FunctionLoader',
-        // 'TwigBridge\Extension\FilterLoader',
-        // 'TwigBridge\Extension\FacadeLoader',
+        'TwigBridge\Extension\FunctionLoader',
+        'TwigBridge\Extension\FilterLoader',
+        'TwigBridge\Extension\FacadeLoader',
     ),
 
     /*
@@ -29,8 +29,14 @@ return array(
     'facades' => array(
         'Auth',
         'Config',
-        'Form',
-        'HTML',
+        'Form' => array(
+            'is_safe' => array(
+                'open',
+            ),
+        ),
+        'HTML' => array(
+            'is_safe' => true,
+        ),
         'Input',
         'Lang',
         'Route',
