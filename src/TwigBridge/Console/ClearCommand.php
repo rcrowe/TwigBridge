@@ -14,32 +14,50 @@ use Illuminate\Console\Command;
 use Twig_Environment;
 use Illuminate\Filesystem\Filesystem;
 
-class ClearCommand extends Command {
-
+class ClearCommand extends Command
+{
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'twig:clear';
+
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Clear the Twig Cache';
 
-
+    /**
+     * @var \Illuminate\Filesystem\Filesystem
+     */
     protected $files;
 
-    public function __construct(Twig_Environment $twig, Filesystem $files){
-        $this->files = $files;
-        $this->twig = $twig;
-
+    /**
+     * Create a new console command instance.
+     *
+     * @param \Twig_Environment $twig
+     * @param \Illuminate\Filesystem\Filesystem
+     */
+    public function __construct(Twig_Environment $twig, Filesystem $files)
+    {
         parent::__construct();
+
+        $this->files = $files;
+        $this->twig  = $twig;
     }
 
-    public function fire(){
-
+    /**
+     * {@inheritdoc}
+     */
+    public function fire()
+    {
         $cacheDir = $this->twig->getCache();
 
         $this->files->deleteDirectory($cacheDir);
 
-        if($this->files->exists($cacheDir)){
+        if ($this->files->exists($cacheDir)){
             $this->error('Could not clear Twig Cache..');
-        }else{
+        } else {
             $this->info('Twig Cache cleared!');
         }
-
     }
 }
