@@ -28,6 +28,7 @@
             <arg value="--report=full" />
             <arg value="--report-checkstyle=build/logs/checkstyle.xml" />
             <arg path="${project.basedir}/src" />
+            <arg path="${project.basedir}/tests" />
         </exec>
     </target>
 

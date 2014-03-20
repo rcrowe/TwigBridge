@@ -12,7 +12,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
 {
     protected $twigBridgeRoot;
 
-    public function __construct($name = NULL, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = array(), $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -54,7 +54,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
                 return $items;
             }
         );
-        $config->getLoader()->shouldReceive('exists')->with('twig',       'twigbridge')->andReturn(false);
+        $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
 
         // Get config data
