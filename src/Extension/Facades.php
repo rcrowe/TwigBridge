@@ -12,6 +12,7 @@ namespace TwigBridge\Extension;
 use TwigBridge\Extension;
 use Illuminate\Foundation\Application;
 use Twig_Environment;
+use InvalidArgumentException;
 
 /**
  * Let's Twig access Facades using global methods (ie. Config.get('app.debug'))
@@ -63,8 +64,7 @@ class Facades extends Extension
                 $facade  = $key;
                 $options = $value;
             } else {
-                $facade  = $key;
-                $options = array();
+                throw new InvalidArgumentException('Incorrect facade');
             }
 
             $facades[$facade] = new Facade\Caller($facade, $options);

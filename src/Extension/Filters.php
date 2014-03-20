@@ -59,18 +59,46 @@ class Filters extends Extension
     {
         $filters = array();
 
-        foreach ($this->filters as $method => $twigFilter) {
-            if (is_string($twigFilter)) {
-                $methodName = $twigFilter;
-            } elseif (is_callable($twigFilter)) {
-                $methodName = $method;
+        foreach ($this->filters as $key => $value) {
+            if (is_int($key)) {
+                $filter   = $value;
+                $callback = $value;
+                $options  = array();
+            } elseif (is_string($value)) {
+                $filter   = $key;
+                $callback = $value;
+                $options  = array();
+            } elseif (is_array($value)) {
+                $filter  = $key;
+                $options = array_merge(
+                    array(
+                        'callback' => null,
+                        'options'  => array(),
+                    ),
+                    $value,
+                );
+
+                if (empty($options['callback'])) {
+                    throw new InvalidArgumentException('Filter `'.$filter.'` has no callback option!');
+                }
+
+                if (!is_callable($options['callback'])) {
+                    throw new InvalidArgumentException('Filter `'.$filter.'` callback is not callable!');
+                }
+
+                $callback = $options['callback'];
+                $options  = $options['options'];
             } else {
-                throw new InvalidArgumentException('Incorrect function filter');
+                throw new InvalidArgumentException('Incorrect filter');
             }
 
-            $function = new Twig_SimpleFilter($methodName, function () use ($twigFilter) {
-                return call_user_func_array($twigFilter, func_get_args());
-            });
+            $function = new Twig_SimpleFilter(
+                $filter,
+                function () use ($callback) {
+                    return call_user_func_array($callback, func_get_args());
+                },
+                $options
+            );
 
             $filters[] = $function;
         }

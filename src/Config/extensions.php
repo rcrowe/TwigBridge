@@ -78,8 +78,15 @@ return array(
     */
     'filters' => array(
         'camel_case',
-        'snake_case',
-        'studly_case',
+        'snake' => 'snake_case',
+        'studly_case' => array(
+            'callback' => 'foo_bar',
+            'options'  => array(
+                // 'pre_escape' => 'html',
+                // 'is_safe' => array('html'),
+                'is_safe' => true,
+            ),
+        ),
         'str_finish',
         'str_plural',
         'str_singular',
