@@ -18,61 +18,64 @@ use Illuminate\View\View;
  */
 abstract class Template extends Twig_Template
 {
-
     /**
      * {@inheritdoc}
      */
-    public function display( array $context, array $blocks = array())
+    public function display(array $context, array $blocks = array())
     {
-
-        if($this->shouldFireEvents()){
+        if ($this->shouldFireEvents()) {
             $context = $this->fireEvents($context);
         }
 
         parent::display($context, $blocks);
-
     }
-
 
     /**
      * Fire the creator/composer events and return the modified context.
      *
-     * @param $context  The old context
-     * @return array    The new context
+     * @param $context Old context.
+     *
+     * @return array New context.
      */
-    public function fireEvents($context){
-
-        /** @var \Illuminate\View\Environment $env */
+    public function fireEvents($context)
+    {
         $env  = $context['__env'];
-        $env->callCreator($view = new View($env, $env->getEngineResolver()->resolve('twig'), $this->getTemplateName(), null, $context));
+        $view = new View($env, $env->getEngineResolver()->resolve('twig'), $this->getTemplateName(), null, $context);
+
+        $env->callCreator($view);
         $env->callComposer($view);
 
         return $view->getData();
     }
 
     /**
-     * Determine wether events should fire for this View.
+     * Determine whether events should fire for this view.
      *
      * @return bool
      */
-    public function shouldFireEvents(){
+    public function shouldFireEvents()
+    {
         $name = $this->getTemplateName();
-        //If a path is passed to Twig, events already have been fired.
+
+        // If a path is passed to Twig, events have been fired already.
         return !is_file($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getAttribute($object, $item, array $arguments = array(), $type = Twig_Template::ANY_CALL, $isDefinedTest = false, $ignoreStrictCheck = false){
-        if(
-            $type !== Twig_Template::METHOD_CALL  //Don't handle Method Calls
-            and is_a($object,'Illuminate\Database\Eloquent\Model') //Only handle Models
-        ){
+    protected function getAttribute(
+        $object,
+        $item,
+        array $arguments = array(),
+        $type = Twig_Template::ANY_CALL,
+        $isDefinedTest = false,
+        $ignoreStrictCheck = false
+    ) {
+        if ($type !== Twig_Template::METHOD_CALL && is_a($object, 'Illuminate\Database\Eloquent\Model')) {
             return $object->getAttribute($item);
-        }else{
+        } else {
             return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
         }
     }
-
 }
