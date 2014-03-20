@@ -150,7 +150,7 @@ class TwigServiceProvider extends ViewServiceProvider
             'twig.loader',
             'twig.loader.path',
             'twig.loader.viewfinder',
-            'command.twig.clear',
+            'command.twig.clean',
         );
     }
 }
