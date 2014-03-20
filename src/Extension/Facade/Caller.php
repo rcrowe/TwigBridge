@@ -54,7 +54,7 @@ class Caller
         $is_safe = ($this->options['is_safe'] === true);
 
         // Allow is_safe option to specify individual methods of the facade that are safe
-        if (is_array($this->options['is_safe']) && in_array($method, $this->options)) {
+        if (is_array($this->options['is_safe']) && in_array($method, $this->options['is_safe'])) {
             $is_safe = true;
         }
 
