@@ -2,7 +2,6 @@
 <project name="TwigBridge" default="build">
 
     <target name="build" depends="prepare,lint,phpcs,phpunit" />
-    <target name="build-ci" depends="prepare,lint,phpcs,phpunit" />
 
     <target name="clean">
         <delete dir="${project.basedir}/build" quiet="true" includeemptydirs="true" />
@@ -25,12 +24,11 @@
         <exec executable="${project.basedir}/vendor/bin/phpcs" passthru="true" checkreturn="true">
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
+            <arg value="-p" />
+            <arg value="--report=full" />
+            <arg value="--report-checkstyle=build/logs/checkstyle.xml" />
             <arg path="${project.basedir}/src" />
         </exec>
-    </target>
-
-    <target name="phpcs-ci">
-        <echo msg="Skipped due to issue on TravisCI" level="warning" />
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">

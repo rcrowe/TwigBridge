@@ -87,7 +87,7 @@ class TwigBridge
         $twig = new Twig_Environment($this->app['twig.loader'], $this->getTwigOptions());
 
         // Load extensions
-        foreach($this->app['twig.extensions'] as $extension) {
+        foreach ($this->app['twig.extensions'] as $extension) {
             // Get an instance of the extension
             // Support for string, closure and an object
             if (is_string($extension)) {
