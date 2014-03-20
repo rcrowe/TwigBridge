@@ -24,7 +24,7 @@ class TwigServiceProvider extends ViewServiceProvider
     public function register()
     {
         // Register the package configuration with the loader.
-        $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/../config');
+        $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/Config');
     }
 
     /**

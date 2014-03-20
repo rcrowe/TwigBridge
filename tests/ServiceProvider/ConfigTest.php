@@ -1,8 +1,8 @@
 <?php
 
-namespace TwigBridgeTests\ServiceProvider;
+namespace TwigBridge\Tests\ServiceProvider;
 
-use TwigBridgeTests\Base;
+use TwigBridge\Tests\Base;
 use TwigBridge\TwigServiceProvider;
 
 class ConfigTest extends Base
@@ -12,7 +12,7 @@ class ConfigTest extends Base
         $app = $this->getApplication();
 
         // Check that our register is registering our config path correctly
-        $dir = realpath(__DIR__.'/../../../').'/src/TwigBridge/../config';
+        $dir = $this->twigBridgeRoot.'/Config';
         $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', $dir)->once();
 
         $provider = new TwigServiceProvider($app);

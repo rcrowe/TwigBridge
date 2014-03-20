@@ -24,9 +24,9 @@
         "twig/extensions": "1.0.*"
     },
     "autoload": {
-        "psr-0": {
-            "TwigBridge": "src/",
-            "TwigBridgeTests": "tests/"
+        "psr-4": {
+            "TwigBridge\\": "src",
+            "TwigBridge\\Tests\\": "tests"
         }
     }
 }

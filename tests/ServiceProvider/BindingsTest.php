@@ -1,10 +1,10 @@
 <?php
 
-namespace TwigBridgeTests\ServiceProvider;
+namespace TwigBridge\Tests\ServiceProvider;
 
 use Mockery as m;
 use Illuminate\View\Environment;
-use TwigBridgeTests\Base;
+use TwigBridge\Tests\Base;
 use TwigBridge\TwigServiceProvider;
 
 class BindingsTest extends Base
