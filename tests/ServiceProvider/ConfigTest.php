@@ -12,11 +12,7 @@ class ConfigTest extends Base
         $app = $this->getApplication();
 
         // Check that our register is registering our config path correctly
-        $dir = realpath(__DIR__.'/../../src').'/Config';
-
-        var_dump(__DIR__);
-        var_dump($dir);
-
+        $dir = $this->twigBridgeRoot.'/Config';
         $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', $dir)->once();
 
         $provider = new TwigServiceProvider($app);
