@@ -9,8 +9,8 @@
  */
 namespace TwigBridge\Extension;
 
-class FacadeCaller{
-
+class FacadeCaller
+{
     /**
      * @var string The name of the Facade that has to be called
      */
@@ -19,7 +19,8 @@ class FacadeCaller{
     /*
      * Create a new FacadeCaller for a facade.
      */
-    public function __construct($facade){
+    public function __construct($facade)
+    {
         $this->facade = $facade;
     }
 
@@ -28,9 +29,11 @@ class FacadeCaller{
      *
      * @param $name
      * @param $arguments
+     *
      * @return mixed
      */
-    public function __call($name, $arguments){
+    public function __call($name, $arguments)
+    {
         return call_user_func_array($this->facade.'::'.$name, $arguments);
     }
 }

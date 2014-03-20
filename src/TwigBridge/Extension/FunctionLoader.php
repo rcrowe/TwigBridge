@@ -20,11 +20,8 @@ use InvalidArgumentException;
  */
 class FunctionLoader extends Extension
 {
-
     /**
-     * Twig functions.
-     *
-     * @var array
+     * @var array Twig functions.
      */
     protected $functions;
 
@@ -55,6 +52,7 @@ class FunctionLoader extends Extension
      * Get functions this extensions provides.
      *
      * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function getFunctions()
@@ -80,5 +78,4 @@ class FunctionLoader extends Extension
 
         return $functions;
     }
-
 }

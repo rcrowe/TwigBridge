@@ -18,15 +18,19 @@ use Twig_Environment;
  */
 class FacadeLoader extends Extension
 {
-    /** @var  array List of Facades to add as global */
+    /**
+     * @var array List of facades to add as globals.
+     */
     protected $facades;
 
     /**
      * Registers a new Extension and loads the facades from the config.
+     *
      * @param Application $app
      * @param Twig_Environment $twig
      */
-    public function __construct(Application $app, Twig_Environment $twig){
+    public function __construct(Application $app, Twig_Environment $twig)
+    {
         parent::__construct($app, $twig);
 
         $this->facades = $app['config']->get('twigbridge::extensions.facades', array());
@@ -37,21 +41,25 @@ class FacadeLoader extends Extension
      *
      * @return string Extension name.
      */
-    public function getName(){
+    public function getName()
+    {
         return 'FacadeLoader';
     }
 
     /**
      * Return all globals created by this FacadeLoader
+     *
      * @return array
      */
-    public function getGlobals(){
+    public function getGlobals()
+    {
         $facades = array();
+
         foreach($this->facades as $facade){
-            $caller = new FacadeCaller($facade);
+            $caller           = new FacadeCaller($facade);
             $facades[$facade] = $caller;
         }
+
         return $facades;
     }
-
 }

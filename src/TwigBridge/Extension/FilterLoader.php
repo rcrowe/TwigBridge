@@ -21,12 +21,9 @@ use InvalidArgumentException;
 class FilterLoader extends Extension
 {
     /**
-     * Twig filters.
-     *
-     * @var array
+     * @var array Twig filters.
      */
     protected $filters;
-
 
     /**
      * Create a new extension instance.
@@ -38,7 +35,7 @@ class FilterLoader extends Extension
     {
         parent::__construct($app, $twig);
 
-        $this->filters   = $app['config']->get('twigbridge::extensions.filters', array());
+        $this->filters = $app['config']->get('twigbridge::extensions.filters', array());
     }
 
     /**
@@ -55,6 +52,7 @@ class FilterLoader extends Extension
      * Get filters this extensions provides.
      *
      * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function getFilters()
