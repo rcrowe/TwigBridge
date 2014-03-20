@@ -10,15 +10,6 @@ use Illuminate\Config\Repository;
 
 abstract class Base extends PHPUnit_Framework_TestCase
 {
-    protected $twigBridgeRoot;
-
-    public function __construct($name = NULL, array $data = array(), $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-
-        $this->twigBridgeRoot = realpath(__DIR__.'/../src');
-    }
-
     public function tearDown()
     {
         m::close();
@@ -61,8 +52,13 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
 
         // Get config data
-        $configData     = include $this->twigBridgeRoot.'/Config/config.php';
-        $extensionsData = include $this->twigBridgeRoot.'/Config/extensions.php';
+        $twigBridgeRoot = realpath(__DIR__.'/../src');
+
+        var_dump(__DIR__);
+        var_dump($twigBridgeRoot);
+
+        $configData     = include $twigBridgeRoot.'/Config/config.php';
+        $extensionsData = include $twigBridgeRoot.'/Config/extensions.php';
         $extensionsData = array(
             'extensions' => $extensionsData,
         );
