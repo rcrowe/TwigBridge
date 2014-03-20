@@ -77,7 +77,6 @@ abstract class Template extends Twig_Template
             if (method_exists($object, $item)) {
                 $ret = call_user_func_array(array($object, $item), $arguments);
             } else {
-
                 // Calling getAttributes lets us deal with accessors, mutators & relations
                 $ret = $object->getAttribute($item);
 
