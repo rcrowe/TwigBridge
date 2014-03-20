@@ -55,7 +55,7 @@ class FacadeLoader extends Extension
     {
         $facades = array();
 
-        foreach($this->facades as $facade){
+        foreach ($this->facades as $facade) {
             $caller           = new FacadeCaller($facade);
             $facades[$facade] = $caller;
         }
