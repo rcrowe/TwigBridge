@@ -21,7 +21,7 @@
             <directory suffix=".php">PHP_LIBDIR</directory>
             <directory suffix=".php">vendor</directory>
             <directory suffix=".php">tests</directory>
-            <directory suffix=".php">src/config</directory>
+            <directory suffix=".php">src/Config</directory>
         </blacklist>
     </filter>
     <logging>
@@ -34,7 +34,7 @@
 
         <log type="coverage-text"
              target="php://stdout"
-             title="lncd/OAuth"
+             title="TwigBridge"
              charset="UTF-8"
              yui="true"
              highlight="true"
