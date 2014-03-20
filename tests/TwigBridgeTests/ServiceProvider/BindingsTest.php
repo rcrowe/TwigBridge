@@ -11,22 +11,11 @@ class BindingsTest extends Base
 {
     public function testBindings()
     {
-        $bindings = array(
-            'twig.extensions',
-            'twig.loader.path',
-            'twig.loader.viewfinder',
-            'twig.loader',
-            'twig.options',
-            'twig.bridge',
-            'twig',
-            'twig.engine',
-        );
-
         $app      = $this->getApplication();
         $provider = new TwigServiceProvider($app);
 
         // Make sure not found
-        foreach ($bindings as $binding) {
+        foreach ($provider->provides() as $binding) {
             $this->assertFalse($app->bound($binding));
         }
 
@@ -34,7 +23,7 @@ class BindingsTest extends Base
         $provider->boot();
 
         // Now make sure bounded
-        foreach ($bindings as $binding) {
+        foreach ($provider->provides() as $binding) {
             $this->assertTrue($app->bound($binding));
         }
     }
