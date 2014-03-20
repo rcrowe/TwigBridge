@@ -7,9 +7,9 @@
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @license MIT
  */
-namespace TwigBridge\Extension;
+namespace TwigBridge\Extension\Facade;
 
-class FacadeCaller
+class Caller
 {
     /**
      * @var string The name of the Facade that has to be called

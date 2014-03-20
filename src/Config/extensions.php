@@ -13,9 +13,9 @@ return array(
     |
     */
     'enabled' => array(
-        'TwigBridge\Extension\FunctionLoader',
-        'TwigBridge\Extension\FilterLoader',
-        'TwigBridge\Extension\FacadeLoader',
+        // 'TwigBridge\Extension\FunctionLoader',
+        // 'TwigBridge\Extension\FilterLoader',
+        // 'TwigBridge\Extension\FacadeLoader',
     ),
 
     /*

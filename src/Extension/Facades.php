@@ -16,7 +16,7 @@ use Twig_Environment;
 /**
  * Let's Twig access Facades using global methods (ie. Config.get('app.debug'))
  */
-class FacadeLoader extends Extension
+class Facades extends Extension
 {
     /**
      * @var array List of facades to add as globals.
@@ -43,7 +43,7 @@ class FacadeLoader extends Extension
      */
     public function getName()
     {
-        return 'FacadeLoader';
+        return 'TwigBridge_Facades';
     }
 
     /**
@@ -56,7 +56,7 @@ class FacadeLoader extends Extension
         $facades = array();
 
         foreach ($this->facades as $facade) {
-            $caller           = new FacadeCaller($facade);
+            $caller           = new Facade\Caller($facade);
             $facades[$facade] = $caller;
         }
 

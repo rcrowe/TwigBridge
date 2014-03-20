@@ -12,18 +12,18 @@ namespace TwigBridge\Extension;
 use Illuminate\Foundation\Application;
 use TwigBridge\Extension;
 use Twig_Environment;
-use Twig_SimpleFunction;
+use Twig_SimpleFilter;
 use InvalidArgumentException;
 
 /**
  * Lets Twig access configurable functions and filters.
  */
-class FunctionLoader extends Extension
+class Filters extends Extension
 {
     /**
-     * @var array Twig functions.
+     * @var array Twig filters.
      */
-    protected $functions;
+    protected $filters;
 
     /**
      * Create a new extension instance.
@@ -35,7 +35,7 @@ class FunctionLoader extends Extension
     {
         parent::__construct($app, $twig);
 
-        $this->functions = $app['config']->get('twigbridge::extensions.functions', array());
+        $this->filters = $app['config']->get('twigbridge::extensions.filters', array());
     }
 
     /**
@@ -45,37 +45,36 @@ class FunctionLoader extends Extension
      */
     public function getName()
     {
-        return 'FunctionLoader';
+        return 'TwigBridge_Filters';
     }
 
     /**
-     * Get functions this extensions provides.
+     * Get filters this extensions provides.
      *
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    public function getFunctions()
+    public function getFilters()
     {
-        $functions = array();
+        $filters = array();
 
-        foreach ($this->functions as $method => $twigFunction) {
-
-            if (is_string($twigFunction)) {
-                $methodName = $twigFunction;
-            } elseif (is_callable($twigFunction)) {
+        foreach ($this->filters as $method => $twigFilter) {
+            if (is_string($twigFilter)) {
+                $methodName = $twigFilter;
+            } elseif (is_callable($twigFilter)) {
                 $methodName = $method;
             } else {
-                throw new InvalidArgumentException('Incorrect function type');
+                throw new InvalidArgumentException('Incorrect function filter');
             }
 
-            $function = new Twig_SimpleFunction($methodName, function () use ($twigFunction) {
-                return call_user_func_array($twigFunction, func_get_args());
+            $function = new Twig_SimpleFilter($methodName, function () use ($twigFilter) {
+                return call_user_func_array($twigFilter, func_get_args());
             });
 
-            $functions[] = $function;
+            $filters[] = $function;
         }
 
-        return $functions;
+        return $filters;
     }
 }
