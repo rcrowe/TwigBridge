@@ -56,4 +56,32 @@ class TwigBridgeTest extends Base
         $this->assertTrue(is_array($options));
         $this->assertEquals($options['cache'], __DIR__.'/storage/views/twig');
     }
+
+    public function testLexer()
+    {
+        $delimiters = array(
+            'tag_comment'  => array('1-##', '##'),
+            'tag_block'    => array('2-%%', '%%'),
+            'tag_variable' => array('3-@@', '@@'),
+        );
+        $app = $this->getApplication(array(
+            'twig' => array(
+                'delimiters' => $delimiters,
+            ),
+        ));
+
+        $provider = new ServiceProvider($app);
+        $provider->boot();
+
+        $lexer = $app['twig']->getLexer();
+        $this->assertInstanceOf('TwigBridge\Twig\Lexer', $lexer);
+
+        $options = $lexer->getOptions();
+
+        foreach ($delimiters as $type => $tag) {
+            $this->assertTrue(array_key_exists($type, $options));
+            $this->assertEquals($tag[0], $options[$type][0]);
+            $this->assertEquals($tag[1], $options[$type][1]);
+        }
+    }
 }
