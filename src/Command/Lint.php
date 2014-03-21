@@ -105,14 +105,9 @@ class Lint extends Command
             $search_directories = array();
 
             foreach ($directories as $directory) {
-                if (is_dir($directory)) {
-                    $search_directories[] = $directory;
-                } else {
-                    // Else check if the directory exists under a view path
-                    foreach ($paths as $path) {
-                        if (is_dir($path.'/'.$directory)) {
-                            $search_directories[] = $path.'/'.$directory;
-                        }
+                foreach ($paths as $path) {
+                    if (is_dir($path.'/'.$directory)) {
+                        $search_directories[] = $path.'/'.$directory;
                     }
                 }
             }
@@ -355,13 +350,13 @@ class Lint extends Command
                 'file',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Lint multiple files. Supports the dot syntax.',
+                'Lint multiple files. Relative to the view path. Supports the dot syntax.',
             ],
             [
                 'directory',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Lint multiple directories. Absolute or relative to the view path. Does not support the dot syntax.',
+                'Lint multiple directories. Relative to the view path. Does not support the dot syntax.',
             ],
             [
                 'format',
