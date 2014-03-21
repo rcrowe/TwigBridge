@@ -25,7 +25,7 @@ use RuntimeException;
 use InvalidArgumentException;
 
 /**
- * Lint check Twig templates.
+ * Artisan command to check the syntax of Twig templates.
  *
  * Adapted from the Symfony TwigBundle:
  * https://github.com/symfony/TwigBundle/blob/master/Command/LintCommand.php

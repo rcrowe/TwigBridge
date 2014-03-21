@@ -133,6 +133,12 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function registerCommands()
     {
+        $this->app['command.twig'] = $this->app->share(
+            function ($app) {
+                return new Command\TwigBridge;
+            }
+        );
+
         $this->app['command.twig.clean'] = $this->app->share(
             function ($app) {
                 return new Command\Clean;
@@ -146,6 +152,7 @@ class ServiceProvider extends ViewServiceProvider
         );
 
         $this->commands(
+            'command.twig',
             'command.twig.clean',
             'command.twig.lint'
         );
@@ -167,6 +174,7 @@ class ServiceProvider extends ViewServiceProvider
             'twig.loader',
             'twig.loader.path',
             'twig.loader.viewfinder',
+            'command.twig',
             'command.twig.clean',
             'command.twig.lint',
         );
