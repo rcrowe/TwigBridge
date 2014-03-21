@@ -55,7 +55,7 @@ class ServiceProvider extends ViewServiceProvider
         $app = $this->app;
 
         // Extensions
-        $app['twig.extensions'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.extensions', function () use ($app) {
             $extensions = $app['config']->get('twigbridge::extensions.enabled', array());
 
             // Is debug enabled?
@@ -70,18 +70,18 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         // Loader
-        $app['twig.loader.path'] = $app->share(function () {
+        $app->bindIf('twig.loader.path', function () {
             return new Twig\Loader\Path;
         });
 
-        $app['twig.loader.viewfinder'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.loader.viewfinder', function () use ($app) {
             return new Twig\Loader\Viewfinder(
                 $app['view']->getFinder(),
                 $app['twig.bridge']->getExtension()
             );
         });
 
-        $app['twig.loader'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.loader', function () use ($app) {
             return new Twig_Loader_Chain(array(
                 $app['twig.loader.path'],
                 $app['twig.loader.viewfinder'],
@@ -89,7 +89,7 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         // Twig
-        $app['twig.options'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.options', function () use ($app) {
             $options = $app['config']->get('twigbridge::twig.environment', array());
 
             // Check whether we have the cache path set
@@ -101,16 +101,16 @@ class ServiceProvider extends ViewServiceProvider
             return $options;
         });
 
-        $app['twig.bridge'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.bridge', function () use ($app) {
             return new TwigBridge($app);
         });
 
-        $app['twig'] = $app->share(function () use ($app) {
+        $app->bindIf('twig', function () use ($app) {
             return $app['twig.bridge']->getTwig();
         });
 
         // Engine
-        $app['twig.engine'] = $app->share(function () use ($app) {
+        $app->bindIf('twig.engine', function () use ($app) {
             return new Engine\Twig(
                 $app['twig'],
                 $app['config']->get('twigbridge::twig.globals', array())
@@ -133,23 +133,17 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function registerCommands()
     {
-        $this->app['command.twig'] = $this->app->share(
-            function ($app) {
-                return new Command\TwigBridge;
-            }
-        );
+        $this->app[''] = $this->app->bindIf('command.twig', function ($app) {
+            return new Command\TwigBridge;
+        });
 
-        $this->app['command.twig.clean'] = $this->app->share(
-            function ($app) {
-                return new Command\Clean;
-            }
-        );
+        $this->app->bindIf('command.twig.clean', function ($app) {
+            return new Command\Clean;
+        });
 
-        $this->app['command.twig.lint'] = $this->app->share(
-            function ($app) {
-                return new Command\Lint;
-            }
-        );
+        $this->app->bindIf('command.twig.lint', function ($app) {
+            return new Command\Lint;
+        });
 
         $this->commands(
             'command.twig',
