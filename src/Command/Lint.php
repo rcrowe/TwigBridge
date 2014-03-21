@@ -331,13 +331,13 @@ class Lint extends Command
      */
     protected function getArguments()
     {
-        return [
-            [
+        return array(
+            array(
                 'filename',
                 InputArgument::OPTIONAL,
                 'Filename or directory to lint. If none supplied, all views will be checked.',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -345,26 +345,26 @@ class Lint extends Command
      */
     protected function getOptions()
     {
-        return [
-            [
+        return array(
+            array(
                 'file',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Lint multiple files. Relative to the view path. Supports the dot syntax.',
-            ],
-            [
+            ),
+            array(
                 'directory',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Lint multiple directories. Relative to the view path. Does not support the dot syntax.',
-            ],
-            [
+            ),
+            array(
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Format to ouput the result in. Supports `text` or `json`.',
                 'text',
-            ],
-        ];
+            ),
+        );
     }
 }
