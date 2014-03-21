@@ -13,6 +13,7 @@ namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use Twig_Environment;
+use InvalidArgumentException;
 
 /**
  * TwigBridge deals with creating an instance of Twig.

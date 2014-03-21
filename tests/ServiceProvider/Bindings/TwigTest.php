@@ -9,6 +9,11 @@ use TwigBridge\ServiceProvider;
 
 class TwigTest extends Base
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testTwigOptions()
     {
         $app      = $this->getApplication();

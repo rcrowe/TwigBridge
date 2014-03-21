@@ -5,9 +5,15 @@ namespace TwigBridge\Tests;
 use TwigBridge\Tests\Base;
 use TwigBridge\ServiceProvider;
 use TwigBridge\TwigBridge;
+use Mockery as m;
 
 class TwigBridgeTest extends Base
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testVersion()
     {
         $version = TwigBridge::VERSION;
@@ -83,5 +89,53 @@ class TwigBridgeTest extends Base
             $this->assertEquals($tag[0], $options[$type][0]);
             $this->assertEquals($tag[1], $options[$type][1]);
         }
+    }
+
+    public function testExtensionLoading()
+    {
+        $mockAliasLoader = m::mock('TwigBridge\Extension\Loader\Functions');
+        $mockAliasLoader->shouldReceive('getName')->twice()->andReturn('twigbridge_test_functions');
+        $mockAliasLoader->shouldReceive('getFilters')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getFunctions')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getTests')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getTokenParsers')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getNodeVisitors')->once()->andReturn(array());
+        $mockAliasLoader->shouldReceive('getOperators')->once()->andReturn(array());
+
+        $app = $this->getApplication();
+        $app['twig.extensions'] = $app->share(function () use ($mockAliasLoader) {
+            return array(
+                'Twig_Extension_Debug',
+                $mockAliasLoader,
+                function () use ($mockAliasLoader) {
+                    return $mockAliasLoader;
+                }
+            );
+        });
+
+        $provider = new ServiceProvider($app);
+        $provider->boot();
+
+        $bridge = new TwigBridge($app);
+        $twig   = $bridge->getTwig();
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidExtension()
+    {
+        $app = $this->getApplication();
+        $app['twig.extensions'] = $app->share(function () {
+            return array(
+                12345,
+            );
+        });
+
+        $provider = new ServiceProvider($app);
+        $provider->boot();
+
+        $bridge = new TwigBridge($app);
+        $twig   = $bridge->getTwig();
     }
 }
