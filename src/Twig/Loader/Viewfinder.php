@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge\Twig\Loader;
@@ -13,7 +15,9 @@ use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 
 /**
- * Same as Path loader without the need to use an extension.
+ * A loader using a ViewFinderInterface instance.
+ *
+ * Means that dot-syntax, views across packages, etc can be found.
  */
 class Viewfinder extends Path
 {
@@ -56,12 +60,12 @@ class Viewfinder extends Path
         if (isset($this->cache[$name])) {
             return $this->cache[$name];
         } else {
-            $view = $name;
-            $ext  = ".".$this->extension;
-            $len  = strlen($ext);
+            $view      = $name;
+            $extension = ".".$this->extension;
+            $length    = strlen($extension);
 
-            if (substr($view, -$len) == $ext) {
-                $view = substr($view, 0, -$len);
+            if (substr($view, -$length) == $extension) {
+                $view = substr($view, 0, -$length);
             }
 
             // Cache for the next lookup

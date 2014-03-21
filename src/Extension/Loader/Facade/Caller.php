@@ -1,16 +1,21 @@
 <?php
 
 /**
- * Brings Twig to Laravel.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @author Barry vd. Heuvel <barryvdh@gmail.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 namespace TwigBridge\Extension\Loader\Facade;
 
 use Twig_Markup;
 
+/**
+ * Handles calling the method on the called facade.
+ */
 class Caller
 {
     /**
@@ -42,7 +47,9 @@ class Caller
     }
 
     /**
-     * Make a 'magic' call to a facade (or static class method)
+     * Call the method on the facade.
+     *
+     * Supports marking the method as safe, i.e. the returned HTML won't be escaped.
      *
      * @param string $name
      * @param array  $arguments

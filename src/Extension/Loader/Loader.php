@@ -1,9 +1,25 @@
 <?php
 
+/**
+ * This file is part of the TwigBridge package.
+ *
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace TwigBridge\Extension\Loader;
 
 use TwigBridge\Extension;
 
+/**
+ * Base loader extension.
+ *
+ * Currently only used for parsing the options array from the config file.
+ * See the `extensions.php` config file for the acceptable options that
+ * can be parsed.
+ */
 abstract class Loader extends Extension
 {
     /**

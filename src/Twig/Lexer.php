@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge\Twig;
@@ -30,7 +32,7 @@ class Lexer
      * @param array $block    Opening & closing tag for blocks.
      * @param array $variable Opening & closing tag for variables.
      *
-     * @throws InvalidArgumentException If opening & closing tag aren't both defined.
+     * @throws \InvalidArgumentException If opening & closing tag aren't both defined.
      */
     public function __construct(array $comment, array $block, array $variable)
     {
@@ -49,7 +51,7 @@ class Lexer
     }
 
     /**
-     * Grab the tags used for the lexer.
+     * Get tags used for the lexer.
      *
      * @return array
      */
@@ -61,9 +63,9 @@ class Lexer
     /**
      * Get a new instance of Twig_Lexer.
      *
-     * @param Twig_Environment $twig
+     * @param \Twig_Environment $twig
      *
-     * @return Twig_Lexer
+     * @return \Twig_Lexer
      */
     public function getLexer(Twig_Environment $twig)
     {

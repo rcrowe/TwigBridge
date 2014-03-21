@@ -5,14 +5,14 @@ namespace TwigBridge\Tests\ServiceProvider;
 use Mockery as m;
 use Illuminate\View\Environment;
 use TwigBridge\Tests\Base;
-use TwigBridge\TwigServiceProvider;
+use TwigBridge\ServiceProvider;
 
 class BindingsTest extends Base
 {
     public function testBindings()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
 
         // Make sure not found
         foreach ($provider->provides() as $binding) {
@@ -31,7 +31,7 @@ class BindingsTest extends Base
     public function testTwigOptions()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $config  = $app['config']->get('twigbridge::twig.environment');
@@ -51,7 +51,7 @@ class BindingsTest extends Base
     public function testExtensions()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $this->assertSame($app['twig.extensions'], $app['config']->get('twigbridge::extensions.enabled'));
@@ -67,7 +67,7 @@ class BindingsTest extends Base
             )
         ));
 
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $this->assertSame($app['twig.extensions'][0], 'Twig_Extension_Debug');
@@ -76,7 +76,7 @@ class BindingsTest extends Base
     public function testLoaderPath()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $this->assertInstanceOf('TwigBridge\Twig\Loader\Path', $app['twig.loader.path']);
@@ -85,7 +85,7 @@ class BindingsTest extends Base
     public function testLoaderViewfinder()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $app['twig.bridge'] = m::mock('stdClass');
@@ -97,7 +97,7 @@ class BindingsTest extends Base
     public function testLoaderChain()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         // View
@@ -126,7 +126,7 @@ class BindingsTest extends Base
     public function testTwigBridge()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $this->assertInstanceOf('TwigBridge\TwigBridge', $app['twig.bridge']);
@@ -135,7 +135,7 @@ class BindingsTest extends Base
     public function testTwigExtension()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $this->assertEquals($app['twig.bridge']->getExtension(), 'twig');
@@ -144,7 +144,7 @@ class BindingsTest extends Base
     public function testTwig()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         // Extensions
@@ -171,7 +171,7 @@ class BindingsTest extends Base
     public function testTwigEngine()
     {
         $app      = $this->getApplication();
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         // Extensions
@@ -213,7 +213,7 @@ class BindingsTest extends Base
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->boot();
 
         $app['twig.extensions'] = array();

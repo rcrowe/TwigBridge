@@ -1,10 +1,22 @@
 <?php
 
+/**
+ * This file is part of the TwigBridge package.
+ *
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use Twig_Environment;
 
+/**
+ * TwigBridge deals with creating an instance of Twig.
+ */
 class TwigBridge
 {
     /**
@@ -13,14 +25,14 @@ class TwigBridge
     const VERSION = '0.6.0';
 
     /**
-     * @var Illuminate\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * Create a new instance.
      *
-     * @param Illuminate\Foundation\Application $app
+     * @param \Illuminate\Foundation\Application $app
      */
     public function __construct(Application $app)
     {
@@ -60,7 +72,7 @@ class TwigBridge
     /**
      * Get the lexer for Twig to use.
      *
-     * @param Twig_Environment $twig
+     * @param \Twig_Environment $twig
      *
      * @return \TwigBridge\Twig\Lexer
      */
@@ -80,7 +92,7 @@ class TwigBridge
     /**
      * Gets an instance of Twig that can be used to render a view.
      *
-     * @return Twig_Environment
+     * @return \Twig_Environment
      */
     public function getTwig()
     {

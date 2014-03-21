@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel 4.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @author Barry vd. Heuvel <barryvdh@gmail.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge\Command;
@@ -26,7 +27,7 @@ use InvalidArgumentException;
 /**
  * Lint check Twig templates.
  *
- * Taken from the Symfony TwigBundle:
+ * Adapted from the Symfony TwigBundle:
  * https://github.com/symfony/TwigBundle/blob/master/Command/LintCommand.php
  *
  * @author Fabien Potencier <fabien@symfony.com>

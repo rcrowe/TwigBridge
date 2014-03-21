@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel 4.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge;
@@ -13,9 +15,17 @@ use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
 
 /**
- * Bootstrap Laravel Twig(Bridge).
+ * Bootstrap Laravel TwigBridge.
+ *
+ * You need to include this `ServiceProvider` in your app.php file:
+ *
+ * <code>
+ *     'providers' => array(
+ *         'TwigBridge\ServiceProvider'
+ *     );
+ * </code>
  */
-class TwigServiceProvider extends ViewServiceProvider
+class ServiceProvider extends ViewServiceProvider
 {
     /**
      * {@inheritdoc}

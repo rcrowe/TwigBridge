@@ -3,7 +3,7 @@
 namespace TwigBridge\Tests\ServiceProvider;
 
 use TwigBridge\Tests\Base;
-use TwigBridge\TwigServiceProvider;
+use TwigBridge\ServiceProvider;
 
 class ConfigTest extends Base
 {
@@ -15,7 +15,7 @@ class ConfigTest extends Base
         $dir = $this->twigBridgeRoot.'/Config';
         $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', $dir)->once();
 
-        $provider = new TwigServiceProvider($app);
+        $provider = new ServiceProvider($app);
         $provider->register();
     }
 }

@@ -1,9 +1,24 @@
 <?php
 
+/**
+ * This file is part of the TwigBridge package.
+ *
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace TwigBridge\Extension\Loader;
 
 use Twig_SimpleFilter;
 
+/**
+ * Extension to expose defined filters to the Twig templates.
+ *
+ * See the `extensions.php` config file, specifically the `filters` key
+ * to configure those that are loaded.
+ */
 class Filters extends Loader
 {
     /**

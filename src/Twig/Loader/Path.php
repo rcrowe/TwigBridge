@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge\Twig\Loader;
@@ -13,7 +15,7 @@ use Twig_LoaderInterface;
 use Twig_ExistsLoaderInterface;
 
 /**
- * Deals with loading a template with an absolute path.
+ * Basic loader using absolute paths.
  */
 class Path implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
 {

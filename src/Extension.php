@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Brings Twig to Laravel 4.
+ * This file is part of the TwigBridge package.
  *
- * @author Rob Crowe <hello@vivalacrowe.com>
- * @license MIT
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace TwigBridge;
@@ -14,25 +16,28 @@ use Illuminate\Foundation\Application;
 use Twig_Environment;
 
 /**
- * All extensions should extend this class.
+ * Base extension that most extensions should extend.
+ *
+ * Provides the extension with better integration with your application
+ * as an instance of your app is passed in.
  */
 abstract class Extension extends Twig_Extension
 {
     /**
-     * @var Twig_Environment
+     * @var \Twig_Environment
      */
     protected $twig;
 
     /**
-     * @var Illuminate\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * Create a new extension instance. Registers Twig undefined function callback.
      *
-     * @param Illuminate\Foundation\Application $app
-     * @param Twig_Environment                  $twig
+     * @param \Illuminate\Foundation\Application $app
+     * @param \Twig_Environment                  $twig
      */
     public function __construct(Application $app, Twig_Environment $twig)
     {
@@ -43,7 +48,7 @@ abstract class Extension extends Twig_Extension
     /**
      * Get the application instance.
      *
-     * @return Illuminate\Foundation\Application
+     * @return \Illuminate\Foundation\Application
      */
     public function getApp()
     {
@@ -53,7 +58,7 @@ abstract class Extension extends Twig_Extension
     /**
      * Get the Twig instance.
      *
-     * @return Twig_Environment
+     * @return \Twig_Environment
      */
     public function getTwig()
     {

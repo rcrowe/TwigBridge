@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the TwigBridge package.
+ *
+ * @copyright Robert Crowe <hello@vivalacrowe.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\EngineInterface;
@@ -8,10 +17,13 @@ use Twig_Template;
 use Twig_Error_Loader;
 use InvalidArgumentException;
 
+/**
+ * Twig engine for Laravel.
+ */
 class Twig implements EngineInterface
 {
     /**
-     * @var Twig_Environment
+     * @var \Twig_Environment
      */
     protected $twig;
 
@@ -35,7 +47,7 @@ class Twig implements EngineInterface
     /**
      * Returns the instance of Twig used to render the template.
      *
-     * @return Twig_Environment
+     * @return \Twig_Environment
      */
     public function getTwig()
     {
@@ -67,7 +79,7 @@ class Twig implements EngineInterface
     /**
      * Loads the given template.
      *
-     * @param string|Twig_Template $name A template name or an instance of Twig_Template
+     * @param string|\Twig_Template $name A template name or an instance of Twig_Template
      *
      * @throws \InvalidArgumentException if the template does not exist
      *
