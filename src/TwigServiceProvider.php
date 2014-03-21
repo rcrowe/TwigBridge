@@ -125,12 +125,19 @@ class TwigServiceProvider extends ViewServiceProvider
     {
         $this->app['command.twig.clean'] = $this->app->share(
             function ($app) {
-                return new Console\CleanCommand($app['twig'], $app['files']);
+                return new Command\Clean;
+            }
+        );
+
+        $this->app['command.twig.lint'] = $this->app->share(
+            function ($app) {
+                return new Command\Lint;
             }
         );
 
         $this->commands(
-            'command.twig.clean'
+            'command.twig.clean',
+            'command.twig.lint'
         );
     }
 
@@ -151,6 +158,7 @@ class TwigServiceProvider extends ViewServiceProvider
             'twig.loader.path',
             'twig.loader.viewfinder',
             'command.twig.clean',
+            'command.twig.lint',
         );
     }
 }

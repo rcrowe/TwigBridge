@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace TwigBridge\Console;
+namespace TwigBridge\Command;
 
 use Illuminate\Console\Command;
 use Twig_Environment;
@@ -17,7 +17,7 @@ use Illuminate\Filesystem\Filesystem;
 /**
  * Artisan command to clear the Twig cache.
  */
-class CleanCommand extends Command
+class Clean extends Command
 {
     /**
      * {@inheritdoc}
@@ -30,34 +30,17 @@ class CleanCommand extends Command
     protected $description = 'Clean the Twig Cache';
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
-     */
-    protected $files;
-
-    /**
-     * Create a new console command instance.
-     *
-     * @param \Twig_Environment $twig
-     * @param \Illuminate\Filesystem\Filesystem
-     */
-    public function __construct(Twig_Environment $twig, Filesystem $files)
-    {
-        parent::__construct();
-
-        $this->files = $files;
-        $this->twig  = $twig;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function fire()
     {
-        $cacheDir = $this->twig->getCache();
+        $twig     = $this->laravel['twig'];
+        $files    = $this->laravel['files'];
+        $cacheDir = $twig->getCache();
 
-        $this->files->deleteDirectory($cacheDir);
+        $files->deleteDirectory($cacheDir);
 
-        if ($this->files->exists($cacheDir)) {
+        if ($files->exists($cacheDir)) {
             $this->error('Twig cache failed to be cleaned');
         } else {
             $this->info('Twig cache cleaned');
