@@ -62,7 +62,7 @@ class Lint extends Command
             return $this->display(array($this->validate($template)), $format);
         }
 
-        $files   = $this->getFiles($this->argument('filename'), $this->option('check'));
+        $files   = $this->getFiles($this->argument('filename'), $this->option('file'), $this->option('directory'));
         $details = array();
 
         foreach ($files as $file) {
@@ -79,21 +79,56 @@ class Lint extends Command
         return $this->display($details, $format);
     }
 
-    protected function getFiles($filename, array $check = array())
+    /**
+     * Gets an array of files to lint.
+     *
+     * @param string $filename    Single file to check.
+     * @param array  $files       Array of files to check.
+     * @param array  $directories Array of directories to get the files from.
+     *
+     * @return array
+     */
+    protected function getFiles($filename, array $files, array $directories)
     {
         // Get files from passed in options
-        $search = $check;
+        $search    = $files;
+        $extension = $this->laravel['twig.bridge']->getExtension();
+        $finder    = new Finder;
+        $paths     = $this->laravel['view']->getFinder()->getPaths();
 
         if (!empty($filename)) {
             $search[] = $filename;
         }
 
+        if (!empty($directories)) {
+            $search_directories = array();
+
+            foreach ($directories as $directory) {
+                if (is_dir($directory)) {
+                    $search_directories[] = $directory;
+                } else {
+                    // Else check if the directory exists under a view path
+                    foreach ($paths as $path) {
+                        if (is_dir($path.'/'.$directory)) {
+                            $search_directories[] = $path.'/'.$directory;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($search_directories)) {
+                // Get those files from the search directory
+                $finder->files()->in($search_directories)->name('*.'.$extension);
+
+                foreach ($finder as $file) {
+                    $search[] = $file->getRealPath();
+                }
+            }
+        }
+
         // If no files passed, use the view paths
         if (empty($search)) {
-            $finder = new Finder;
-            $paths  = $this->laravel['view']->getFinder()->getPaths();
-
-            $finder->files()->in($paths)->name('*.'.$this->laravel['twig.bridge']->getExtension());
+            $finder->files()->in($paths)->name('*.'.$extension);
 
             foreach ($finder as $file) {
                 $search[] = $file->getRealPath();
@@ -103,11 +138,26 @@ class Lint extends Command
         return $search;
     }
 
+    /**
+     * Get the contents of the template.
+     *
+     * @param string $file
+     *
+     * @return string
+     */
     protected function getContents($file)
     {
         return $this->laravel['twig.loader']->getSource($file);
     }
 
+    /**
+     * Validate the template.
+     *
+     * @param string $template Twig template.
+     * @param string $file     Filename of the template.
+     *
+     * @return array
+     */
     protected function validate($template, $file = null)
     {
         $twig = $this->laravel['twig'];
@@ -130,6 +180,16 @@ class Lint extends Command
         );
     }
 
+    /**
+     * Output the results of the linting.
+     *
+     * @param array  $details Validation results from all linted files.
+     * @param string $format  Format to output the results in. Supports text or json.
+     *
+     * @throws \InvalidArgumentException Thrown for an unknown format.
+     *
+     * @return int
+     */
     protected function display(array $details, $format = 'text')
     {
         $verbose = $this->getOutput()->isVerbose();
@@ -146,6 +206,14 @@ class Lint extends Command
         }
     }
 
+    /**
+     * Output the results as text.
+     *
+     * @param array $details Validation results from all linted files.
+     * @param bool  $verbose
+     *
+     * @return int
+     */
     protected function displayText(array $details, $verbose = false)
     {
         $errors = 0;
@@ -169,6 +237,14 @@ class Lint extends Command
         return min($errors, 1);
     }
 
+    /**
+     * Output the results as json.
+     *
+     * @param array $details Validation results from all linted files.
+     * @param bool  $verbose
+     *
+     * @return int
+     */
     protected function displayJson(array $details)
     {
         $errors = 0;
@@ -192,6 +268,13 @@ class Lint extends Command
         return min($errors, 1);
     }
 
+    /**
+     * Output the error to the console.
+     *
+     * @param array Details for the file that failed to be linted.
+     *
+     * @return void
+     */
     protected function renderException(array $info)
     {
         $file      = $info['file'];
@@ -268,10 +351,16 @@ class Lint extends Command
     {
         return [
             [
-                'check',
+                'file',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-                'Lint multiple files or directories',
+                'Lint multiple files. Supports the dot syntax.',
+            ],
+            [
+                'directory',
+                null,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+                'Lint multiple directories. Absolute or relative to the view path. Does not support the dot syntax.',
             ],
             [
                 'format',
