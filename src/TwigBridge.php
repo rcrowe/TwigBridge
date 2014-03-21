@@ -13,7 +13,6 @@ namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use Twig_Environment;
-use InvalidArgumentException;
 
 /**
  * TwigBridge deals with creating an instance of Twig.
@@ -80,13 +79,6 @@ class TwigBridge
     public function getLexer(Twig_Environment $twig)
     {
         $delimiters = $this->app['config']->get('twigbridge::twig.delimiters');
-
-        // Make sure delimiters contain both tags
-        foreach ($delimiters as $type => $tag) {
-            if (count($tag) !== 2) {
-                throw new InvalidArgumentException($type.' must contain both an opening and closing tag.');
-            }
-        }
 
         return new Twig\Lexer($twig, $delimiters);
     }
