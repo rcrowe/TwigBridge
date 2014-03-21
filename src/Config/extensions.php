@@ -37,6 +37,25 @@ return array(
     |
     | Available facades. Access like `{{ Config.get('foo.bar') }}`.
     |
+    | Each facade can take an optional array of options. To mark the whole facade
+    | as safe you can set the option `'is_safe' => true`. Setting the facade as
+    | safe means that any HTML returned will not be escaped.
+    |
+    | It is advisable to not set the whole facade as safe and instead mark the
+    | each appropriate method as safe for security reasons. You can do that with
+    | the following syntax:
+    |
+    | <code>
+    |     'Form' => array(
+    |         'is_safe' => array(
+    |             'open'
+    |         )
+    |     )
+    | </code>
+    |
+    | The values of the `is_safe` array must match the called method on the facade
+    | in order to be marked as safe.
+    |
     */
     'facades' => array(
         'Auth',
@@ -52,22 +71,6 @@ return array(
         'Route',
         'Str',
         'URL',
-
-        // 'Auth',
-        // 'Config',
-        // 'Form' => array(
-        //     'is_safe' => array(
-        //         'open',
-        //     ),
-        // ),
-        // 'HTML' => array(
-        //     'is_safe' => true,
-        // ),
-        // 'Input',
-        // 'Lang',
-        // 'Route',
-        // 'Str',
-        // 'URL',
     ),
 
     /*
@@ -76,6 +79,26 @@ return array(
     |--------------------------------------------------------------------------
     |
     | Available functions. Access like `{{ secure_url(...) }}`.
+    |
+    | Each function can take an optional array of options. These options are
+    | passed directly to `Twig_SimpleFunction`.
+    |
+    | So for example, to mark a function as safe you can do the following:
+    |
+    | <code>
+    |     'link_to' => array(
+    |         'is_safe' => array('html')
+    |     )
+    | </code>
+    |
+    | The options array also takes a `callback` that allows you to name the
+    | function differently in your Twig templates than what is actually called.
+    |
+    | <code>
+    |     'link' => array(
+    |         'callback' => 'link_to'
+    |     )
+    | </code>
     |
     */
     'functions' => array(
@@ -92,23 +115,6 @@ return array(
         'trans',
         'trans_choice',
         'csrf_token',
-
-        // 'route',
-        // 'action',
-        // 'asset' => 'asset_url',
-        // 'url' => array(
-        //     'callback' => 'router_url',
-        //     'is_safe'  => true,
-        // ),
-        // 'link_to',
-        // 'link_to_asset',
-        // 'link_to_route',
-        // 'link_to_action',
-        // 'secure_asset',
-        // 'secure_url',
-        // 'trans',
-        // 'trans_choice',
-        // 'csrf_token',
     ),
 
     /*
@@ -118,6 +124,26 @@ return array(
     |
     | Available filters. Access like `{{ variable|filter }}`.
     |
+    | Each filter can take an optional array of options. These options are
+    | passed directly to `Twig_SimpleFilter`.
+    |
+    | So for example, to mark a filter as safe you can do the following:
+    |
+    | <code>
+    |     'studly_case' => array(
+    |         'is_safe' => array('html')
+    |     )
+    | </code>
+    |
+    | The options array also takes a `callback` that allows you to name the
+    | filter differently in your Twig templates than what is actually called.
+    |
+    | <code>
+    |     'snake' => array(
+    |         'callback' => 'snake_case'
+    |     )
+    | </code>
+    |
     */
     'filters' => array(
         'camel_case',
@@ -126,18 +152,6 @@ return array(
         'str_finish',
         'str_plural',
         'str_singular',
-
-        // 'camel_case',
-        // 'snake_case',
-        // 'studly' => 'studly_case',
-        // 'str_finish' => array(
-        //     'callback' => 'foo_bar',
-        //     'is_safe'  => true,
-        //     // 'pre_escape' => 'html',
-        //     // 'is_safe'    => array('html'),
-        // ),
-        // 'str_plural',
-        // 'str_singular',
     ),
 
 );
