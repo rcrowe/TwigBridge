@@ -101,13 +101,12 @@ class Twig implements EngineInterface
     /**
      * Get the evaluated contents of the view.
      *
-     * @param  string $path Full file path to Twig template.
-     * @param  array  $data
-     * @param  string $view Original view passed View::make.
+     * @param string $path Full file path to Twig template.
+     * @param array  $data
      *
      * @return string
      */
-    public function get($path, array $data = array(), $view = null)
+    public function get($path, array $data = array())
     {
         $data = array_merge($this->getGlobalData(), $data);
 
