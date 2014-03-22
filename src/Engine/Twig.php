@@ -15,6 +15,7 @@ use Illuminate\View\Engines\EngineInterface;
 use Twig_Environment;
 use Twig_Error_Loader;
 use InvalidArgumentException;
+use TwigBridge\Twig\Template;
 
 /**
  * Twig engine for Laravel.
@@ -87,7 +88,15 @@ class Twig implements EngineInterface
     public function load($name)
     {
         try {
-            return $this->twig->loadTemplate($name);
+            $template = $this->twig->loadTemplate($name);
+            
+            if($template instanceof Template){
+                //Events are already fired by the View Environment
+                $template->setFiredEvents(true);
+            }
+            
+            return $template;
+            
         } catch (Twig_Error_Loader $e) {
             throw new InvalidArgumentException("Error in $name: ". $e->getMessage(), $e->getCode(), $e);
         }

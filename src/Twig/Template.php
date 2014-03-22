@@ -19,6 +19,8 @@ use Illuminate\View\View;
  */
 abstract class Template extends Twig_Template
 {
+    protected $firedEvents = false;
+    
     /**
      * {@inheritdoc}
      */
@@ -56,10 +58,18 @@ abstract class Template extends Twig_Template
      */
     public function shouldFireEvents()
     {
-        $name = $this->getTemplateName();
-
-        // If a path is passed to Twig, events have been fired already.
-        return !is_file($name);
+        // If a events are not already fired by the Engine, fire them now.
+        return !$this->firedEvents;
+    }
+	
+    /**
+     * Set the firedEvents flag, to make sure composers/creators only fire once.
+     *
+     * @param bool $fired
+     */
+    public function setFiredEvents($fired=true)
+    {
+        $this->firedEvents = $fired;
     }
 
     /**
