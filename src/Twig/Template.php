@@ -19,8 +19,11 @@ use Illuminate\View\View;
  */
 abstract class Template extends Twig_Template
 {
+    /**
+     * @var bool Have the creator/composer events fired.
+     */
     protected $firedEvents = false;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +46,13 @@ abstract class Template extends Twig_Template
     public function fireEvents($context)
     {
         $env  = $context['__env'];
-        $view = new View($env, $env->getEngineResolver()->resolve('twig'), $this->getTemplateName(), null, $context);
+        $view = new View(
+            $env,
+            $env->getEngineResolver()->resolve('twig'),
+            $this->getTemplateName(),
+            null,
+            $context
+        );
 
         $env->callCreator($view);
         $env->callComposer($view);
@@ -58,14 +67,15 @@ abstract class Template extends Twig_Template
      */
     public function shouldFireEvents()
     {
-        // If a events are not already fired by the Engine, fire them now.
-        return ! $this->firedEvents;
+        return !$this->firedEvents;
     }
-    
+
     /**
      * Set the firedEvents flag, to make sure composers/creators only fire once.
      *
      * @param bool $fired
+     *
+     * @return void
      */
     public function setFiredEvents($fired = true)
     {

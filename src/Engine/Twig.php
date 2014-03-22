@@ -79,9 +79,9 @@ class Twig implements EngineInterface
     /**
      * Loads the given template.
      *
-     * @param string  $name A template name
+     * @param string $name A template name
      *
-     * @throws \InvalidArgumentException if the template does not exist
+     * @throws \InvalidArgumentException Thrown if the template does not exist.
      *
      * @return \Twig_TemplateInterface
      */
@@ -89,17 +89,16 @@ class Twig implements EngineInterface
     {
         try {
             $template = $this->twig->loadTemplate($name);
-            
-            if ($template instanceof Template) {
-                //Events are already fired by the View Environment
-                $template->setFiredEvents(true);
-            }
-            
-            return $template;
-            
         } catch (Twig_Error_Loader $e) {
             throw new InvalidArgumentException("Error in $name: ". $e->getMessage(), $e->getCode(), $e);
         }
+
+        if ($template instanceof Template) {
+            //Events are already fired by the View Environment
+            $template->setFiredEvents(true);
+        }
+
+        return $template;
     }
 
     /**

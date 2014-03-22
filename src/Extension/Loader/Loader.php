@@ -12,6 +12,7 @@
 namespace TwigBridge\Extension\Loader;
 
 use TwigBridge\Extension;
+use Illuminate\Config\Repository as Config;
 
 /**
  * Base loader extension.
@@ -22,6 +23,16 @@ use TwigBridge\Extension;
  */
 abstract class Loader extends Extension
 {
+    /**
+     * Create a new loader extension.
+     *
+     * @param \Illuminate\Config\Repository
+     */
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * Parse callable & options.
      *

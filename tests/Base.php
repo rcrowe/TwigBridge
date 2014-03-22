@@ -73,6 +73,10 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $config->package('foo/twigbridge', __DIR__);
         $app['config'] = $config;
 
+        $app->bind('Illuminate\Config\Repository', function () use ($app) {
+            return $app['config'];
+        });
+
         return $app;
     }
 }
