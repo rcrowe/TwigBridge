@@ -34,17 +34,6 @@ class EngineTest extends Base
         $this->assertEquals($global, $engine->getGlobalData());
     }
 
-    public function testLoadTemplateInstance()
-    {
-        $template = m::mock('TwigBridge\Twig\Template');
-        $template->shouldReceive('getName')->andReturn('test_instance');
-
-        $engine   = new Engine(new Twig_Environment);
-        $template = $engine->load($template);
-
-        $this->assertEquals($template->getName(), 'test_instance');
-    }
-
     public function testLoad()
     {
         $loader = new Twig_Loader_Array(array(
