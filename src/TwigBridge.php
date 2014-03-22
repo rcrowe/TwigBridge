@@ -98,7 +98,7 @@ class TwigBridge
             // Get an instance of the extension
             // Support for string, closure and an object
             if (is_string($extension)) {
-                $extension = new $extension($this->app, $twig);
+                $extension = $this->app->make($extension);
             } elseif (is_callable($extension)) {
                 $extension = $extension($this->app, $twig);
             } elseif (!is_object($extension)) {
