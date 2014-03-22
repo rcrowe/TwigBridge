@@ -59,15 +59,15 @@ abstract class Template extends Twig_Template
     public function shouldFireEvents()
     {
         // If a events are not already fired by the Engine, fire them now.
-        return !$this->firedEvents;
+        return ! $this->firedEvents;
     }
-	
+    
     /**
      * Set the firedEvents flag, to make sure composers/creators only fire once.
      *
      * @param bool $fired
      */
-    public function setFiredEvents($fired=true)
+    public function setFiredEvents($fired = true)
     {
         $this->firedEvents = $fired;
     }

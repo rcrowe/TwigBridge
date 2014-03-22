@@ -90,7 +90,7 @@ class Twig implements EngineInterface
         try {
             $template = $this->twig->loadTemplate($name);
             
-            if($template instanceof Template){
+            if ($template instanceof Template) {
                 //Events are already fired by the View Environment
                 $template->setFiredEvents(true);
             }
