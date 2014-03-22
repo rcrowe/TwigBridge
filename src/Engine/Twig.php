@@ -13,7 +13,6 @@ namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\EngineInterface;
 use Twig_Environment;
-use Twig_Template;
 use Twig_Error_Loader;
 use InvalidArgumentException;
 
@@ -79,7 +78,7 @@ class Twig implements EngineInterface
     /**
      * Loads the given template.
      *
-     * @param string|\Twig_Template $name A template name or an instance of Twig_Template
+     * @param string  $name A template name
      *
      * @throws \InvalidArgumentException if the template does not exist
      *
@@ -87,10 +86,6 @@ class Twig implements EngineInterface
      */
     public function load($name)
     {
-        if ($name instanceof Twig_Template) {
-            return $name;
-        }
-
         try {
             return $this->twig->loadTemplate($name);
         } catch (Twig_Error_Loader $e) {
