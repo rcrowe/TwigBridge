@@ -93,7 +93,7 @@ class Lint extends Command
     {
         // Get files from passed in options
         $search    = $files;
-        $extension = $this->laravel['twig.bridge']->getExtension();
+        $extension = $this->laravel['twig.extension'];
         $finder    = new Finder;
         $paths     = $this->laravel['view']->getFinder()->getPaths();
 

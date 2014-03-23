@@ -1,5 +1,12 @@
 <?php
 
+
+// Move Twig to the service provider
+// Facade, calls Twig_Environment plus custom functions
+// Remove / clean up the Lexer
+// Move to using separate extensions
+
+
 /**
  * This file is part of the TwigBridge package.
  *
@@ -12,7 +19,6 @@
 namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
-use Twig_Environment;
 use InvalidArgumentException;
 
 /**
@@ -40,80 +46,110 @@ class TwigBridge
         $this->app = $app;
     }
 
-    /**
-     * Get Twig template extension.
-     *
-     * @return string
-     */
-    public function getExtension()
+    public function __call($method, $args)
     {
-        return $this->app['config']->get('twigbridge::twig.extension');
-    }
+        $instance = $this->app['twig'];
 
-    /**
-     * Get extensions that Twig should load.
-     *
-     * @return array
-     */
-    public function getExtensions()
-    {
-        return $this->app['twig.extensions'];
-    }
+        switch (count($args)) {
+            case 0:
+                return $instance->$method();
 
-    /**
-     * Get options passed to Twig_Environment.
-     *
-     * @return array
-     */
-    public function getTwigOptions()
-    {
-        return $this->app['twig.options'];
-    }
+            case 1:
+                return $instance->$method($args[0]);
 
-    /**
-     * Get the lexer for Twig to use.
-     *
-     * @param \Twig_Environment $twig
-     *
-     * @return \TwigBridge\Twig\Lexer
-     */
-    public function getLexer(Twig_Environment $twig)
-    {
-        $delimiters = $this->app['config']->get('twigbridge::twig.delimiters');
+            case 2:
+                return $instance->$method($args[0], $args[1]);
 
-        return new Twig\Lexer($twig, $delimiters);
-    }
+            case 3:
+                return $instance->$method($args[0], $args[1], $args[2]);
 
-    /**
-     * Gets an instance of Twig that can be used to render a view.
-     *
-     * @return \Twig_Environment
-     */
-    public function getTwig()
-    {
-        $twig = new Twig_Environment($this->app['twig.loader'], $this->getTwigOptions());
+            case 4:
+                return $instance->$method($args[0], $args[1], $args[2], $args[3]);
 
-        // Load extensions
-        foreach ($this->app['twig.extensions'] as $extension) {
-            // Get an instance of the extension
-            // Support for string, closure and an object
-            if (is_string($extension)) {
-                $extension = $this->app->make($extension);
-            } elseif (is_callable($extension)) {
-                $extension = $extension($this->app, $twig);
-            } elseif (!is_object($extension)) {
-                throw new InvalidArgumentException('Incorrect extension type');
-            }
-
-            // Add extension to twig
-            $twig->addExtension($extension);
+            default:
+                return call_user_func_array(array($instance, $method), $args);
         }
+    }
 
-        $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
+    // /**
+    //  * Get Twig template extension.
+    //  *
+    //  * @return string
+    //  */
+    // public function getExtension()
+    // {
+    //     return $this->app['config']->get('twigbridge::twig.extension');
+    // }
 
-        // Set template tags
-        $twig->setLexer($this->getLexer($twig));
+    // /**
+    //  * Get extensions that Twig should load.
+    //  *
+    //  * @return array
+    //  */
+    // public function getExtensions()
+    // {
+    //     return $this->app['twig.extensions'];
+    // }
 
-        return $twig;
+    // /**
+    //  * Get options passed to Twig_Environment.
+    //  *
+    //  * @return array
+    //  */
+    // public function getTwigOptions()
+    // {
+    //     return $this->app['twig.options'];
+    // }
+
+    // /**
+    //  * Get the lexer for Twig to use.
+    //  *
+    //  * @param \Twig_Environment $twig
+    //  *
+    //  * @return \TwigBridge\Twig\Lexer
+    //  */
+    // public function getLexer(Twig_Environment $twig)
+    // {
+    //     $delimiters = $this->app['config']->get('twigbridge::twig.delimiters');
+
+    //     return new Twig\Lexer($twig, $delimiters);
+    // }
+
+    // /**
+    //  * Gets an instance of Twig that can be used to render a view.
+    //  *
+    //  * @return \Twig_Environment
+    //  */
+    // public function getTwig()
+    // {
+    //     $twig = new Twig_Environment($this->app['twig.loader'], $this->getTwigOptions());
+
+    //     // Load extensions
+    //     foreach ($this->app['twig.extensions'] as $extension) {
+    //         // Get an instance of the extension
+    //         // Support for string, closure and an object
+    //         if (is_string($extension)) {
+    //             $extension = $this->app->make($extension);
+    //         } elseif (is_callable($extension)) {
+    //             $extension = $extension($this->app, $twig);
+    //         } elseif (!is_object($extension)) {
+    //             throw new InvalidArgumentException('Incorrect extension type');
+    //         }
+
+    //         // Add extension to twig
+    //         $twig->addExtension($extension);
+    //     }
+
+    //     $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
+
+    //     // Set template tags
+    //     $twig->setLexer($this->getLexer($twig));
+
+    //     return $twig;
+    // }
+
+    public function addExtension($extension)
+    {
+
     }
 }

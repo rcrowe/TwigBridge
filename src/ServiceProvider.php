@@ -13,6 +13,7 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
+use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -77,7 +78,7 @@ class ServiceProvider extends ViewServiceProvider
         $app->bindIf('twig.loader.viewfinder', function () use ($app) {
             return new Twig\Loader\Viewfinder(
                 $app['view']->getFinder(),
-                $app['twig.bridge']->getExtension()
+                $app['twig.extension']
             );
         });
 
@@ -101,20 +102,36 @@ class ServiceProvider extends ViewServiceProvider
             return $options;
         });
 
-        $app->bindIf('twig.bridge', function () use ($app) {
-            return new TwigBridge($app);
+        $app->bindIf('twig.extension', function () use ($app) {
+            return $app['config']->get('twigbridge::twig.extension');
+        });
+
+        $app->bindIf('twig.lexer', function () use ($app) {
+
         });
 
         $app->bindIf('twig', function () use ($app) {
-            return $app['twig.bridge']->getTwig();
+            return new Twig_Environment($app['twig.loader'], $app['twig.options']);
         });
 
-        // Engine
         $app->bindIf('twig.engine', function () use ($app) {
             return new Engine\Twig(
                 $app['twig'],
                 $app['config']->get('twigbridge::twig.globals', array())
             );
+        });
+
+        $app->bindIf('twig.bridge', function () use ($app) {
+            $bridge = new TwigBridge($app);
+
+            foreach ($app['twig.extensions'] as $extension) {
+                $bridge->addExtension($extension);
+            }
+
+            // Check for lexer
+            // twig.lexer
+
+            return $bridge;
         });
 
         $app['view']->addExtension(
