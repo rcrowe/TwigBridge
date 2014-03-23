@@ -71,85 +71,24 @@ class TwigBridge
         }
     }
 
-    // /**
-    //  * Get Twig template extension.
-    //  *
-    //  * @return string
-    //  */
-    // public function getExtension()
-    // {
-    //     return $this->app['config']->get('twigbridge::twig.extension');
-    // }
-
-    // /**
-    //  * Get extensions that Twig should load.
-    //  *
-    //  * @return array
-    //  */
-    // public function getExtensions()
-    // {
-    //     return $this->app['twig.extensions'];
-    // }
-
-    // /**
-    //  * Get options passed to Twig_Environment.
-    //  *
-    //  * @return array
-    //  */
-    // public function getTwigOptions()
-    // {
-    //     return $this->app['twig.options'];
-    // }
-
-    // /**
-    //  * Get the lexer for Twig to use.
-    //  *
-    //  * @param \Twig_Environment $twig
-    //  *
-    //  * @return \TwigBridge\Twig\Lexer
-    //  */
-    // public function getLexer(Twig_Environment $twig)
-    // {
-    //     $delimiters = $this->app['config']->get('twigbridge::twig.delimiters');
-
-    //     return new Twig\Lexer($twig, $delimiters);
-    // }
-
-    // /**
-    //  * Gets an instance of Twig that can be used to render a view.
-    //  *
-    //  * @return \Twig_Environment
-    //  */
-    // public function getTwig()
-    // {
-    //     $twig = new Twig_Environment($this->app['twig.loader'], $this->getTwigOptions());
-
-    //     // Load extensions
-    //     foreach ($this->app['twig.extensions'] as $extension) {
-    //         // Get an instance of the extension
-    //         // Support for string, closure and an object
-    //         if (is_string($extension)) {
-    //             $extension = $this->app->make($extension);
-    //         } elseif (is_callable($extension)) {
-    //             $extension = $extension($this->app, $twig);
-    //         } elseif (!is_object($extension)) {
-    //             throw new InvalidArgumentException('Incorrect extension type');
-    //         }
-
-    //         // Add extension to twig
-    //         $twig->addExtension($extension);
-    //     }
-
-    //     $this->app['events']->fire('twigbridge.twig', array('twig' => $twig));
-
-    //     // Set template tags
-    //     $twig->setLexer($this->getLexer($twig));
-
-    //     return $twig;
-    // }
-
-    public function addExtension($extension)
+    public function addExtension($extensions)
     {
+        $twig       = $this->app['twig'];
+        $extensions = (!is_array($extensions)) ? array($extensions) : $extensions;
 
+        foreach ($extensions as $extension) {
+            // Get an instance of the extension
+            // Support for string, closure and an object
+            if (is_string($extension)) {
+                $extension = $this->app->make($extension);
+            } elseif (is_callable($extension)) {
+                $extension = $extension($this->app, $twig);
+            } elseif (!is_object($extension)) {
+                throw new InvalidArgumentException('Incorrect extension type');
+            }
+
+            // Add extension to twig
+            $twig->addExtension($extension);
+        }
     }
 }

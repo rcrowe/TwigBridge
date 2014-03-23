@@ -107,7 +107,7 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         $app->bindIf('twig.lexer', function () use ($app) {
-
+            return null;
         });
 
         $app->bindIf('twig', function () use ($app) {
@@ -124,12 +124,12 @@ class ServiceProvider extends ViewServiceProvider
         $app->bindIf('twig.bridge', function () use ($app) {
             $bridge = new TwigBridge($app);
 
-            foreach ($app['twig.extensions'] as $extension) {
-                $bridge->addExtension($extension);
-            }
+            $bridge->addExtension($app['twig.extensions']);
 
-            // Check for lexer
-            // twig.lexer
+            $lexer = $app['twig.lexer'];
+            if (is_a($lexer, 'Twig_LexerInterface')) {
+                $bridge->setLexer($lexer);
+            }
 
             return $bridge;
         });

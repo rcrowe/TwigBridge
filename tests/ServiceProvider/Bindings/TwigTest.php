@@ -33,6 +33,24 @@ class TwigTest extends Base
         $this->assertSame($options, $config);
     }
 
+    public function testExtension()
+    {
+        $app      = $this->getApplication();
+        $provider = new ServiceProvider($app);
+        $provider->boot();
+
+        $this->assertEquals('twig', $app['twig.extension']);
+
+        // Change extension
+        $app = $this->getApplication(array(
+            'twig' => array('extension' => 'twig.html'),
+        ));
+        $provider = new ServiceProvider($app);
+        $provider->boot();
+
+        $this->assertEquals('twig.html', $app['twig.extension']);
+    }
+
     public function testExtensions()
     {
         $app      = $this->getApplication();

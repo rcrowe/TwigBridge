@@ -28,36 +28,18 @@ class TwigBridgeTest extends Base
         }
     }
 
-    public function testExtension()
-    {
-        $app      = $this->getApplication();
-        $provider = new ServiceProvider($app);
-        $provider->boot();
+    // public function testExtensions()
+    // {
+    //     $app      = $this->getApplication();
+    //     $provider = new ServiceProvider($app);
 
-        $this->assertEquals('twig', $app['twig.extension']);
+    //     $provider->boot();
 
-        // Change extension
-        $app = $this->getApplication(array(
-            'twig' => array('extension' => 'twig.html'),
-        ));
-        $provider = new ServiceProvider($app);
-        $provider->boot();
+    //     $bridge     = $app['twig.bridge'];
+    //     $extensions = $bridge->getExtensions();
 
-        $this->assertEquals('twig.html', $app['twig.extension']);
-    }
-
-    public function testExtensions()
-    {
-        $app      = $this->getApplication();
-        $provider = new ServiceProvider($app);
-
-        $provider->boot();
-
-        $bridge     = $app['twig.bridge'];
-        $extensions = $bridge->getExtensions();
-
-        $this->assertTrue(is_array($extensions));
-    }
+    //     $this->assertTrue(is_array($extensions));
+    // }
 
     // public function testOptions()
     // {
