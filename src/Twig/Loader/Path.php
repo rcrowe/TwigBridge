@@ -13,6 +13,7 @@ namespace TwigBridge\Twig\Loader;
 
 use Twig_LoaderInterface;
 use Twig_ExistsLoaderInterface;
+use InvalidArgumentException;
 
 /**
  * Basic loader using absolute paths.
@@ -44,7 +45,13 @@ class Path implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
      */
     public function getSource($name)
     {
-        return file_get_contents($this->findTemplate($name));
+        $file = $this->findTemplate($name);
+
+        if (!$file) {
+            throw new InvalidArgumentException('Unable to get source for file: '.$name);
+        }
+
+        return file_get_contents($file);
     }
 
     /**

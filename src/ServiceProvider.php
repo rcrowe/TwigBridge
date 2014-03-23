@@ -45,7 +45,6 @@ class ServiceProvider extends ViewServiceProvider
         $app = $this->app;
 
         $this->registerCommands($app);
-
         $this->registerTwigBridge($app);
         $this->registerTwigLoaders($app);
         $this->registerTwigOptions($app);
@@ -133,7 +132,6 @@ class ServiceProvider extends ViewServiceProvider
             return null;
         });
     }
-
 
     /**
      * Register the Twig engine.

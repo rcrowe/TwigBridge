@@ -55,7 +55,7 @@ class Viewfinder extends Path
      *
      * @return string|bool Path to template or FALSE if not found.
      */
-    protected function findTemplate($name)
+    public function findTemplate($name)
     {
         if (isset($this->cache[$name])) {
             return $this->cache[$name];

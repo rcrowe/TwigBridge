@@ -12,7 +12,7 @@
 namespace TwigBridge\Command;
 
 use Illuminate\Console\Command;
-use TwigBridge\TwigBridge as Bridge;
+use TwigBridge\Bridge;
 use Twig_Environment;
 
 /**

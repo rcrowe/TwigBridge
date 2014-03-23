@@ -87,6 +87,21 @@ class Bridge
 
     public function lint($file)
     {
+        $twig   = $this->app['twig'];
+        $loader = $this->app['twig.loader.viewfinder'];
 
+        try {
+            $template = $loader->getSource($file);
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
+
+        try {
+            $twig->parse($twig->tokenize($template, $file));
+        } catch (Twig_Error $e) {
+            return false;
+        }
+
+        return true;
     }
 }
