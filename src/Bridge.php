@@ -1,12 +1,5 @@
 <?php
 
-
-// Move Twig to the service provider
-// Facade, calls Twig_Environment plus custom functions
-// Remove / clean up the Lexer
-// Move to using separate extensions
-
-
 /**
  * This file is part of the TwigBridge package.
  *
@@ -24,7 +17,7 @@ use InvalidArgumentException;
 /**
  * TwigBridge deals with creating an instance of Twig.
  */
-class TwigBridge
+class Bridge
 {
     /**
      * @var string TwigBridge version
@@ -90,5 +83,10 @@ class TwigBridge
             // Add extension to twig
             $twig->addExtension($extension);
         }
+    }
+
+    public function lint($file)
+    {
+
     }
 }

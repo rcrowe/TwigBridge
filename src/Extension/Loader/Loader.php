@@ -11,7 +11,7 @@
 
 namespace TwigBridge\Extension\Loader;
 
-use TwigBridge\Extension;
+use Twig_Extension;
 use Illuminate\Config\Repository as Config;
 
 /**
@@ -21,7 +21,7 @@ use Illuminate\Config\Repository as Config;
  * See the `extensions.php` config file for the acceptable options that
  * can be parsed.
  */
-abstract class Loader extends Extension
+abstract class Loader extends Twig_Extension
 {
     /**
      * Create a new loader extension.

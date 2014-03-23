@@ -42,35 +42,42 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        $this->registerTwigEngine();
-        $this->registerCommands();
-    }
-
-    /**
-     * Register the Twig engine.
-     *
-     * @return void
-     */
-    public function registerTwigEngine()
-    {
         $app = $this->app;
 
-        // Extensions
-        $app->bindIf('twig.extensions', function () use ($app) {
-            $extensions = $app['config']->get('twigbridge::extensions.enabled', array());
+        $this->registerCommands($app);
 
-            // Is debug enabled?
-            $options = $app['twig.options'];
-            $debug   = (bool) (isset($options['debug'])) ? $options['debug'] : false;
+        $this->registerTwigBridge($app);
+        $this->registerTwigLoaders($app);
+        $this->registerTwigOptions($app);
+        $this->registerTwigEngine($app);
 
-            if ($debug) {
-                array_unshift($extensions, 'Twig_Extension_Debug');
+        $app['view']->addExtension(
+            $app['twig.extension'],
+            'twig',
+            function () use ($app) {
+                $bridge = $app['twig.bridge'];
+                $lexer  = $app['twig.lexer'];
+
+                $bridge->addExtension($app['twig.extensions']);
+
+                if (is_a($lexer, 'Twig_LexerInterface')) {
+                    $bridge->setLexer($lexer);
+                }
+
+                return $app['twig.engine'];
             }
+        );
+    }
 
-            return $extensions;
+    protected function registerTwigBridge($app)
+    {
+        $app->bindIf('twig.bridge', function () use ($app) {
+            return new Bridge($app);
         });
+    }
 
-        // Loader
+    protected function registerTwigLoaders($app)
+    {
         $app->bindIf('twig.loader.path', function () {
             return new Twig\Loader\Path;
         });
@@ -88,8 +95,14 @@ class ServiceProvider extends ViewServiceProvider
                 $app['twig.loader.viewfinder'],
             ));
         });
+    }
 
-        // Twig
+    protected function registerTwigOptions($app)
+    {
+        $app->bindIf('twig.extension', function () use ($app) {
+            return $app['config']->get('twigbridge::twig.extension');
+        });
+
         $app->bindIf('twig.options', function () use ($app) {
             $options = $app['config']->get('twigbridge::twig.environment', array());
 
@@ -102,17 +115,38 @@ class ServiceProvider extends ViewServiceProvider
             return $options;
         });
 
-        $app->bindIf('twig.extension', function () use ($app) {
-            return $app['config']->get('twigbridge::twig.extension');
+        $app->bindIf('twig.extensions', function () use ($app) {
+            $extensions = $app['config']->get('twigbridge::extensions.enabled', array());
+
+            // Is debug enabled?
+            $options = $app['twig.options'];
+            $debug   = (bool) (isset($options['debug'])) ? $options['debug'] : false;
+
+            if ($debug) {
+                array_unshift($extensions, 'Twig_Extension_Debug');
+            }
+
+            return $extensions;
         });
 
         $app->bindIf('twig.lexer', function () use ($app) {
             return null;
         });
+    }
 
-        $app->bindIf('twig', function () use ($app) {
-            return new Twig_Environment($app['twig.loader'], $app['twig.options']);
-        });
+
+    /**
+     * Register the Twig engine.
+     *
+     * @return void
+     */
+    public function registerTwigEngine($app)
+    {
+        if (!$app->bound('twig')) {
+            $app->singleton('twig', function () use ($app) {
+                return new Twig_Environment($app['twig.loader'], $app['twig.options']);
+            });
+        }
 
         $app->bindIf('twig.engine', function () use ($app) {
             return new Engine\Twig(
@@ -120,27 +154,6 @@ class ServiceProvider extends ViewServiceProvider
                 $app['config']->get('twigbridge::twig.globals', array())
             );
         });
-
-        $app->bindIf('twig.bridge', function () use ($app) {
-            $bridge = new TwigBridge($app);
-
-            $bridge->addExtension($app['twig.extensions']);
-
-            $lexer = $app['twig.lexer'];
-            if (is_a($lexer, 'Twig_LexerInterface')) {
-                $bridge->setLexer($lexer);
-            }
-
-            return $bridge;
-        });
-
-        $app['view']->addExtension(
-            $app['config']->get('twigbridge::twig.extension', 'twig'),
-            'twig',
-            function () use ($app) {
-                return $app['twig.engine'];
-            }
-        );
     }
 
     /**
@@ -148,17 +161,17 @@ class ServiceProvider extends ViewServiceProvider
      *
      * @return void
      */
-    public function registerCommands()
+    public function registerCommands($app)
     {
-        $this->app[''] = $this->app->bindIf('command.twig', function ($app) {
+        $app->bindIf('command.twig', function () {
             return new Command\TwigBridge;
         });
 
-        $this->app->bindIf('command.twig.clean', function ($app) {
+        $app->bindIf('command.twig.clean', function () {
             return new Command\Clean;
         });
 
-        $this->app->bindIf('command.twig.lint', function ($app) {
+        $app->bindIf('command.twig.lint', function () {
             return new Command\Lint;
         });
 
