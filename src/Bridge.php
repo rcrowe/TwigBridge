@@ -39,6 +39,16 @@ class Bridge
         $this->app = $app;
     }
 
+    /**
+     * Handle dynamic, static calls.
+     *
+     * All dynamic calls are passed to \Twig_Environment.
+     *
+     * @param  string  $method
+     * @param  array   $args
+     *
+     * @return mixed
+     */
     public function __call($method, $args)
     {
         $instance = $this->app['twig'];
@@ -64,6 +74,9 @@ class Bridge
         }
     }
 
+    /**
+     *
+     */
     public function addExtension($extensions)
     {
         $twig       = $this->app['twig'];
@@ -85,6 +98,13 @@ class Bridge
         }
     }
 
+    /**
+     * Lint (check) the syntax of a file on the view paths.
+     *
+     * @param string $file File to check. Supports dot-syntax.
+     *
+     * @return bool Whether the file passed or not.
+     */
     public function lint($file)
     {
         $twig     = $this->app['twig'];
