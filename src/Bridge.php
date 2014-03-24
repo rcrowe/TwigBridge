@@ -87,13 +87,11 @@ class Bridge
 
     public function lint($file)
     {
-        $twig   = $this->app['twig'];
-        $loader = $this->app['twig.loader.viewfinder'];
+        $twig     = $this->app['twig'];
+        $template = $this->app['twig.loader.viewfinder']->getSource($file);
 
-        try {
-            $template = $loader->getSource($file);
-        } catch (InvalidArgumentException $e) {
-            return false;
+        if (!$template) {
+            throw new InvalidArgumentException('Unable to find file: '.$file);
         }
 
         try {

@@ -12,6 +12,7 @@
 namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
+use Illuminate\Foundation\Application;
 use Twig_Loader_Chain;
 use Twig_Environment;
 
@@ -68,14 +69,28 @@ class ServiceProvider extends ViewServiceProvider
         );
     }
 
-    protected function registerTwigBridge($app)
+    /**
+     * Register TwigBridge bindings.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     *
+     * @return void
+     */
+    public function registerTwigBridge(Application $app)
     {
         $app->bindIf('twig.bridge', function () use ($app) {
             return new Bridge($app);
         });
     }
 
-    protected function registerTwigLoaders($app)
+    /**
+     * Register Twig loader bindings.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     *
+     * @return void
+     */
+    public function registerTwigLoaders(Application $app)
     {
         $app->bindIf('twig.loader.path', function () {
             return new Twig\Loader\Path;
@@ -96,7 +111,14 @@ class ServiceProvider extends ViewServiceProvider
         });
     }
 
-    protected function registerTwigOptions($app)
+    /**
+     * Register Twig config option bindings.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     *
+     * @return void
+     */
+    public function registerTwigOptions(Application $app)
     {
         $app->bindIf('twig.extension', function () use ($app) {
             return $app['config']->get('twigbridge::twig.extension');
@@ -134,11 +156,13 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
-     * Register the Twig engine.
+     * Register Twig engine bindings.
+     *
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return void
      */
-    public function registerTwigEngine($app)
+    public function registerTwigEngine(Application $app)
     {
         if (!$app->bound('twig')) {
             $app->singleton('twig', function () use ($app) {
@@ -155,11 +179,13 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
-     * Register the cache related console commands.
+     * Register console command bindings.
+     *
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return void
      */
-    public function registerCommands($app)
+    public function registerCommands(Application $app)
     {
         $app->bindIf('command.twig', function () {
             return new Command\TwigBridge;
