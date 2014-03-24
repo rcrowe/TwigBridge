@@ -75,7 +75,28 @@ class Bridge
     }
 
     /**
+     * Add a Twig extension.
      *
+     * <code>
+     *     // Using a string
+     *     Bridge::addExtension('TwigBridge\Extension\Loader\Functions');
+     *
+     *     // Array of extensions
+     *     Bridge::addExtension(array(
+     *         'TwigBridge\Extension\Loader\Functions',
+     *         'TwigBridge\Extension\Loader\Filters',
+     *         'TwigBridge\Extension\Loader\Facades',
+     *     ));
+     *
+     *     // Callback
+     *     Bridge::addExtension(function ($app, $twig) {
+     *         return new Twig_Extension_Debug;
+     *     });
+     * </code>
+     *
+     * @param string|array Single or multiple extensions.
+     *
+     * @return void
      */
     public function addExtension($extensions)
     {
