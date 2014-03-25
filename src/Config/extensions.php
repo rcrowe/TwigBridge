@@ -69,6 +69,7 @@ return array(
         'Input',
         'Lang',
         'Route',
+        'Session',
         'Str',
         'URL',
     ),
