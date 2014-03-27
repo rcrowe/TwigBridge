@@ -58,16 +58,29 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
 
         // Get config data
-        $twigData       = include $this->twigBridgeRoot.'/Config/twig.php';
-        $extensionsData = include $this->twigBridgeRoot.'/Config/extensions.php';
-        $twigData       = array(
-            'twig' => $twigData,
+        $twigData = array(
+            'twig' => array(
+                'extension' => 'twig',
+                'environment' => array(
+                    'debug'               => false,
+                    'charset'             => 'utf-8',
+                    'base_template_class' => 'TwigBridge\Twig\Template',
+                    'cache'               => null,
+                    'auto_reload'         => true,
+                    'strict_variables'    => false,
+                    'autoescape'          => true,
+                    'optimizations'       => -1,
+                ),
+                'globals' => array(),
+            ),
         );
+
+        $extensionsData = include $this->twigBridgeRoot.'/Config/extensions.php';
         $extensionsData = array(
             'extensions' => $extensionsData,
         );
-        $configData = array_replace_recursive($twigData, $extensionsData, $customConfig);
 
+        $configData = array_replace_recursive($twigData, $extensionsData, $customConfig);
         $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn($configData);
 
         $config->package('foo/twigbridge', __DIR__);

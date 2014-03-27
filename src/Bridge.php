@@ -13,6 +13,7 @@ namespace TwigBridge;
 
 use Illuminate\Foundation\Application;
 use InvalidArgumentException;
+use Twig_Error;
 
 /**
  * TwigBridge deals with creating an instance of Twig.
@@ -110,7 +111,7 @@ class Bridge
                 $extension = $this->app->make($extension);
             } elseif (is_callable($extension)) {
                 $extension = $extension($this->app, $twig);
-            } elseif (!is_object($extension)) {
+            } elseif (!is_a($extension, 'Twig_Extension')) {
                 throw new InvalidArgumentException('Incorrect extension type');
             }
 
