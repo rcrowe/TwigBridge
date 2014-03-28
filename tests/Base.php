@@ -7,6 +7,7 @@ use Mockery as m;
 use Illuminate\Foundation\Application;
 use Illuminate\View\Environment;
 use Illuminate\Config\Repository;
+use Illuminate\View\Engines\EngineResolver;
 
 abstract class Base extends PHPUnit_Framework_TestCase
 {
@@ -33,14 +34,11 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $app['path.storage'] = __DIR__.'/storage';
 
         // View
-        $engine = m::mock('Illuminate\View\Engines\EngineResolver');
-        $engine->shouldReceive('register');
-
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
 
         $app['view'] = new Environment(
-            $engine,
+            new EngineResolver,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
         );
