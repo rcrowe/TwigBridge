@@ -3,7 +3,7 @@
 namespace TwigBridge\Tests\ServiceProvider\Bindings;
 
 use Mockery as m;
-use Illuminate\View\Environment;
+use Illuminate\View\Factory;
 use TwigBridge\Tests\Base;
 use TwigBridge\ServiceProvider;
 
@@ -112,7 +112,7 @@ class TwigTest extends Base
         $finder->shouldReceive('getPaths')->andReturn(array());
         $finder->shouldReceive('getHints')->andReturn(array());
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             $engine,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
@@ -153,7 +153,7 @@ class TwigTest extends Base
         $finder->shouldReceive('getPaths')->andReturn(array());
         $finder->shouldReceive('getHints')->andReturn(array());
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             $engine,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
@@ -180,7 +180,7 @@ class TwigTest extends Base
         $finder->shouldReceive('getPaths')->andReturn(array());
         $finder->shouldReceive('getHints')->andReturn(array());
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             $engine,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
@@ -201,7 +201,7 @@ class TwigTest extends Base
         $finder->shouldReceive('getPaths')->andReturn(array());
         $finder->shouldReceive('getHints')->andReturn(array());
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             $engine,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')

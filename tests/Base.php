@@ -5,7 +5,7 @@ namespace TwigBridge\Tests;
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
 use Illuminate\Foundation\Application;
-use Illuminate\View\Environment;
+use Illuminate\View\Factory;
 use Illuminate\Config\Repository;
 use Illuminate\View\Engines\EngineResolver;
 
@@ -37,7 +37,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             new EngineResolver,
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
