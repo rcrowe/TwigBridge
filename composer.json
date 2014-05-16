@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "twig/twig": "~1.12"
+        "twig/twig": "~1.15"
     },
     "require-dev": {
         "laravel/framework": "~4.1.0",
