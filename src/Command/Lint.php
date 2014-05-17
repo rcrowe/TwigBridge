@@ -11,10 +11,6 @@
 
 namespace TwigBridge\Command;
 
-if (!defined('JSON_PRETTY_PRINT')) {
-    define('JSON_PRETTY_PRINT', 128);
-}
-
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
