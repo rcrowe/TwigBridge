@@ -28,6 +28,15 @@ return array(
         'TwigBridge\Extension\Loader\Facades',
         'TwigBridge\Extension\Loader\Filters',
         'TwigBridge\Extension\Loader\Functions',
+        'TwigBridge\Extension\Auth',
+        'TwigBridge\Extension\Config',
+        'TwigBridge\Extension\Form',
+        'TwigBridge\Extension\Html',
+        'TwigBridge\Extension\Session',
+        'TwigBridge\Extension\String',
+        'TwigBridge\Extension\Translator',
+        'TwigBridge\Extension\Url',
+       // 'TwigBridge\Extension\Legacy\Facades',
     ),
 
     /*
@@ -103,19 +112,7 @@ return array(
     |
     */
     'functions' => array(
-        'route',
-        'action',
-        'asset',
-        'url',
-        'link_to' => array('is_safe' => array('html')),
-        'link_to_asset' => array('is_safe' => array('html')),
-        'link_to_route' => array('is_safe' => array('html')),
-        'link_to_action' => array('is_safe' => array('html')),
-        'secure_asset' => array('is_safe' => array('html')),
-        'secure_url',
-        'trans',
-        'trans_choice',
-        'csrf_token',
+
     ),
 
     /*
@@ -147,12 +144,7 @@ return array(
     |
     */
     'filters' => array(
-        'camel_case',
-        'snake_case',
-        'studly_case',
-        'str_finish',
-        'str_plural',
-        'str_singular',
+
     ),
 
 );
