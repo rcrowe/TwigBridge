@@ -15,7 +15,6 @@
     "require-dev": {
         "laravel/framework": "~4.2.0",
         "mockery/mockery": "~0.9.0",
-        "phing/phing": "~2.7.0",
         "phpunit/phpunit": "~4.1.0",
         "squizlabs/php_codesniffer": "~1.5.0",
         "satooshi/php-coveralls": "~0.6"
