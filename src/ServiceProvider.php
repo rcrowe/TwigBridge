@@ -12,7 +12,6 @@
 namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
-use Illuminate\Foundation\Application;
 use Twig_Loader_Chain;
 use Twig_Environment;
 
@@ -22,9 +21,9 @@ use Twig_Environment;
  * You need to include this `ServiceProvider` in your app.php file:
  *
  * <code>
- *     'providers' => array(
+ *     'providers' => [
  *         'TwigBridge\ServiceProvider'
- *     );
+ *     ];
  * </code>
  */
 class ServiceProvider extends ViewServiceProvider
