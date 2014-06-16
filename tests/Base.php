@@ -73,7 +73,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
             ),
         );
 
-        $extensionsData = include $this->twigBridgeRoot.'/Config/extensions.php';
+        $extensionsData = include $this->twigBridgeRoot.'/config/extensions.php';
         $extensionsData = array(
             'extensions' => $extensionsData,
         );
