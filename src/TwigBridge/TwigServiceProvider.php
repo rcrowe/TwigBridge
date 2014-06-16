@@ -33,12 +33,12 @@ class TwigServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        // Override Environment
+        // Override Factory
         // We need to do this in order to set the name of the generated/compiled twig templates
         // Laravel by default only passes the full path to the requested view, we also need the view name
         // that relates to defined view composers.
         $this->app['view'] = $this->app->share(function($app) {
-            $env = new View\Environment($app['view.engine.resolver'], $app['view.finder'], $app['events']);
+            $env = new View\Factory($app['view.engine.resolver'], $app['view.finder'], $app['events']);
             $env->setContainer($app);
             $env->share('app', $app);
 

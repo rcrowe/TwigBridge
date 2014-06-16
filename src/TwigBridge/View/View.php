@@ -35,7 +35,7 @@ class View extends BaseView
         if ($this->engine instanceof TwigEngine)
         {
             $twig = $this->engine->getTwig();
-            foreach ($this->environment->getShared() as $key => $value)
+            foreach ($this->factory->getShared() as $key => $value)
             {
                 $twig->addGlobal($key, $value);
             }
