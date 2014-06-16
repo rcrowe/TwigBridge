@@ -11,20 +11,20 @@ class Base extends BridgeBase
 {
     protected function getApplication()
     {
-    	$app = parent::getApplication();
-    	$app['twig.extension'] = 'twig';
+        $app = parent::getApplication();
+        $app['twig.extension'] = 'twig';
 
-    	$finder = m::mock('Illuminate\View\ViewFinderInterface');
-		$finder->shouldReceive('name');
-		$finder->shouldReceive('in')->andReturn($finder);
+        $finder = m::mock('Illuminate\View\ViewFinderInterface');
+        $finder->shouldReceive('name');
+        $finder->shouldReceive('in')->andReturn($finder);
 
-    	$viewFinder = m::mock('Illuminate\View\ViewFinderInterface');
-    	$viewFinder->shouldReceive('getPaths')->andReturn([]); // paths
-    	$viewFinder->shouldReceive('files')->andReturn($finder);
+        $viewFinder = m::mock('Illuminate\View\ViewFinderInterface');
+        $viewFinder->shouldReceive('getPaths')->andReturn([]); // paths
+        $viewFinder->shouldReceive('files')->andReturn($finder);
 
-    	$app['view'] = m::mock('Illuminate\View\Factory');
-    	$app['view']->shouldReceive('getFinder')->andReturn($viewFinder);
+        $app['view'] = m::mock('Illuminate\View\Factory');
+        $app['view']->shouldReceive('getFinder')->andReturn($viewFinder);
 
-    	return $app;
+        return $app;
     }
 }

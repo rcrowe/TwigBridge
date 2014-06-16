@@ -17,34 +17,34 @@ class BasicTest extends Base
 
     public function testEmpty()
     {
-    	$command = new Lint;
-    	$app     = $this->getApplication();
+        $command = new Lint;
+        $app     = $this->getApplication();
     
-    	$command->setLaravel($app);
+        $command->setLaravel($app);
 
-    	$input  = new \Symfony\Component\Console\Input\ArrayInput([]);
-    	$output = m::mock('Symfony\Component\Console\Output\OutputInterface');
-    	$output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
-    	$output->shouldReceive('writeln')->with('<comment>0/0 valid files</comment>');
+        $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
+        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
+        $output->shouldReceive('writeln')->with('<comment>0/0 valid files</comment>');
 
-    	$command->run($input, $output);
+        $command->run($input, $output);
     }
 
     public function testEmptyJSON()
     {
-    	$command = new Lint;
-    	$app     = $this->getApplication();
+        $command = new Lint;
+        $app     = $this->getApplication();
     
-    	$command->setLaravel($app);
+        $command->setLaravel($app);
 
-    	$input  = new \Symfony\Component\Console\Input\ArrayInput([
-    		'--format' => 'json'
-    	]);
-    	$output = m::mock('Symfony\Component\Console\Output\OutputInterface');
-    	$output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
-    	$output->shouldReceive('writeln')->with("[]");
+        $input  = new \Symfony\Component\Console\Input\ArrayInput([
+            '--format' => 'json'
+        ]);
+        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
+        $output->shouldReceive('writeln')->with("[]");
 
-    	$command->run($input, $output);
+        $command->run($input, $output);
     }
 
     /**
