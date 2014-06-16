@@ -34,7 +34,7 @@ class Viewfinder extends Path
     /**
      * @var array Template lookup cache.
      */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Create a new instance.

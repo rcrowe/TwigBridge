@@ -34,14 +34,14 @@ class Caller
      * @param string $facade
      * @param array  $options
      */
-    public function __construct($facade, array $options = array())
+    public function __construct($facade, array $options = [])
     {
         $this->facade  = $facade;
         $this->options = array_merge(
-            array(
+            [
                 'is_safe' => null,
                 'charset' => null,
-            ),
+            ],
             $options
         );
     }

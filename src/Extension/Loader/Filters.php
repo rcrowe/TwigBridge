@@ -38,8 +38,8 @@ class Filters extends Loader
      */
     public function getFilters()
     {
-        $load    = $this->config->get('twigbridge::extensions.filters', array());
-        $filters = array();
+        $load    = $this->config->get('twigbridge::extensions.filters', []);
+        $filters = [];
 
         foreach ($load as $method => $callable) {
             list($method, $callable, $options) = $this->parseCallable($method, $callable);

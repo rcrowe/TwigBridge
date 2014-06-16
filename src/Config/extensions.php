@@ -12,7 +12,7 @@
 /**
  * Configuration options for the built-in extensions.
  */
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -24,11 +24,11 @@ return array(
     | `Twig_Extension_Debug` is enabled automatically if twig.debug is TRUE.
     |
     */
-    'enabled' => array(
+    'enabled' => [
         'TwigBridge\Extension\Loader\Facades',
         'TwigBridge\Extension\Loader\Filters',
         'TwigBridge\Extension\Loader\Functions',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -57,14 +57,14 @@ return array(
     | in order to be marked as safe.
     |
     */
-    'facades' => array(
+    'facades' => [
         'Auth',
         'Config',
-        'Form' => array(
-            'is_safe' => array(
+        'Form' => [
+            'is_safe' => [
                 'open',
-            )
-        ),
+            ],
+        ],
         'HTML',
         'Input',
         'Lang',
@@ -72,7 +72,7 @@ return array(
         'Session',
         'Str',
         'URL',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -102,21 +102,21 @@ return array(
     | </code>
     |
     */
-    'functions' => array(
+    'functions' => [
         'route',
         'action',
         'asset',
         'url',
-        'link_to' => array('is_safe' => array('html')),
-        'link_to_asset' => array('is_safe' => array('html')),
-        'link_to_route' => array('is_safe' => array('html')),
-        'link_to_action' => array('is_safe' => array('html')),
-        'secure_asset' => array('is_safe' => array('html')),
+        'link_to'        => ['is_safe' => ['html']],
+        'link_to_asset'  => ['is_safe' => ['html']],
+        'link_to_route'  => ['is_safe' => ['html']],
+        'link_to_action' => ['is_safe' => ['html']],
+        'secure_asset'   => ['is_safe' => ['html']],
         'secure_url',
         'trans',
         'trans_choice',
         'csrf_token',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -146,13 +146,13 @@ return array(
     | </code>
     |
     */
-    'filters' => array(
+    'filters' => [
         'camel_case',
         'snake_case',
         'studly_case',
         'str_finish',
         'str_plural',
         'str_singular',
-    ),
+    ],
 
-);
+];

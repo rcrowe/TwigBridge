@@ -43,7 +43,7 @@ abstract class Loader extends Twig_Extension
      */
     protected function parseCallable($method, $callable)
     {
-        $options = array();
+        $options = [];
 
         if (is_array($callable)) {
             $options = $callable;
@@ -68,6 +68,6 @@ abstract class Loader extends Twig_Extension
             }
         }
 
-        return array($method, $callable, $options);
+        return [$method, $callable, $options];
     }
 }

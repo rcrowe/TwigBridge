@@ -56,14 +56,13 @@ class Lint extends Command
                 $template .= fread(STDIN, 1024);
             }
 
-            return $this->display(array($this->validate($template)), $format);
+            return $this->display([$this->validate($template)], $format);
         }
 
         $files   = $this->getFiles($this->argument('filename'), $this->option('file'), $this->option('directory'));
-        $details = array();
+        $details = [];
 
         foreach ($files as $file) {
-
             try {
                 $template = $this->getContents($file);
             } catch (Twig_Error_Loader $e) {
@@ -98,7 +97,7 @@ class Lint extends Command
         }
 
         if (!empty($directories)) {
-            $search_directories = array();
+            $search_directories = [];
 
             foreach ($directories as $directory) {
                 foreach ($paths as $path) {
@@ -157,19 +156,19 @@ class Lint extends Command
         try {
             $twig->parse($twig->tokenize($template, $file));
         } catch (Twig_Error $e) {
-            return array(
+            return [
                 'template'  => $template,
                 'file'      => $file,
                 'valid'     => false,
                 'exception' => $e,
-            );
+            ];
         }
 
-        return array(
+        return [
             'template'  => $template,
             'file'      => $file,
             'valid'     => true,
-        );
+        ];
     }
 
     /**
@@ -312,7 +311,7 @@ class Lint extends Command
         $position = max(0, $line - $context);
         $max      = min(count($lines), $line - 1 + $context);
 
-        $result = array();
+        $result = [];
 
         while ($position < $max) {
             $result[$position + 1] = $lines[$position];
@@ -327,13 +326,13 @@ class Lint extends Command
      */
     protected function getArguments()
     {
-        return array(
-            array(
+        return [
+            [
                 'filename',
                 InputArgument::OPTIONAL,
                 'Filename or directory to lint. If none supplied, all views will be checked.',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -341,26 +340,26 @@ class Lint extends Command
      */
     protected function getOptions()
     {
-        return array(
-            array(
+        return [
+            [
                 'file',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Lint multiple files. Relative to the view path. Supports the dot syntax.',
-            ),
-            array(
+            ],
+            [
                 'directory',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
                 'Lint multiple directories. Relative to the view path. Does not support the dot syntax.',
-            ),
-            array(
+            ],
+            [
                 'format',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Format to ouput the result in. Supports `text` or `json`.',
                 'text',
-            ),
-        );
+            ],
+        ];
     }
 }

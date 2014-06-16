@@ -30,7 +30,7 @@ class Twig implements EngineInterface
     /**
      * @var array Global data that is always passed to the template.
      */
-    protected $globalData = array();
+    protected $globalData = [];
 
     /**
      * Create a new instance of the Twig engine.
@@ -38,7 +38,7 @@ class Twig implements EngineInterface
      * @param \Twig_Environment $twig
      * @param array             $globalData
      */
-    public function __construct(Twig_Environment $twig, array $globalData = array())
+    public function __construct(Twig_Environment $twig, array $globalData = [])
     {
         $this->twig       = $twig;
         $this->globalData = $globalData;
@@ -109,7 +109,7 @@ class Twig implements EngineInterface
      *
      * @return string
      */
-    public function get($path, array $data = array())
+    public function get($path, array $data = [])
     {
         $data = array_merge($this->getGlobalData(), $data);
 
