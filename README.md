@@ -133,6 +133,6 @@ TwigBridge offers a command for CLI Interaction.
 
 Empty the Twig cache:
 ```
-$ php artisan twig:clear
+$ php artisan twig:clean
 ```
 
