@@ -46,11 +46,11 @@ return [
     | the following syntax:
     |
     | <code>
-    |     'Form' => array(
-    |         'is_safe' => array(
+    |     'Form' => [
+    |         'is_safe' => [
     |             'open'
-    |         )
-    |     )
+    |         ]
+    |     ]
     | </code>
     |
     | The values of the `is_safe` array must match the called method on the facade
@@ -87,18 +87,18 @@ return [
     | So for example, to mark a function as safe you can do the following:
     |
     | <code>
-    |     'link_to' => array(
-    |         'is_safe' => array('html')
-    |     )
+    |     'link_to' => [
+    |         'is_safe' => ['html']
+    |     ]
     | </code>
     |
     | The options array also takes a `callback` that allows you to name the
-    | function differently in your Twig templates than what is actually called.
+    | function differently in your Twig templates than what it's actually called.
     |
     | <code>
-    |     'link' => array(
+    |     'link' => [
     |         'callback' => 'link_to'
-    |     )
+    |     ]
     | </code>
     |
     */
@@ -131,18 +131,18 @@ return [
     | So for example, to mark a filter as safe you can do the following:
     |
     | <code>
-    |     'studly_case' => array(
-    |         'is_safe' => array('html')
-    |     )
+    |     'studly_case' => [
+    |         'is_safe' => ['html']
+    |     ]
     | </code>
     |
     | The options array also takes a `callback` that allows you to name the
     | filter differently in your Twig templates than what is actually called.
     |
     | <code>
-    |     'snake' => array(
+    |     'snake' => [
     |         'callback' => 'snake_case'
-    |     )
+    |     ]
     | </code>
     |
     */
