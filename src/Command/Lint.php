@@ -14,7 +14,6 @@ namespace TwigBridge\Command;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
 use Twig_Error_Loader;
 use Twig_Error;
 use RuntimeException;
@@ -89,8 +88,8 @@ class Lint extends Command
         // Get files from passed in options
         $search    = $files;
         $extension = $this->laravel['twig.extension'];
-        $finder    = new Finder;
-        $paths     = $this->laravel['view']->getFinder()->getPaths();
+        $finder    = $this->laravel['view']->getFinder();
+        $paths     = $finder->getPaths();
 
         if (!empty($filename)) {
             $search[] = $filename;
