@@ -62,7 +62,6 @@ class BasicTest extends Base
         ]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
         $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
-        // $output->shouldReceive('writeln')->with("[]");
 
         $command->run($input, $output);
     }

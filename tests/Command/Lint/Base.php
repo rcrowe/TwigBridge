@@ -9,9 +9,9 @@ use TwigBridge\Command\Lint;
 
 class Base extends BridgeBase
 {
-    protected function getApplication()
+    protected function getApplication(array $customConfig = [])
     {
-        $app = parent::getApplication();
+        $app = parent::getApplication($customConfig);
         $app['twig.extension'] = 'twig';
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
