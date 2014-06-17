@@ -34,7 +34,6 @@ class ContentTest extends Base
         ]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
         $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
-        // $output->shouldReceive('writeln')->with('<comment>0/0 valid files</comment>');
 
         $command->run($input, $output);
     }
