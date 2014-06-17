@@ -9,12 +9,12 @@
 
 namespace TwigBridge\View;
 
-use Illuminate\View\Environment as BaseEnvironment;
+use Illuminate\View\Factory as BaseFactory;
 
 /**
  * Overrides default environment object so that we can override view object.
  */
-class Environment extends BaseEnvironment
+class Factory extends BaseFactory
 {
     /**
      * {@inheritdoc}

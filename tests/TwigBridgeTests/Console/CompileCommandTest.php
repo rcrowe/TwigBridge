@@ -90,7 +90,7 @@ class CompileCommandTest extends PHPUnit_Framework_TestCase
         $file_finder->files()->in($paths)->name('*.twig');
 
         // View
-        $view = m::mock('Illuminate\View\Environment');
+        $view = m::mock('Illuminate\View\Factory');
         $view->shouldReceive('addExtension');
         $view->shouldReceive('getFinder')->andReturn($finder);
 
