@@ -8,7 +8,7 @@ use TwigBridge\TwigBridge;
 use TwigBridge\Twig\Loader\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Config\Repository;
-use Illuminate\View\Environment;
+use Illuminate\View\Factory;
 use Twig_Environment;
 use Twig_Lexer;
 use ReflectionProperty;
@@ -191,7 +191,7 @@ class TwigBridgeTest extends PHPUnit_Framework_TestCase
         $finder->shouldReceive('getPaths')->andReturn($paths);
         $finder->shouldReceive('getHints')->andReturn($hints);
 
-        $app['view'] = new Environment(
+        $app['view'] = new Factory(
             m::mock('Illuminate\View\Engines\EngineResolver'),
             $finder,
             m::mock('Illuminate\Events\Dispatcher')
