@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.4.0",
         "twig/twig": "~1.12"
     },
     "require-dev": {
-        "illuminate/foundation": "~4.0",
-        "illuminate/filesystem": "~4.0",
-        "phpunit/phpunit": "~3.7.0",
-        "mockery/mockery": "~0.7.2"
+        "illuminate/foundation": "~4.2",
+        "illuminate/filesystem": "~4.2",
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "~0.9"
     },
     "suggest": {
         "twig/extensions": "1.0.*"

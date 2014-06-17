@@ -4,7 +4,7 @@ namespace TwigBridgeTests\View;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
-use Illuminate\View\Environment;
+use Illuminate\View\Factory;
 use TwigBridge\View\View;
 use TwigBridge\Engines\TwigEngine;
 use TwigBridge\Twig\Loader\Filesystem;
@@ -22,14 +22,14 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $dispatcher = m::mock('Illuminate\Events\Dispatcher');
         $dispatcher->shouldReceive('fire')->andReturn(true);
 
-        $environment = new Environment(
+        $factory = new Factory(
             m::mock('Illuminate\View\Engines\EngineResolver'),
             m::mock('Illuminate\View\ViewFinderInterface'),
             $dispatcher
         );
 
         $engine = $this->getEngine();
-        $view   = new View($environment, $engine, 'base.twig', __DIR__);
+        $view   = new View($factory, $engine, 'base.twig', __DIR__);
 
         $view->render();
 
@@ -37,7 +37,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $globals = $engine->getTwig()->getGlobals();
 
         $this->assertArrayHasKey('__env', $globals);
-        $this->assertInstanceOf('Illuminate\View\Environment', $globals['__env']);
+        $this->assertInstanceOf('Illuminate\View\Factory', $globals['__env']);
     }
 
     private function getFilesystem()
