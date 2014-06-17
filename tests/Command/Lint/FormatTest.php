@@ -6,7 +6,7 @@ use Mockery as m;
 use Symfony\Component\Console\Output\StreamOutput;
 use TwigBridge\Command\Lint;
 
-class BasicTest extends Base
+class FormatTest extends Base
 {
     public function testInstance()
     {
@@ -19,7 +19,7 @@ class BasicTest extends Base
     {
         $command = new Lint;
         $app     = $this->getApplication();
-    
+
         $command->setLaravel($app);
 
         $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
@@ -34,7 +34,7 @@ class BasicTest extends Base
     {
         $command = new Lint;
         $app     = $this->getApplication();
-    
+
         $command->setLaravel($app);
 
         $input  = new \Symfony\Component\Console\Input\ArrayInput([
@@ -54,7 +54,7 @@ class BasicTest extends Base
     {
         $command = new Lint;
         $app     = $this->getApplication();
-    
+
         $command->setLaravel($app);
 
         $input  = new \Symfony\Component\Console\Input\ArrayInput([
