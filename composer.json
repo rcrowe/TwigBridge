@@ -16,7 +16,7 @@
         "illuminate/view": "~4.2"
     },
     "require-dev": {
-        "illuminate/filesystem": "~4.2",
+        "laravel/framework": "~4.2",
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9"
     },
