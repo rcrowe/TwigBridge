@@ -13,7 +13,7 @@
         "php": ">=5.4.0",
         "twig/twig": "~1.12"
         "illuminate/support": "~4.2",
-        "illuminate/view": "~4.2",
+        "illuminate/view": "~4.2"
     },
     "require-dev": {
         "illuminate/filesystem": "~4.2",
