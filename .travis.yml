@@ -11,7 +11,7 @@ matrix:
     - php: hhvm
 
 before_script:
-  - curl -s https://getcomposer.org/installer | php
-  - php ./composer.phar install --dev --prefer-source
+  - travis_retry composer self-update
+  - travis_retry composer install --prefer-source --no-interaction --dev
 
-script: ./vendor/bin/phpunit --configuration phpunit.xml.dist
+script: vendor/bin/phpunit --configuration phpunit.xml.dist --verbose
