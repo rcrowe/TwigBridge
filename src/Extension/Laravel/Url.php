@@ -50,12 +50,12 @@ class Url extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('asset', [$url, 'asset'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('action', [$url, 'action'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('asset', [$this->url, 'asset'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('action', [$this->url, 'action'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('route', [$url, 'route'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('secure_url', [$url, 'secure'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('secure_asset', [$url, 'secureAsset'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction(
                 'url_*',
                 function ($name) {
