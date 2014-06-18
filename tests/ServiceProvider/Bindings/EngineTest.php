@@ -22,19 +22,19 @@ class EngineTest extends Base
         $this->assertInstanceOf('TwigBridge\Engine\Twig', $app['view']->getEngineResolver()->resolve('twig'));
     }
 
-    public function testSetLexer()
+    public function testCallBridge()
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $lexer = m::mock('Twig_LexerInterface');
-        $lexer->shouldReceive('fooBar')->andReturn('buttonMoon');
-        $app['twig.lexer'] = $lexer;
+        $called = false;
+        $app->resolving('twig.bridge', function () use (&$called) {
+            $called = true;
+        });
 
         $app['view']->getEngineResolver()->resolve('twig');
-        $lexer = $app['twig.bridge']->getLexer();
 
-        $this->assertEquals('buttonMoon', $lexer->fooBar());
+        $this->assertTrue($called);
     }
 }

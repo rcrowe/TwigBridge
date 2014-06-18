@@ -126,15 +126,6 @@ class TwigTest extends Base
         $this->assertInstanceOf('Twig_Loader_Chain', $app['twig.loader']);
     }
 
-    public function testTwigBridge()
-    {
-        $app      = $this->getApplication();
-        $provider = new ServiceProvider($app);
-        $provider->boot();
-
-        $this->assertInstanceOf('TwigBridge\Bridge', $app['twig.bridge']);
-    }
-
     public function testTwig()
     {
         $app      = $this->getApplication();

@@ -128,6 +128,9 @@ class ServiceProvider extends ViewServiceProvider
             return new Twig_Loader_Chain([
                 $this->app['twig.loader.path'],
                 $this->app['twig.loader.viewfinder'],
+
+                // View::make(...) will never get this far
+                // but it allows Twig::render(...) to render a string
                 new Twig_Loader_String,
             ]);
         });
