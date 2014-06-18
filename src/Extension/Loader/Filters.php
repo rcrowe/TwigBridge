@@ -22,9 +22,7 @@ use Twig_SimpleFilter;
 class Filters extends Loader
 {
     /**
-     * Returns the name of the extension.
-     *
-     * @return string Extension name.
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -32,9 +30,7 @@ class Filters extends Loader
     }
 
     /**
-     * Get filters this extensions provides.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getFilters()
     {

@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace TwigBridge\Extension\Legacy;
+namespace TwigBridge\Extension\Laravel\Legacy;
 
 use Twig_Extension;
 use Twig_Function_Function;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Foundation\Application;
-
 
 /**
  * Handles undefined function calls in a Twig template by checking
@@ -26,12 +25,20 @@ use Illuminate\Foundation\Application;
  */
 class Facades extends Twig_Extension
 {
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
     protected $app;
+
+    /**
+     * @var \Illuminate\Config\Repository
+     */
     protected $config;
+
     /**
      * @var array Lookup cache
      */
-    protected $lookup = array();
+    protected $lookup = [];
 
     /**
      * @var array Aliases loaded by Illuminate.
@@ -44,39 +51,42 @@ class Facades extends Twig_Extension
     protected $shortcuts;
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string Extension name.
+     * {@inheritDoc}
      */
     public function getName()
     {
-        return 'TwigBridge_Extension_Legacy_Facades';
+        return 'TwigBridge_Extension_Laravel_Legacy_Facades';
     }
 
+    /**
+     * Create a new legacy facade extension
+     *
+     * @param \Illuminate\Foundation\Application
+     * @param \Illuminate\Config\Repository
+     */
     public function __construct(Application $app, Config $config)
     {
-        $this->app = $app;
+        $this->app    = $app;
         $this->config = $config;
 
-        $aliases   = $this->config->get('app.aliases', array());
-        $shortcuts = $this->config->get('twigbridge::alias_shortcuts', array());
+        $aliases   = $this->config->get('app.aliases', []);
+        $shortcuts = $this->config->get('twigbridge::alias_shortcuts', []);
 
         $this->setAliases($aliases);
         $this->setShortcuts($shortcuts);
 
         // Register Twig callback to handle undefined functions
-        $this->app['twig']->registerUndefinedFunctionCallback(
-            function ($name){
-                // Allow any method on aliased classes
-                return $this->getFunction($name);
-            }
-        );
+        $this->app['twig']->registerUndefinedFunctionCallback(function ($name) {
+            // Allow any method on aliased classes
+            return $this->getFunction($name);
+        });
     }
 
     /**
      * Sets those classes that have been Aliased.
      *
      * @param array $aliases Aliased classes.
+     *
      * @return void
      */
     public function setAliases(array $aliases)
@@ -98,11 +108,12 @@ class Facades extends Twig_Extension
      * Set shortcuts to aliased classes.
      *
      * @param array $shortcuts Shortcut to alias map.
+     *
      * @return void
      */
     public function setShortcuts(array $shortcuts)
     {
-        $lowered = array();
+        $lowered = [];
 
         foreach ($shortcuts as $from => $to) {
             $lowered[strtolower($from)] = strtolower($to);
@@ -125,6 +136,7 @@ class Facades extends Twig_Extension
      * Get the alias the shortcut points to.
      *
      * @param string $name Twig function name.
+     *
      * @return string Either the alias or the name passed in if not found.
      */
     public function getShortcut($name)
@@ -141,6 +153,7 @@ class Facades extends Twig_Extension
      * meets that format.
      *
      * @param string $name Function name.
+     *
      * @return array|bool Array containing class and method or FALSE if incorrect format.
      */
     public function getAliasParts($name)
@@ -154,10 +167,10 @@ class Facades extends Twig_Extension
                 return false;
             }
 
-            return array(
+            return [
                 $parts[0],
                 implode('_', array_slice($parts, 1))
-            );
+            ];
         }
 
         return false;
@@ -169,6 +182,7 @@ class Facades extends Twig_Extension
      * Repeat calls to an undefined function are cached.
      *
      * @param string $name Function name.
+     *
      * @return Twig_Function_Function|false
      */
     public function getLookup($name)

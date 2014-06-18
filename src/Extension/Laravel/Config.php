@@ -4,22 +4,25 @@
  * This file is part of the TwigBridge package.
  *
  * @copyright Robert Crowe <hello@vivalacrowe.com>
- * @copyright Barry vd. Heuvel <barryvdh@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace TwigBridge\Extension;
+namespace TwigBridge\Extension\Laravel;
 
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Twig_SimpleFilter;
 use Illuminate\Config\Repository as ConfigRepository;
 
-
+/**
+ * Access Laravels config class in your Twig templates.
+ */
 class Config extends Twig_Extension
 {
+    /**
+     * @var \Illuminate\Config\Repository
+     */
     protected $config;
 
     /**
@@ -27,25 +30,27 @@ class Config extends Twig_Extension
      *
      * @param \Illuminate\Config\Repository
      */
-    public function __construct(ConfigRepository $config){
+    public function __construct(ConfigRepository $config)
+    {
         $this->config = $config;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getName(){
-        return 'TwigBridge_Extension_Config';
+    public function getName()
+    {
+        return 'TwigBridge_Extension_Laravel_Config';
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getFunctions(){
-        return array(
-            new Twig_SimpleFunction('config_get', array($this->config, 'get'), array('is_safe' => array('html'))),
-            new Twig_SimpleFunction('config_has', array($this->config, 'has'), array('is_safe' => array('html'))),
-        );
+    public function getFunctions()
+    {
+        return [
+            new Twig_SimpleFunction('config_get', [$this->config, 'get'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('config_has', [$this->config, 'has'], ['is_safe' => ['html']]),
+        ];
     }
-
 }

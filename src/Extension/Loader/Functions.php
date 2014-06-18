@@ -22,9 +22,7 @@ use Twig_SimpleFunction;
 class Functions extends Loader
 {
     /**
-     * Returns the name of the extension.
-     *
-     * @return string Extension name.
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -32,9 +30,7 @@ class Functions extends Loader
     }
 
     /**
-     * Get functions this extensions provides.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getFunctions()
     {

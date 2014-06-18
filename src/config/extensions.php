@@ -29,16 +29,16 @@ return [
         'TwigBridge\Extension\Loader\Filters',
         'TwigBridge\Extension\Loader\Functions',
 
-        'TwigBridge\Extension\Auth',
-        'TwigBridge\Extension\Config',
-        'TwigBridge\Extension\Form',
-        'TwigBridge\Extension\Html',
-        'TwigBridge\Extension\Session',
-        'TwigBridge\Extension\String',
-        'TwigBridge\Extension\Translator',
-        'TwigBridge\Extension\Url',
+        'TwigBridge\Extension\Laravel\Auth',
+        'TwigBridge\Extension\Laravel\Config',
+        'TwigBridge\Extension\Laravel\Form',
+        'TwigBridge\Extension\Laravel\Html',
+        'TwigBridge\Extension\Laravel\Session',
+        'TwigBridge\Extension\Laravel\String',
+        'TwigBridge\Extension\Laravel\Translator',
+        'TwigBridge\Extension\Laravel\Url',
 
-        // 'TwigBridge\Extension\Legacy\Facades',
+        // 'TwigBridge\Extension\Laravel\Legacy\Facades',
     ],
 
     /*
