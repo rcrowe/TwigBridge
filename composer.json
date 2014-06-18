@@ -31,6 +31,5 @@
             "TwigBridge\\": "src",
             "TwigBridge\\Tests\\": "tests"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
