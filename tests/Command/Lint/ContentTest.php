@@ -3,6 +3,7 @@
 namespace TwigBridge\Tests\Command\Lint;
 
 use Mockery as m;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use TwigBridge\Command\Lint;
 
@@ -29,7 +30,7 @@ class ContentTest extends Base
 
         $command->setLaravel($app);
 
-        $input  = new \Symfony\Component\Console\Input\ArrayInput([
+        $input  = new ArrayInput([
             'filename' => 'foo.txt',
         ]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
