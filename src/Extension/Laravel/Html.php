@@ -50,10 +50,10 @@ class Html extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('link_to', [$html, 'link'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_asset', [$html, 'linkAsset'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_route', [$html, 'linkRoute'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_action', [$html, 'linkAction'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('link_to', [$this->html, 'link'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('link_to_asset', [$this->html, 'linkAsset'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('link_to_route', [$this->html, 'linkRoute'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('link_to_action', [$this->html, 'linkAction'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction(
                 'html_*',
                 function ($name) {
