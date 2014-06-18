@@ -47,6 +47,26 @@ class Caller
     }
 
     /**
+     * Return facade that will be called.
+     *
+     * @return string
+     */
+    public function getFacade()
+    {
+        return $this->facade;
+    }
+
+    /**
+     * Return extension options.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
      * Call the method on the facade.
      *
      * Supports marking the method as safe, i.e. the returned HTML won't be escaped.
