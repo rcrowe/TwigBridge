@@ -22,6 +22,33 @@ use Illuminate\Support\Str;
 class String extends Twig_Extension
 {
     /**
+     * @var string|object
+     */
+    protected $callback = 'Illuminate\Support\Str';
+
+    /**
+     * Return the string object callback.
+     *
+     * @return string|object
+     */
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    /**
+     * Set a new string callback.
+     *
+     * @param string|object
+     *
+     * @return void
+     */
+    public function setCallback($callback)
+    {
+        $this->callback = $callback;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getName()
@@ -41,7 +68,7 @@ class String extends Twig_Extension
                     $arguments = array_slice(func_get_args(), 1);
                     $name      = Str::camel($name);
 
-                    return call_user_func_array(['Illuminate\Support\Str', $name], $arguments);
+                    return call_user_func_array([$this->callback, $name], $arguments);
                 },
                 [
                     'is_safe' => ['html'],
@@ -56,16 +83,16 @@ class String extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('camel_case', ['Illuminate\Support\Str', 'camel'], ['is_safe' => ['html']]),
-            new Twig_SimpleFilter('snake_case', ['Illuminate\Support\Str', 'snake'], ['is_safe' => ['html']]),
-            new Twig_SimpleFilter('studly_case', ['Illuminate\Support\Str', 'studly'], ['is_safe' => ['html']]),
+            new Twig_SimpleFilter('camel_case', [$this->callback, 'camel'], ['is_safe' => ['html']]),
+            new Twig_SimpleFilter('snake_case', [$this->callback, 'snake'], ['is_safe' => ['html']]),
+            new Twig_SimpleFilter('studly_case', [$this->callback, 'studly'], ['is_safe' => ['html']]),
             new Twig_SimpleFilter(
                 'str_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
                     $name      = Str::camel($name);
 
-                    return call_user_func_array(['Illuminate\Support\Str', $name], $arguments);
+                    return call_user_func_array([$this->callback, $name], $arguments);
                 },
                 [
                     'is_safe' => ['html'],
