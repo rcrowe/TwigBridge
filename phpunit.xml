@@ -16,13 +16,12 @@
         </testsuite>
     </testsuites>
     <filter>
-        <blacklist>
-            <directory suffix=".php">PEAR_INSTALL_DIR</directory>
-            <directory suffix=".php">PHP_LIBDIR</directory>
-            <directory suffix=".php">vendor</directory>
-            <directory suffix=".php">tests</directory>
-            <directory suffix=".php">src/Config</directory>
-        </blacklist>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">./src/config</directory>
+            </exclude>
+        </whitelist>
     </filter>
     <logging>
         <log type="coverage-html"

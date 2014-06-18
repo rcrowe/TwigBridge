@@ -11,6 +11,8 @@
 
 namespace TwigBridge\Extension\Loader;
 
+use TwigBridge\Extension\Loader\Facade\Caller;
+
 /**
  * Extension to expose defined facades to the Twig templates.
  *
@@ -45,13 +47,13 @@ class Facades extends Loader
      */
     public function getGlobals()
     {
-        $load    = $this->config->get('twigbridge::extensions.facades', array());
-        $globals = array();
+        $load    = $this->config->get('twigbridge::extensions.facades', []);
+        $globals = [];
 
         foreach ($load as $facade => $options) {
             list($facade, $callable, $options) = $this->parseCallable($facade, $options);
 
-            $globals[$facade] = new Facade\Caller($facade, $options);
+            $globals[$facade] = new Caller($facade, $options);
         }
 
         return $globals;

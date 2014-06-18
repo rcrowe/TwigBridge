@@ -13,7 +13,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
 {
     protected $twigBridgeRoot;
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -25,7 +25,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    protected function getApplication(array $customConfig = array())
+    protected function getApplication(array $customConfig = [])
     {
         $app = new Application;
         $app->instance('path', __DIR__);
@@ -73,7 +73,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
             ),
         );
 
-        $extensionsData = include $this->twigBridgeRoot.'/Config/extensions.php';
+        $extensionsData = include $this->twigBridgeRoot.'/config/extensions.php';
         $extensionsData = array(
             'extensions' => $extensionsData,
         );

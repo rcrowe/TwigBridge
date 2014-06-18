@@ -27,7 +27,7 @@ abstract class Template extends Twig_Template
     /**
      * {@inheritdoc}
      */
-    public function display(array $context, array $blocks = array())
+    public function display(array $context, array $blocks = [])
     {
         if ($this->shouldFireEvents()) {
             $context = $this->fireEvents($context);
@@ -88,7 +88,7 @@ abstract class Template extends Twig_Template
     protected function getAttribute(
         $object,
         $item,
-        array $arguments = array(),
+        array $arguments = [],
         $type = Twig_Template::ANY_CALL,
         $isDefinedTest = false,
         $ignoreStrictCheck = false
@@ -96,7 +96,7 @@ abstract class Template extends Twig_Template
         // We need to handle accessing attributes/methods on an Eloquent instance differently
         if (is_a($object, 'Illuminate\Database\Eloquent\Model')) {
             if (method_exists($object, $item)) {
-                $ret = call_user_func_array(array($object, $item), $arguments);
+                $ret = call_user_func_array([$object, $item], $arguments);
             } else {
                 // Calling getAttributes lets us deal with accessors, mutators & relations
                 $ret = $object->getAttribute($item);

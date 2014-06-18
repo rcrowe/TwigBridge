@@ -83,11 +83,11 @@ class Bridge
      *     Bridge::addExtension('TwigBridge\Extension\Loader\Functions');
      *
      *     // Array of extensions
-     *     Bridge::addExtension(array(
+     *     Bridge::addExtension([
      *         'TwigBridge\Extension\Loader\Functions',
      *         'TwigBridge\Extension\Loader\Filters',
      *         'TwigBridge\Extension\Loader\Facades',
-     *     ));
+     *     ]);
      *
      *     // Callback
      *     Bridge::addExtension(function ($app, $twig) {
@@ -102,7 +102,7 @@ class Bridge
     public function addExtension($extensions)
     {
         $twig       = $this->app['twig'];
-        $extensions = (!is_array($extensions)) ? array($extensions) : $extensions;
+        $extensions = (!is_array($extensions)) ? [$extensions] : $extensions;
 
         foreach ($extensions as $extension) {
             // Get an instance of the extension

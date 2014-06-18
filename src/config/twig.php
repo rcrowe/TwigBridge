@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Config;
 /**
  * Configuration options for Twig.
  */
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -34,12 +34,12 @@ return array(
     | http://twig.sensiolabs.org/doc/api.html#environment-options
     |
     */
-    'environment' => array(
+    'environment' => [
 
         // When set to true, the generated templates have a __toString() method
         // that you can use to display the generated nodes.
         // default: false
-        'debug' => Config::get('app.debug'),
+        'debug' => Config::get('app.debug', false),
 
         // The charset used by the templates.
         // default: utf-8
@@ -72,7 +72,7 @@ return array(
         // A flag that indicates which optimizations to apply
         // (default to -1 -- all optimizations are enabled; set it to 0 to disable)
         'optimizations' => -1,
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -83,6 +83,6 @@ return array(
     | NOTE: these will be overwritten if you pass data into the view with the same key.
     |
     */
-    'globals' => array(),
+    'globals' => [],
 
-);
+];

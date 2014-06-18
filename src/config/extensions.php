@@ -12,7 +12,7 @@
 /**
  * Configuration options for the built-in extensions.
  */
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -24,10 +24,11 @@ return array(
     | `Twig_Extension_Debug` is enabled automatically if twig.debug is TRUE.
     |
     */
-    'enabled' => array(
+    'enabled' => [
         'TwigBridge\Extension\Loader\Facades',
         'TwigBridge\Extension\Loader\Filters',
         'TwigBridge\Extension\Loader\Functions',
+
         'TwigBridge\Extension\Auth',
         'TwigBridge\Extension\Config',
         'TwigBridge\Extension\Form',
@@ -36,8 +37,9 @@ return array(
         'TwigBridge\Extension\String',
         'TwigBridge\Extension\Translator',
         'TwigBridge\Extension\Url',
-       // 'TwigBridge\Extension\Legacy\Facades',
-    ),
+
+        // 'TwigBridge\Extension\Legacy\Facades',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -55,33 +57,18 @@ return array(
     | the following syntax:
     |
     | <code>
-    |     'Form' => array(
-    |         'is_safe' => array(
+    |     'Form' => [
+    |         'is_safe' => [
     |             'open'
-    |         )
-    |     )
+    |         ]
+    |     ]
     | </code>
     |
     | The values of the `is_safe` array must match the called method on the facade
     | in order to be marked as safe.
     |
     */
-    'facades' => array(
-        'Auth',
-        'Config',
-        'Form' => array(
-            'is_safe' => array(
-                'open',
-            )
-        ),
-        'HTML',
-        'Input',
-        'Lang',
-        'Route',
-        'Session',
-        'Str',
-        'URL',
-    ),
+    'facades' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -96,24 +83,22 @@ return array(
     | So for example, to mark a function as safe you can do the following:
     |
     | <code>
-    |     'link_to' => array(
-    |         'is_safe' => array('html')
-    |     )
+    |     'link_to' => [
+    |         'is_safe' => ['html']
+    |     ]
     | </code>
     |
     | The options array also takes a `callback` that allows you to name the
-    | function differently in your Twig templates than what is actually called.
+    | function differently in your Twig templates than what it's actually called.
     |
     | <code>
-    |     'link' => array(
+    |     'link' => [
     |         'callback' => 'link_to'
-    |     )
+    |     ]
     | </code>
     |
     */
-    'functions' => array(
-
-    ),
+    'functions' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -128,23 +113,21 @@ return array(
     | So for example, to mark a filter as safe you can do the following:
     |
     | <code>
-    |     'studly_case' => array(
-    |         'is_safe' => array('html')
-    |     )
+    |     'studly_case' => [
+    |         'is_safe' => ['html']
+    |     ]
     | </code>
     |
     | The options array also takes a `callback` that allows you to name the
     | filter differently in your Twig templates than what is actually called.
     |
     | <code>
-    |     'snake' => array(
+    |     'snake' => [
     |         'callback' => 'snake_case'
-    |     )
+    |     ]
     | </code>
     |
     */
-    'filters' => array(
+    'filters' => [],
 
-    ),
-
-);
+];

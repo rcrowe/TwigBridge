@@ -38,8 +38,8 @@ class Functions extends Loader
      */
     public function getFunctions()
     {
-        $load      = $this->config->get('twigbridge::extensions.functions', array());
-        $functions = array();
+        $load      = $this->config->get('twigbridge::extensions.functions', []);
+        $functions = [];
 
         foreach ($load as $method => $callable) {
             list($method, $callable, $options) = $this->parseCallable($method, $callable);
