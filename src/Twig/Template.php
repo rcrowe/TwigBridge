@@ -41,10 +41,14 @@ abstract class Template extends Twig_Template
      *
      * @param $context Old context.
      *
-     * @return array New context.
+     * @return array New context if __env is passed in, else the passed in context is returned.
      */
     public function fireEvents($context)
     {
+        if (!isset($context['__env'])) {
+            return $context;
+        }
+
         $env  = $context['__env'];
         $view = new View(
             $env,

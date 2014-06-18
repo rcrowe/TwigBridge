@@ -13,6 +13,7 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
+use Twig_Loader_String;
 use Twig_Environment;
 
 /**
@@ -52,15 +53,7 @@ class ServiceProvider extends ViewServiceProvider
             $this->app['twig.extension'],
             'twig',
             function () {
-                $bridge = $this->app['twig.bridge'];
-                $lexer  = $this->app['twig.lexer'];
-
-                $bridge->addExtension($this->app['twig.extensions']);
-
-                if (is_a($lexer, 'Twig_LexerInterface')) {
-                    $bridge->setLexer($lexer);
-                }
-
+                $this->app['twig.bridge'];
                 return $this->app['twig.engine'];
             }
         );
@@ -100,7 +93,16 @@ class ServiceProvider extends ViewServiceProvider
     protected function registerTwigBridge()
     {
         $this->app->bindIf('twig.bridge', function () {
-            return new Bridge($this->app);
+            $bridge = new Bridge($this->app);
+            $lexer  = $this->app['twig.lexer'];
+
+            $bridge->addExtension($this->app['twig.extensions']);
+
+            if (is_a($lexer, 'Twig_LexerInterface')) {
+                $bridge->setLexer($lexer);
+            }
+
+            return $bridge;
         });
     }
 
@@ -126,6 +128,7 @@ class ServiceProvider extends ViewServiceProvider
             return new Twig_Loader_Chain([
                 $this->app['twig.loader.path'],
                 $this->app['twig.loader.viewfinder'],
+                new Twig_Loader_String,
             ]);
         });
     }

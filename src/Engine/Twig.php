@@ -94,7 +94,7 @@ class Twig implements EngineInterface
         }
 
         if ($template instanceof Template) {
-            //Events are already fired by the View Environment
+            // Events are already fired by the View Environment
             $template->setFiredEvents(true);
         }
 
