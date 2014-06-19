@@ -71,9 +71,15 @@ class Compile extends Command
      */
     public function fire()
     {
+        $this->twig = $this->laravel['twig.bridge'];
+        $result     = $this->call('twig:lint');
+
+        if ($result > 0) {
+            return $this->error('Unable to compile. Exiting!');
+        }
+
         $this->line('Compiling Twig templates. Environment: <comment>'.$this->laravel->make('env').'</comment>');
 
-        $this->twig = $this->laravel['twig.bridge'];
         $finder     = $this->laravel['view']->getFinder();
         $paths      = [];
 
