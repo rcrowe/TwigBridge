@@ -27,7 +27,16 @@ Once Composer has installed or updated your packages you need to register TwigBr
 'TwigBridge\ServiceProvider'
 ```
 
-**TODO:** Add facade instructions.
+You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig_Environment).
+
+```php
+'Twig' => 'TwigBridge\Facade\Twig',
+```
+
+```php
+Twig::addExtension('TwigBridge\Extension\Loader\Functions');
+Twig::render('mytemplate', $data);
+```
 
 Configuration
 =============
