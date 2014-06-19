@@ -74,6 +74,10 @@ class ServiceProvider extends ViewServiceProvider
             return new Command\Clean;
         });
 
+        $this->app->bindIf('command.twig.compile', function () {
+            return new Command\Compile;
+        });
+
         $this->app->bindIf('command.twig.lint', function () {
             return new Command\Lint;
         });
@@ -81,6 +85,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->commands(
             'command.twig',
             'command.twig.clean',
+            'command.twig.compile',
             'command.twig.lint'
         );
     }
@@ -228,6 +233,7 @@ class ServiceProvider extends ViewServiceProvider
             'twig.templates',
             'command.twig',
             'command.twig.clean',
+            'command.twig.compile',
             'command.twig.lint',
         );
     }
