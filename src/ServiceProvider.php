@@ -205,9 +205,15 @@ class ServiceProvider extends ViewServiceProvider
             });
         }
 
+        $this->app->bindIf('twig.compiler', function () {
+            return new Compiler\Twig(
+                $this->app['twig']
+            );
+        });
+
         $this->app->bindIf('twig.engine', function () {
             return new Engine\Twig(
-                $this->app['twig'],
+                $this->app['twig.compiler'],
                 $this->app['config']->get('twigbridge::twig.globals', [])
             );
         });
@@ -223,6 +229,7 @@ class ServiceProvider extends ViewServiceProvider
         return array(
             'twig',
             'twig.bridge',
+            'twig.compiler',
             'twig.engine',
             'twig.extensions',
             'twig.options',
