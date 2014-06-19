@@ -14,9 +14,13 @@ namespace TwigBridge\Engine;
 use Illuminate\View\Compilers\CompilerInterface;
 use Twig_Environment;
 use Twig_Error_Loader;
+use Exception;
 use InvalidArgumentException;
 use TwigBridge\Twig\Template;
 
+/**
+ * Compiles Twig templates.
+ */
 class Compiler implements CompilerInterface
 {
     /**
@@ -71,7 +75,12 @@ class Compiler implements CompilerInterface
      */
     public function compile($path)
     {
-        $this->load($path);
+        try {
+            $this->load($path);
+        } catch (Exception $ex) {
+            // Unable to compile
+            // Try running `php artisan twig:lint`
+        }
     }
 
     /**

@@ -13,6 +13,9 @@ namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\CompilerEngine;
 
+/**
+ * View engine for Twig files.
+ */
 class Twig extends CompilerEngine
 {
     /**
