@@ -16,16 +16,18 @@ use Twig_Environment;
 use Twig_Error_Loader;
 use InvalidArgumentException;
 use TwigBridge\Twig\Template;
+use Illuminate\View\Engines\CompilerEngine;
+use TwigBridge\Compiler\Twig as TwigCompiler;
 
 /**
  * Twig engine for Laravel.
  */
-class Twig implements EngineInterface
+class Twig extends CompilerEngine
 {
     /**
-     * @var \Twig_Environment
+     * @var TwigCompiler
      */
-    protected $twig;
+    protected $compiler;
 
     /**
      * @var array Global data that is always passed to the template.
@@ -35,23 +37,13 @@ class Twig implements EngineInterface
     /**
      * Create a new instance of the Twig engine.
      *
-     * @param \Twig_Environment $twig
+     * @param TwigCompiler      $compiler
      * @param array             $globalData
      */
-    public function __construct(Twig_Environment $twig, array $globalData = [])
+    public function __construct(TwigCompiler $compiler, array $globalData = [])
     {
-        $this->twig       = $twig;
+        $this->compiler   = $compiler;
         $this->globalData = $globalData;
-    }
-
-    /**
-     * Returns the instance of Twig used to render the template.
-     *
-     * @return \Twig_Environment
-     */
-    public function getTwig()
-    {
-        return $this->twig;
     }
 
     /**
@@ -88,7 +80,7 @@ class Twig implements EngineInterface
     public function load($name)
     {
         try {
-            $template = $this->twig->loadTemplate($name);
+            $template = $this->compiler->getTwig()->loadTemplate($name);
         } catch (Twig_Error_Loader $e) {
             throw new InvalidArgumentException("Error in $name: ". $e->getMessage(), $e->getCode(), $e);
         }
