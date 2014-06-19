@@ -27,11 +27,6 @@ class CommandTest extends Base
         $this->assertEquals(get_class($this->app['command.twig.clean']), 'TwigBridge\Command\Clean');
     }
 
-    public function testCompileInstance()
-    {
-        $this->assertEquals(get_class($this->app['command.twig.compile']), 'TwigBridge\Command\Compile');
-    }
-
     public function testLintInstance()
     {
         $this->assertEquals(get_class($this->app['command.twig.lint']), 'TwigBridge\Command\Lint');

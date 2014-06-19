@@ -74,10 +74,6 @@ class ServiceProvider extends ViewServiceProvider
             return new Command\Clean;
         });
 
-        $this->app->bindIf('command.twig.compile', function () {
-            return new Command\Compile;
-        });
-
         $this->app->bindIf('command.twig.lint', function () {
             return new Command\Lint;
         });
@@ -85,7 +81,6 @@ class ServiceProvider extends ViewServiceProvider
         $this->commands(
             'command.twig',
             'command.twig.clean',
-            'command.twig.compile',
             'command.twig.lint'
         );
     }
@@ -205,9 +200,13 @@ class ServiceProvider extends ViewServiceProvider
             });
         }
 
+        $this->app->bindIf('twig.compiler', function () {
+            return new Engine\Compiler($this->app['twig']);
+        });
+
         $this->app->bindIf('twig.engine', function () {
             return new Engine\Twig(
-                $this->app['twig'],
+                $this->app['twig.compiler'],
                 $this->app['config']->get('twigbridge::twig.globals', [])
             );
         });
@@ -233,7 +232,6 @@ class ServiceProvider extends ViewServiceProvider
             'twig.templates',
             'command.twig',
             'command.twig.clean',
-            'command.twig.compile',
             'command.twig.lint',
         );
     }
