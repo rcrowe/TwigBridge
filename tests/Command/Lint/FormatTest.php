@@ -22,6 +22,12 @@ class FormatTest extends Base
 
         $command->setLaravel($app);
 
+        $finder = m::mock('Symfony\Component\Finder\Finder');
+        $finder->shouldReceive('files')->andReturn($finder);
+        $finder->shouldReceive('in')->andReturn($finder);
+        $finder->shouldReceive('name')->andReturn([]);
+        $command->setFinder($finder);
+
         $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
         $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
@@ -36,6 +42,12 @@ class FormatTest extends Base
         $app     = $this->getApplication();
 
         $command->setLaravel($app);
+
+        $finder = m::mock('Symfony\Component\Finder\Finder');
+        $finder->shouldReceive('files')->andReturn($finder);
+        $finder->shouldReceive('in')->andReturn($finder);
+        $finder->shouldReceive('name')->andReturn([]);
+        $command->setFinder($finder);
 
         $input  = new \Symfony\Component\Console\Input\ArrayInput([
             '--format' => 'json'
@@ -56,6 +68,12 @@ class FormatTest extends Base
         $app     = $this->getApplication();
 
         $command->setLaravel($app);
+
+        $finder = m::mock('Symfony\Component\Finder\Finder');
+        $finder->shouldReceive('files')->andReturn($finder);
+        $finder->shouldReceive('in')->andReturn($finder);
+        $finder->shouldReceive('name')->andReturn([]);
+        $command->setFinder($finder);
 
         $input  = new \Symfony\Component\Console\Input\ArrayInput([
             '--format' => 'foo'

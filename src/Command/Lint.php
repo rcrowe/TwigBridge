@@ -14,6 +14,7 @@ namespace TwigBridge\Command;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 use Twig_Error_Loader;
 use Twig_Error;
 use RuntimeException;
@@ -40,11 +41,37 @@ class Lint extends Command
     protected $description = 'Lints Twig templates';
 
     /**
+     * @var \TwigBridge\Bridge
+     */
+    protected $twig;
+
+    protected $finder;
+
+    /**
+     * @return \Symfony\Component\Finder\Finder
+     */
+    public function getFinder(array $paths)
+    {
+        $finder = (empty($this->finder)) ? Finder::create() : $this->finder;
+
+        return $finder->files()->in($paths)->name('*.'.$this->laravel['twig.extension']);
+    }
+
+    /**
+     * @param \Symfony\Component\Finder\Finder $finder
+     */
+    public function setFinder(Finder $finder)
+    {
+        $this->finder = $finder;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function fire()
     {
-        $format = $this->option('format');
+        $this->twig = $this->laravel['twig.bridge'];
+        $format     = $this->option('format');
 
         // Check STDIN for the template
         if (ftell(STDIN) === 0) {
@@ -86,10 +113,8 @@ class Lint extends Command
     protected function getFiles($filename, array $files, array $directories)
     {
         // Get files from passed in options
-        $search    = $files;
-        $extension = $this->laravel['twig.extension'];
-        $finder    = $this->laravel['view']->getFinder();
-        $paths     = $finder->getPaths();
+        $search = $files;
+        $paths  = $this->laravel['view']->getFinder()->getPaths();
 
         if (!empty($filename)) {
             $search[] = $filename;
@@ -108,9 +133,7 @@ class Lint extends Command
 
             if (!empty($search_directories)) {
                 // Get those files from the search directory
-                $finder->files()->in($search_directories)->name('*.'.$extension);
-
-                foreach ($finder as $file) {
+                foreach ($this->getFinder($search_directories) as $file) {
                     $search[] = $file->getRealPath();
                 }
             }
@@ -118,9 +141,7 @@ class Lint extends Command
 
         // If no files passed, use the view paths
         if (empty($search)) {
-            $finder->files()->in($paths)->name('*.'.$extension);
-
-            foreach ($finder as $file) {
+            foreach ($this->getFinder($paths) as $file) {
                 $search[] = $file->getRealPath();
             }
         }
@@ -150,10 +171,8 @@ class Lint extends Command
      */
     protected function validate($template, $file = null)
     {
-        $twig = $this->laravel['twig'];
-
         try {
-            $twig->parse($twig->tokenize($template, $file));
+            $this->twig->parse($this->twig->tokenize($template, $file));
         } catch (Twig_Error $e) {
             return [
                 'template'  => $template,
