@@ -5,6 +5,7 @@ namespace TwigBridge\Tests\Engine;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Engine\Twig as Engine;
+use TwigBridge\Engine\Compiler;
 use Twig_Environment;
 use Twig_Loader_Array;
 use InvalidArgumentException;
@@ -18,71 +19,53 @@ class TwigTest extends Base
 
     public function testInstance()
     {
-        $global = array('name' => 'Rob');
-        $engine = new Engine(new Twig_Environment, $global);
+        $global   = array('name' => 'Rob');
+        $compiler = new Compiler(new Twig_Environment);
+        $engine   = new Engine($compiler, $global);
 
-        $this->assertInstanceOf('Twig_Environment', $engine->getTwig());
+        $this->assertInstanceOf('Illuminate\View\Engines\CompilerEngine', $engine);
         $this->assertEquals($global, $engine->getGlobalData());
     }
 
     public function testSetGlobalData()
     {
-        $global = array('package' => 'TwigBridge');
-        $engine = new Engine(new Twig_Environment);
+        $global   = array('package' => 'TwigBridge');
+        $compiler = new Compiler(new Twig_Environment);
+        $engine   = new Engine($compiler);
+
         $engine->setGlobalData($global);
 
         $this->assertEquals($global, $engine->getGlobalData());
     }
 
-    public function testLoad()
+    public function testGet()
     {
-        $loader = new Twig_Loader_Array(array(
-            'index.html' => 'Hello {{ name }}',
-        ));
-        $twig     = new Twig_Environment($loader);
-        $engine   = new Engine($twig);
-        $template = $engine->load('index.html');
+        $path = __DIR__;
+        $data = ['foo' => 'bar'];
 
-        $this->assertEquals('index.html', $template->getTemplateName());
-        $this->assertEquals('Hello Rob', $template->render(array('name' => 'Rob')));
-    }
-
-    public function testTemplateNotFound()
-    {
-        $loader = new Twig_Loader_Array(array(
-            'index.html' => 'Hello {{ name }',
-        ));
-        $twig     = new Twig_Environment($loader);
-        $engine   = new Engine($twig);
-
-        try {
-            $engine->load('home.html');
-        } catch (InvalidArgumentException $e) {
-            $this->assertEquals('Error in home.html: Template "home.html" is not defined.', $e->getMessage());
-        }
-    }
-
-    public function testLoadTemplate()
-    {
-        $twig     = m::mock('Twig_Environment');
         $template = m::mock('TwigBridge\Twig\Template');
+        $template->shouldReceive('render')->once()->with($data);
 
-        $twig->shouldReceive('loadTemplate')->andReturn($template);
-        $template->shouldReceive('setFiredEvents')->with(true)->once();
+        $compiler = m::mock('TwigBridge\Engine\Compiler');
+        $compiler->shouldReceive('compile')->once()->with($path)->andReturn($template);
 
-        $engine   = new Engine($twig);
-        $response = $engine->load('home.html');
+        $engine = new Engine($compiler);
+        $engine->get($path, $data);
     }
 
     public function testGetWithGlobalData()
     {
-        $loader = new Twig_Loader_Array(array(
-            'index.html' => 'Hello {{ first }} {{ last }}',
-        ));
-        $twig     = new Twig_Environment($loader);
-        $engine   = new Engine($twig, array('last' => 'Crowe'));
-        $template = $engine->get('index.html', array('first' => 'Rob'));
+        $path       = __DIR__;
+        $globalData = ['package' => 'TwigBridge', 'foo' => 'baz'];
+        $data       = ['foo' => 'bar'];
 
-        $this->assertEquals('Hello Rob Crowe', $template);
+        $template = m::mock('TwigBridge\Twig\Template');
+        $template->shouldReceive('render')->once()->with(array_merge($globalData, $data));
+
+        $compiler = m::mock('TwigBridge\Engine\Compiler');
+        $compiler->shouldReceive('compile')->once()->with($path)->andReturn($template);
+
+        $engine = new Engine($compiler, $globalData);
+        $engine->get($path, $data);
     }
 }

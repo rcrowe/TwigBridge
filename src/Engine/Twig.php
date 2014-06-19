@@ -11,47 +11,29 @@
 
 namespace TwigBridge\Engine;
 
-use Illuminate\View\Engines\EngineInterface;
-use Twig_Environment;
-use Twig_Error_Loader;
-use InvalidArgumentException;
-use TwigBridge\Twig\Template;
+use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\View\Compilers\CompilerInterface;
 
-/**
- * Twig engine for Laravel.
- */
-class Twig implements EngineInterface
+class Twig extends CompilerEngine
 {
-    /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
-
     /**
      * @var array Global data that is always passed to the template.
      */
     protected $globalData = [];
 
     /**
-     * Create a new instance of the Twig engine.
+     * Create a new Twig view engine instance.
      *
-     * @param \Twig_Environment $twig
-     * @param array             $globalData
+     * @param \Illuminate\View\Compilers\CompilerInterface $compiler
+     * @param array                                        $globalData
+     *
+     * @return void
      */
-    public function __construct(Twig_Environment $twig, array $globalData = [])
+    public function __construct(CompilerInterface $compiler, array $globalData = [])
     {
-        $this->twig       = $twig;
-        $this->globalData = $globalData;
-    }
+        parent::__construct($compiler);
 
-    /**
-     * Returns the instance of Twig used to render the template.
-     *
-     * @return \Twig_Environment
-     */
-    public function getTwig()
-    {
-        return $this->twig;
+        $this->globalData = $globalData;
     }
 
     /**
@@ -77,31 +59,6 @@ class Twig implements EngineInterface
     }
 
     /**
-     * Loads the given template.
-     *
-     * @param string $name A template name
-     *
-     * @throws \InvalidArgumentException Thrown if the template does not exist.
-     *
-     * @return \Twig_TemplateInterface
-     */
-    public function load($name)
-    {
-        try {
-            $template = $this->twig->loadTemplate($name);
-        } catch (Twig_Error_Loader $e) {
-            throw new InvalidArgumentException("Error in $name: ". $e->getMessage(), $e->getCode(), $e);
-        }
-
-        if ($template instanceof Template) {
-            // Events are already fired by the View Environment
-            $template->setFiredEvents(true);
-        }
-
-        return $template;
-    }
-
-    /**
      * Get the evaluated contents of the view.
      *
      * @param string $path Full file path to Twig template.
@@ -111,9 +68,8 @@ class Twig implements EngineInterface
      */
     public function get($path, array $data = [])
     {
-        $data = array_merge($this->getGlobalData(), $data);
+        $data = array_merge($this->globalData, $data);
 
-        // Render template
-        return $this->load($path)->render($data);
+        return $this->compiler->compile($path)->render($data);
     }
 }
