@@ -28,13 +28,15 @@ class BindingsTest extends Base
 
     public function testBindIf()
     {
-        $app      = $this->getApplication();
+        $app = $this->getApplication();
+
         $provider = new ServiceProvider($app);
         $provides = $provider->provides();
 
         foreach ($provides as $name) {
-            $app      = $this->getApplication();
-            $provider = new ServiceProvider($app);
+            $app                    = $this->getApplication();
+            $app['twig.extensions'] = [];
+            $provider               = new ServiceProvider($app);
             $provider->boot();
 
             $this->assertNotNull($app[$name]);

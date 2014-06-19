@@ -10,7 +10,9 @@ class BridgeTest extends Base
 {
     public function testInstance()
     {
-        $app      = $this->getApplication();
+        $app                    = $this->getApplication();
+        $app['twig.extensions'] = [];
+
         $provider = new ServiceProvider($app);
         $provider->boot();
 
@@ -22,6 +24,7 @@ class BridgeTest extends Base
         $app = $this->getApplication();
         $app['twig.lexer'] = m::mock('Twig_LexerInterface');
         $app['twig.lexer']->shouldReceive('fooBar')->andReturn('baz');
+        $app['twig.extensions'] = [];
 
         $provider = new ServiceProvider($app);
         $provider->boot();
@@ -33,8 +36,9 @@ class BridgeTest extends Base
 
     public function testAddExtensions()
     {
-        $app      = $this->getApplication();
-        $provider = new ServiceProvider($app);
+        $app                    = $this->getApplication();
+        $app['twig.extensions'] = [];
+        $provider               = new ServiceProvider($app);
         $provider->boot();
 
         $called = false;

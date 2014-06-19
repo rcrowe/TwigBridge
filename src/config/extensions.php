@@ -28,6 +28,17 @@ return [
         'TwigBridge\Extension\Loader\Facades',
         'TwigBridge\Extension\Loader\Filters',
         'TwigBridge\Extension\Loader\Functions',
+
+        'TwigBridge\Extension\Laravel\Auth',
+        'TwigBridge\Extension\Laravel\Config',
+        'TwigBridge\Extension\Laravel\Form',
+        'TwigBridge\Extension\Laravel\Html',
+        'TwigBridge\Extension\Laravel\Session',
+        'TwigBridge\Extension\Laravel\String',
+        'TwigBridge\Extension\Laravel\Translator',
+        'TwigBridge\Extension\Laravel\Url',
+
+        // 'TwigBridge\Extension\Laravel\Legacy\Facades',
     ],
 
     /*
@@ -57,22 +68,7 @@ return [
     | in order to be marked as safe.
     |
     */
-    'facades' => [
-        'Auth',
-        'Config',
-        'Form' => [
-            'is_safe' => [
-                'open',
-            ],
-        ],
-        'HTML',
-        'Input',
-        'Lang',
-        'Route',
-        'Session',
-        'Str',
-        'URL',
-    ],
+    'facades' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -102,21 +98,7 @@ return [
     | </code>
     |
     */
-    'functions' => [
-        'route',
-        'action',
-        'asset',
-        'url',
-        'link_to'        => ['is_safe' => ['html']],
-        'link_to_asset'  => ['is_safe' => ['html']],
-        'link_to_route'  => ['is_safe' => ['html']],
-        'link_to_action' => ['is_safe' => ['html']],
-        'secure_asset'   => ['is_safe' => ['html']],
-        'secure_url',
-        'trans',
-        'trans_choice',
-        'csrf_token',
-    ],
+    'functions' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -146,13 +128,6 @@ return [
     | </code>
     |
     */
-    'filters' => [
-        'camel_case',
-        'snake_case',
-        'studly_case',
-        'str_finish',
-        'str_plural',
-        'str_singular',
-    ],
+    'filters' => [],
 
 ];

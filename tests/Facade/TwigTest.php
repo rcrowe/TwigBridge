@@ -20,6 +20,8 @@ class TwigTest extends Base
         $app = $this->getApplication();
         $app['config']->getLoader()->shouldReceive('addNamespace');
 
+        $app['twig.extensions'] = [];
+
         $provider = new ServiceProvider($app);
         $provider->register();
         $provider->boot();

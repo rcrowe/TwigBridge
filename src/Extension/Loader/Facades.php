@@ -29,9 +29,7 @@ use TwigBridge\Extension\Loader\Facade\Caller;
 class Facades extends Loader
 {
     /**
-     * Returns the name of the extension.
-     *
-     * @return string Extension name.
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -39,11 +37,7 @@ class Facades extends Loader
     }
 
     /**
-     * Get globals this extension provides.
-     *
-     * Currently only returns facades.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getGlobals()
     {
