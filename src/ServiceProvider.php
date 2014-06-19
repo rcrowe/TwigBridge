@@ -13,7 +13,7 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
-use Twig_Loader_String;
+use Twig_Loader_Array;
 use Twig_Environment;
 
 /**
@@ -113,6 +113,15 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerTwigLoaders()
     {
+        // The array used in the ArrayLoader
+        $this->app->bindIf('twig.templates', function () {
+            return [];
+        });
+
+        $this->app->bindIf('twig.loader.array', function ($app) {
+            return new Twig_Loader_Array($app['twig.templates']);
+        });
+
         $this->app->bindIf('twig.loader.path', function () {
             return new Twig\Loader\Path;
         });
@@ -126,12 +135,9 @@ class ServiceProvider extends ViewServiceProvider
 
         $this->app->bindIf('twig.loader', function () {
             return new Twig_Loader_Chain([
+                $this->app['twig.loader.array'],
                 $this->app['twig.loader.path'],
                 $this->app['twig.loader.viewfinder'],
-
-                // View::make(...) will never get this far
-                // but it allows Twig::render(...) to render a string
-                new Twig_Loader_String,
             ]);
         });
     }
@@ -216,8 +222,10 @@ class ServiceProvider extends ViewServiceProvider
             'twig.extensions',
             'twig.options',
             'twig.loader',
+            'twig.loader.array',
             'twig.loader.path',
             'twig.loader.viewfinder',
+            'twig.templates',
             'command.twig',
             'command.twig.clean',
             'command.twig.lint',
