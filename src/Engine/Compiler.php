@@ -28,7 +28,6 @@ class Compiler implements CompilerInterface
      * Create a new instance of the Twig compiler.
      *
      * @param \Twig_Environment $twig
-     * @param array             $globalData
      */
     public function __construct(Twig_Environment $twig)
     {
@@ -46,7 +45,7 @@ class Compiler implements CompilerInterface
     }
 
     /**
-     * Twig handles this for us.
+     * Twig handles this for us. Here to satisfy interface.
      *
      * {@inheritdoc}
      */
@@ -56,7 +55,7 @@ class Compiler implements CompilerInterface
     }
 
     /**
-     * Twig handles this for us.
+     * Twig handles this for us. Here to satisfy interface.
      *
      * {@inheritdoc}
      */
@@ -68,13 +67,21 @@ class Compiler implements CompilerInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function compile($path)
+    {
+        $this->load($path);
+    }
+
+    /**
      * Compile the view at the given path.
      *
      * @param string $path
      *
      * @return string \TwigBridge\Twig\Template
      */
-    public function compile($path)
+    public function load($path)
     {
         // Load template
         try {

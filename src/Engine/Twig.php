@@ -12,7 +12,6 @@
 namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\CompilerEngine;
-use Illuminate\View\Compilers\CompilerInterface;
 
 class Twig extends CompilerEngine
 {
@@ -24,12 +23,12 @@ class Twig extends CompilerEngine
     /**
      * Create a new Twig view engine instance.
      *
-     * @param \Illuminate\View\Compilers\CompilerInterface $compiler
-     * @param array                                        $globalData
+     * @param \TwigBridge\Engine\Compiler $compiler
+     * @param array                       $globalData
      *
      * @return void
      */
-    public function __construct(CompilerInterface $compiler, array $globalData = [])
+    public function __construct(Compiler $compiler, array $globalData = [])
     {
         parent::__construct($compiler);
 
@@ -70,6 +69,6 @@ class Twig extends CompilerEngine
     {
         $data = array_merge($this->globalData, $data);
 
-        return $this->compiler->compile($path)->render($data);
+        return $this->compiler->load($path)->render($data);
     }
 }

@@ -47,7 +47,7 @@ class TwigTest extends Base
         $template->shouldReceive('render')->once()->with($data);
 
         $compiler = m::mock('TwigBridge\Engine\Compiler');
-        $compiler->shouldReceive('compile')->once()->with($path)->andReturn($template);
+        $compiler->shouldReceive('load')->once()->with($path)->andReturn($template);
 
         $engine = new Engine($compiler);
         $engine->get($path, $data);
@@ -63,7 +63,7 @@ class TwigTest extends Base
         $template->shouldReceive('render')->once()->with(array_merge($globalData, $data));
 
         $compiler = m::mock('TwigBridge\Engine\Compiler');
-        $compiler->shouldReceive('compile')->once()->with($path)->andReturn($template);
+        $compiler->shouldReceive('load')->once()->with($path)->andReturn($template);
 
         $engine = new Engine($compiler, $globalData);
         $engine->get($path, $data);
