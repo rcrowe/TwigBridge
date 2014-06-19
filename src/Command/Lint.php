@@ -45,9 +45,16 @@ class Lint extends Command
      */
     protected $twig;
 
+    /**
+     * @var \Symfony\Component\Finder\Finder
+     */
     protected $finder;
 
     /**
+     * Get a finder instance of Twig files in the specified directories.
+     *
+     * @param array $paths Paths to search for files in.
+     *
      * @return \Symfony\Component\Finder\Finder
      */
     public function getFinder(array $paths)
@@ -58,7 +65,11 @@ class Lint extends Command
     }
 
     /**
+     * Set the finder used to search for Twig files.
+     *
      * @param \Symfony\Component\Finder\Finder $finder
+     *
+     * @return void
      */
     public function setFinder(Finder $finder)
     {
