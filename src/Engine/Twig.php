@@ -11,7 +11,11 @@
 
 namespace TwigBridge\Engine;
 
+use Twig_Error;
+use ErrorException;
 use Illuminate\View\Engines\CompilerEngine;
+use TwigBridge\Twig\Loader\Viewfinder;
+
 
 /**
  * View engine for Twig files.
@@ -24,17 +28,23 @@ class Twig extends CompilerEngine
     protected $globalData = [];
 
     /**
+     * @var Viewfinder The ViewFinder Loader, to find the original file
+     */
+    protected $finder = [];
+
+    /**
      * Create a new Twig view engine instance.
      *
      * @param \TwigBridge\Engine\Compiler $compiler
-     * @param array                       $globalData
+     * @param \TwigBridge\Twig\Loader\Viewfinder $finder
+     * @param array $globalData
      *
-     * @return void
      */
-    public function __construct(Compiler $compiler, array $globalData = [])
+    public function __construct(Compiler $compiler, Viewfinder $finder, array $globalData = [])
     {
         parent::__construct($compiler);
 
+        $this->finder     = $finder;
         $this->globalData = $globalData;
     }
 
@@ -71,7 +81,38 @@ class Twig extends CompilerEngine
     public function get($path, array $data = [])
     {
         $data = array_merge($this->globalData, $data);
+        $template = $this->compiler->load($path);
 
-        return $this->compiler->load($path)->render($data);
+        try {
+            return $template->render($data);
+        } catch (Twig_Error $e) {
+            $this->handleTwigError($e);
+        }
+
+    }
+
+    /**
+     * Handle a TwigError Exception.
+     *
+     * @param  Twig_Error  $e
+     *
+     * @throws Twig_Error|ErrorException
+     */
+    protected function handleTwigError($e)
+    {
+        $templateFile = $e->getTemplateFile();
+        $templateLine = $e->getTemplateLine();
+
+        if ($templateFile && file_exists($templateFile)) {
+            $file = $templateFile;
+        } elseif($templateFile) {
+            $file = $this->finder->findTemplate($templateFile);
+        }
+
+        if ($file) {
+            $e = new ErrorException($e->getMessage(), 0, 1, $file, $templateLine, $e);
+        }
+
+        throw $e;
     }
 }
