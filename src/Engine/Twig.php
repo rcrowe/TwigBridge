@@ -16,7 +16,6 @@ use ErrorException;
 use Illuminate\View\Engines\CompilerEngine;
 use TwigBridge\Twig\Loader\Viewfinder;
 
-
 /**
  * View engine for Twig files.
  */
@@ -105,7 +104,7 @@ class Twig extends CompilerEngine
 
         if ($templateFile && file_exists($templateFile)) {
             $file = $templateFile;
-        } elseif($templateFile) {
+        } elseif ($templateFile) {
             $file = $this->finder->findTemplate($templateFile);
         }
 
