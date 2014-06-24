@@ -61,8 +61,22 @@ class Translator extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('trans', [$this->translator, 'trans'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
-            new Twig_SimpleFunction('trans_choice', [$this->translator, 'transChoice'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new Twig_SimpleFilter(
+                'trans', 
+                [$this->translator, 'trans'], 
+                [
+                    'pre_escape' => 'html', 
+                    'is_safe' => ['html'],
+                ]
+            ),
+            new Twig_SimpleFunction(
+                'trans_choice', 
+                [$this->translator, 'transChoice'], 
+                [
+                    'pre_escape' => 'html', 
+                    'is_safe' => ['html'],
+                ]
+            ),
         ];
     }
 }

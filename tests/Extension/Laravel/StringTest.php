@@ -89,16 +89,6 @@ class StringTest extends Base
         }
     }
 
-    public function testIsSafe()
-    {
-        $string  = $this->getString();
-        $filters = $string->getFilters();
-        $mock    = m::mock('Twig_Node');
-
-        foreach ($filters as $filter) {
-            $this->assertTrue(in_array('html', $filter->getSafe($mock)));
-        }
-    }
 
     protected function getString()
     {
