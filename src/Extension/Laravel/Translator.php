@@ -66,7 +66,7 @@ class Translator extends Twig_Extension
                 [$this->translator, 'trans'],
                 [
                     'pre_escape' => 'html',
-                    'is_safe' => ['html'],
+                    'is_safe'    => ['html'],
                 ]
             ),
             new Twig_SimpleFunction(
@@ -74,7 +74,7 @@ class Translator extends Twig_Extension
                 [$this->translator, 'transChoice'],
                 [
                     'pre_escape' => 'html',
-                    'is_safe' => ['html'],
+                    'is_safe'    => ['html'],
                 ]
             ),
         ];
