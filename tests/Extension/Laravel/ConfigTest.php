@@ -30,24 +30,6 @@ class ConfigTest extends Base
         }
     }
 
-    public function testIsSafe()
-    {
-        $config    = $this->getConfig();
-        $functions = $config->getFunctions();
-        $node      = m::mock('Twig_Node');
-        $check     = [
-            'config_get',
-        ];
-
-        foreach ($functions as $function) {
-            if (!in_array($function->getName(), $check)) {
-                continue;
-            }
-
-            $this->assertTrue(in_array('html', $function->getSafe($node)));
-        }
-    }
-
     protected function getConfig()
     {
         return new Config(m::mock('Illuminate\Config\Repository'));
