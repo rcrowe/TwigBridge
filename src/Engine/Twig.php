@@ -12,6 +12,9 @@
 namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\CompilerEngine;
+use TwigBridge\Twig\Loader\Viewfinder;
+use Twig_Error;
+use ErrorException;
 
 /**
  * View engine for Twig files.
@@ -19,22 +22,31 @@ use Illuminate\View\Engines\CompilerEngine;
 class Twig extends CompilerEngine
 {
     /**
-     * @var array Global data that is always passed to the template.
+     * Data that is passed to all templates.
+     *
+     * @var array
      */
     protected $globalData = [];
 
     /**
+     * Used to find the file that has failed.
+     *
+     * @var \TwigBridge\Twig\Loader\Viewfinder
+     */
+    protected $finder = [];
+
+    /**
      * Create a new Twig view engine instance.
      *
-     * @param \TwigBridge\Engine\Compiler $compiler
-     * @param array                       $globalData
-     *
-     * @return void
+     * @param \TwigBridge\Engine\Compiler        $compiler
+     * @param \TwigBridge\Twig\Loader\Viewfinder $finder
+     * @param array                              $globalData
      */
-    public function __construct(Compiler $compiler, array $globalData = [])
+    public function __construct(Compiler $compiler, Viewfinder $finder, array $globalData = [])
     {
         parent::__construct($compiler);
 
+        $this->finder     = $finder;
         $this->globalData = $globalData;
     }
 
@@ -72,6 +84,35 @@ class Twig extends CompilerEngine
     {
         $data = array_merge($this->globalData, $data);
 
-        return $this->compiler->load($path)->render($data);
+        try {
+            return $this->compiler->load($path)->render($data);
+        } catch (Twig_Error $ex) {
+            $this->handleTwigError($ex);
+        }
+    }
+
+    /**
+     * Handle a TwigError exception.
+     *
+     * @param Twig_Error $ex
+     *
+     * @throws Twig_Error|ErrorException
+     */
+    protected function handleTwigError($ex)
+    {
+        $templateFile = $ex->getTemplateFile();
+        $templateLine = $ex->getTemplateLine();
+
+        if ($templateFile && file_exists($templateFile)) {
+            $file = $templateFile;
+        } elseif ($templateFile) {
+            $file = $this->finder->findTemplate($templateFile);
+        }
+
+        if ($file) {
+            $ex = new ErrorException($ex->getMessage(), 0, 1, $file, $templateLine, $ex);
+        }
+
+        throw $ex;
     }
 }
