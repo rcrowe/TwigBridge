@@ -80,24 +80,22 @@ class Twig extends CompilerEngine
     public function get($path, array $data = [])
     {
         $data = array_merge($this->globalData, $data);
-        $template = $this->compiler->load($path);
 
         try {
-            return $template->render($data);
-        } catch (Twig_Error $e) {
-            $this->handleTwigError($e);
+            return $this->compiler->load($path)->render($data);
+        } catch (Twig_Error $ex) {
+            $this->handleTwigError($ex);
         }
-
     }
 
     /**
-     * Handle a TwigError Exception.
+     * Handle a TwigError exception.
      *
-     * @param  Twig_Error  $e
+     * @param Twig_Error $ex
      *
      * @throws Twig_Error|ErrorException
      */
-    protected function handleTwigError($e)
+    protected function handleTwigError($ex)
     {
         $templateFile = $e->getTemplateFile();
         $templateLine = $e->getTemplateLine();
@@ -109,9 +107,9 @@ class Twig extends CompilerEngine
         }
 
         if ($file) {
-            $e = new ErrorException($e->getMessage(), 0, 1, $file, $templateLine, $e);
+            $ex = new ErrorException($e->getMessage(), 0, 1, $file, $templateLine, $e);
         }
 
-        throw $e;
+        throw $ex;
     }
 }
