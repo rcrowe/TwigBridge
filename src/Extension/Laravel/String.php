@@ -69,10 +69,7 @@ class String extends Twig_Extension
                     $name      = Str::camel($name);
 
                     return call_user_func_array([$this->callback, $name], $arguments);
-                },
-                [
-                    'is_safe' => ['html'],
-                ]
+                }
             ),
         ];
     }
@@ -83,9 +80,9 @@ class String extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('camel_case', [$this->callback, 'camel'], ['is_safe' => ['html']]),
-            new Twig_SimpleFilter('snake_case', [$this->callback, 'snake'], ['is_safe' => ['html']]),
-            new Twig_SimpleFilter('studly_case', [$this->callback, 'studly'], ['is_safe' => ['html']]),
+            new Twig_SimpleFilter('camel_case', [$this->callback, 'camel']),
+            new Twig_SimpleFilter('snake_case', [$this->callback, 'snake']),
+            new Twig_SimpleFilter('studly_case', [$this->callback, 'studly']),
             new Twig_SimpleFilter(
                 'str_*',
                 function ($name) {
@@ -93,10 +90,7 @@ class String extends Twig_Extension
                     $name      = Str::camel($name);
 
                     return call_user_func_array([$this->callback, $name], $arguments);
-                },
-                [
-                    'is_safe' => ['html'],
-                ]
+                }
             ),
         ];
     }
