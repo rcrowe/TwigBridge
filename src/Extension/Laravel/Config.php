@@ -50,7 +50,7 @@ class Config extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('config_get', [$this->config, 'get'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('config_has', [$this->config, 'has'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('config_has', [$this->config, 'has']),
         ];
     }
 }

@@ -37,7 +37,6 @@ class ConfigTest extends Base
         $node      = m::mock('Twig_Node');
         $check     = [
             'config_get',
-            'config_has'
         ];
 
         foreach ($functions as $function) {
