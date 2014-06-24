@@ -11,10 +11,10 @@
 
 namespace TwigBridge\Engine;
 
-use Twig_Error;
-use ErrorException;
 use Illuminate\View\Engines\CompilerEngine;
 use TwigBridge\Twig\Loader\Viewfinder;
+use Twig_Error;
+use ErrorException;
 
 /**
  * View engine for Twig files.
@@ -97,8 +97,8 @@ class Twig extends CompilerEngine
      */
     protected function handleTwigError($ex)
     {
-        $templateFile = $e->getTemplateFile();
-        $templateLine = $e->getTemplateLine();
+        $templateFile = $ex->getTemplateFile();
+        $templateLine = $ex->getTemplateLine();
 
         if ($templateFile && file_exists($templateFile)) {
             $file = $templateFile;
@@ -107,7 +107,7 @@ class Twig extends CompilerEngine
         }
 
         if ($file) {
-            $ex = new ErrorException($e->getMessage(), 0, 1, $file, $templateLine, $e);
+            $ex = new ErrorException($ex->getMessage(), 0, 1, $file, $templateLine, $ex);
         }
 
         throw $ex;
