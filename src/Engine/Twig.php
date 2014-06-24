@@ -22,22 +22,25 @@ use ErrorException;
 class Twig extends CompilerEngine
 {
     /**
-     * @var array Global data that is always passed to the template.
+     * Data that is passed to all templates.
+     *
+     * @var array
      */
     protected $globalData = [];
 
     /**
-     * @var Viewfinder The ViewFinder Loader, to find the original file
+     * Used to find the file that has failed.
+     *
+     * @var \TwigBridge\Twig\Loader\Viewfinder
      */
     protected $finder = [];
 
     /**
      * Create a new Twig view engine instance.
      *
-     * @param \TwigBridge\Engine\Compiler $compiler
+     * @param \TwigBridge\Engine\Compiler        $compiler
      * @param \TwigBridge\Twig\Loader\Viewfinder $finder
-     * @param array $globalData
-     *
+     * @param array                              $globalData
      */
     public function __construct(Compiler $compiler, Viewfinder $finder, array $globalData = [])
     {
