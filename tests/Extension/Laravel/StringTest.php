@@ -47,12 +47,12 @@ class StringTest extends Base
         call_user_func($string->getFunctions()[0]->getCallable(), 'foo_bar');
     }
 
-    public function testFunctionIsSafe()
+    public function testFunctionIsNotSafe()
     {
         $string   = $this->getString();
         $function = $string->getFunctions()[0];
 
-        $this->assertTrue(in_array('html', $function->getSafe(m::mock('Twig_Node'))));
+        $this->assertFalse(in_array('html', $function->getSafe(m::mock('Twig_Node'))));
     }
 
     public function testCustomFilters()

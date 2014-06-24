@@ -30,7 +30,7 @@ class TranslatorTest extends Base
         }
     }
 
-    public function testIsSafe()
+    public function testIsNotSafe()
     {
         $translator = $this->getTranslator();
         $functions  = $translator->getFunctions();
@@ -45,7 +45,7 @@ class TranslatorTest extends Base
                 continue;
             }
 
-            $this->assertTrue(in_array('html', $function->getSafe($node)));
+            $this->assertFalse(in_array('html', $function->getSafe($node)));
         }
     }
 
