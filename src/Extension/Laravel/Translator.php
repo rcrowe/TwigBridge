@@ -69,7 +69,7 @@ class Translator extends Twig_Extension
                     'is_safe'    => ['html'],
                 ]
             ),
-            new Twig_SimpleFunction(
+            new Twig_SimpleFilter(
                 'trans_choice',
                 [$this->translator, 'transChoice'],
                 [
