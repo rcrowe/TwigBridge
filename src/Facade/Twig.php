@@ -12,6 +12,10 @@ namespace TwigBridge\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @see \Twig_Environment
+ * @see \TwigBridge\Bridge
+ */
 class Twig extends Facade
 {
     /**
