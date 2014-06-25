@@ -76,51 +76,6 @@ class Bridge
     }
 
     /**
-     * Add a Twig extension.
-     *
-     * <code>
-     *     // Using a string
-     *     Bridge::addExtension('TwigBridge\Extension\Loader\Functions');
-     *
-     *     // Array of extensions
-     *     Bridge::addExtension([
-     *         'TwigBridge\Extension\Loader\Functions',
-     *         'TwigBridge\Extension\Loader\Filters',
-     *         'TwigBridge\Extension\Loader\Facades',
-     *     ]);
-     *
-     *     // Callback
-     *     Bridge::addExtension(function ($app, $twig) {
-     *         return new Twig_Extension_Debug;
-     *     });
-     * </code>
-     *
-     * @param string|array Single or multiple extensions.
-     *
-     * @return void
-     */
-    public function addExtension($extensions)
-    {
-        $twig       = $this->app['twig'];
-        $extensions = (!is_array($extensions)) ? [$extensions] : $extensions;
-
-        foreach ($extensions as $extension) {
-            // Get an instance of the extension
-            // Support for string, closure and an object
-            if (is_string($extension)) {
-                $extension = $this->app->make($extension);
-            } elseif (is_callable($extension)) {
-                $extension = $extension($this->app, $twig);
-            } elseif (!is_a($extension, 'Twig_Extension')) {
-                throw new InvalidArgumentException('Incorrect extension type');
-            }
-
-            // Add extension to twig
-            $twig->addExtension($extension);
-        }
-    }
-
-    /**
      * Lint (check) the syntax of a file on the view paths.
      *
      * @param string $file File to check. Supports dot-syntax.
