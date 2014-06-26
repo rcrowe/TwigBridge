@@ -14,7 +14,6 @@ namespace TwigBridge;
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
 use Twig_Loader_Array;
-use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -44,16 +43,14 @@ class ServiceProvider extends ViewServiceProvider
     public function boot()
     {
         $this->registerCommands();
-        $this->registerTwigBridge();
-        $this->registerTwigLoaders();
-        $this->registerTwigOptions();
-        $this->registerTwigEngine();
+        $this->registerOptions();
+        $this->registerLoaders();
+        $this->registerEngine();
 
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
             'twig',
             function () {
-                $this->app['twig.bridge'];
                 return $this->app['twig.engine'];
             }
         );
@@ -86,23 +83,67 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
-     * Register TwigBridge bindings.
+     * Register Twig config option bindings.
      *
      * @return void
      */
-    protected function registerTwigBridge()
+    protected function registerOptions()
     {
-        $this->app->bindIf('twig.bridge', function () {
-            $bridge = new Bridge($this->app);
-            $lexer  = $this->app['twig.lexer'];
+        $this->app->bindIf('twig.extension', function () {
+            return $this->app['config']->get('twigbridge::twig.extension');
+        });
 
-            $bridge->addExtension($this->app['twig.extensions']);
+        $this->app->bindIf('twig.options', function () {
+            $options = $this->app['config']->get('twigbridge::twig.environment', []);
 
-            if (is_a($lexer, 'Twig_LexerInterface')) {
-                $bridge->setLexer($lexer);
+            // Check whether we have the cache path set
+            if (empty($options['cache'])) {
+                // No cache path set for Twig, lets set to the Laravel views storage folder
+                $options['cache'] = $this->app['path.storage'].'/views/twig';
             }
 
-            return $bridge;
+            return $options;
+        });
+
+        $this->app->bindIf('twig.extensions.config', function () {
+            $load = $this->app['config']->get('twigbridge::extensions.enabled', []);
+
+            // Is debug enabled?
+            // If so enable debug extension
+            $options = $this->app['twig.options'];
+            $isDebug = (bool) (isset($options['debug'])) ? $options['debug'] : false;
+
+            if ($isDebug) {
+                array_unshift($load, 'Twig_Extension_Debug');
+            }
+
+            return $load;
+        });
+
+        $this->app->bindIf('twig.extensions', function () {
+            $load       = $this->app['twig.extensions.config'];
+            $extensions = [];
+
+            // Instantiate extensions
+            foreach ($load as $extension) {
+                // Get an instance of the extension
+                // Support for string, closure and an object
+                if (is_string($extension)) {
+                    $extension = $this->app->make($extension);
+                } elseif (is_callable($extension)) {
+                    $extension = $extension($this->app, $twig);
+                } elseif (!is_a($extension, 'Twig_Extension')) {
+                    throw new InvalidArgumentException('Incorrect extension type');
+                }
+
+                $extensions[] = $extension;
+            }
+
+            return $extensions;
+        });
+
+        $this->app->bindIf('twig.lexer', function () {
+            return null;
         });
     }
 
@@ -111,7 +152,7 @@ class ServiceProvider extends ViewServiceProvider
      *
      * @return void
      */
-    protected function registerTwigLoaders()
+    protected function registerLoaders()
     {
         // The array used in the ArrayLoader
         $this->app->bindIf('twig.templates', function () {
@@ -143,60 +184,36 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
-     * Register Twig config option bindings.
-     *
-     * @return void
-     */
-    protected function registerTwigOptions()
-    {
-        $this->app->bindIf('twig.extension', function () {
-            return $this->app['config']->get('twigbridge::twig.extension');
-        });
-
-        $this->app->bindIf('twig.options', function () {
-            $options = $this->app['config']->get('twigbridge::twig.environment', []);
-
-            // Check whether we have the cache path set
-            if (empty($options['cache'])) {
-                // No cache path set for Twig, lets set to the Laravel views storage folder
-                $options['cache'] = $this->app['path.storage'].'/views/twig';
-            }
-
-            return $options;
-        });
-
-        $this->app->bindIf('twig.extensions', function () {
-            $extensions = $this->app['config']->get('twigbridge::extensions.enabled', []);
-
-            // Is debug enabled?
-            $options = $this->app['twig.options'];
-            $debug   = (bool) (isset($options['debug'])) ? $options['debug'] : false;
-
-            if ($debug) {
-                array_unshift($extensions, 'Twig_Extension_Debug');
-            }
-
-            return $extensions;
-        });
-
-        $this->app->bindIf('twig.lexer', function () {
-            return null;
-        });
-    }
-
-    /**
      * Register Twig engine bindings.
      *
      * @return void
      */
-    protected function registerTwigEngine()
+    protected function registerEngine()
     {
         if (!$this->app->bound('twig')) {
             $this->app->singleton('twig', function () {
-                return new Twig_Environment(
+
+                $extensions = $this->app['twig.extensions'];
+                $lexer      = $this->app['twig.lexer'];
+                $twig       = new Bridge(
                     $this->app['twig.loader'],
-                    $this->app['twig.options']
+                    $this->app['twig.options'],
+                    $this->app
                 );
+
+                // Add extensions
+                if (is_array($extensions)) {
+                    foreach ($extensions as $extension) {
+                        $twig->addExtension($extension);
+                    }
+                }
+
+                // Set lexer
+                if (is_a($lexer, 'Twig_LexerInterface')) {
+                    $twig->setLexer($lexer);
+                }
+
+                return $twig;
             });
         }
 
@@ -222,7 +239,6 @@ class ServiceProvider extends ViewServiceProvider
     {
         return array(
             'twig',
-            'twig.bridge',
             'twig.engine',
             'twig.extensions',
             'twig.options',

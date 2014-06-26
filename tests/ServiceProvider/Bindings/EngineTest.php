@@ -35,7 +35,7 @@ class EngineTest extends Base
         $provider->boot();
 
         $called = false;
-        $app->resolving('twig.bridge', function () use (&$called) {
+        $app->resolving('twig', function () use (&$called) {
             $called = true;
         });
 

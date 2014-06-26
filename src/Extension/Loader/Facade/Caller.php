@@ -85,7 +85,7 @@ class Caller
             $is_safe = true;
         }
 
-        $result  = forward_static_call_array(array($this->facade, $method), $arguments);
+        $result  = forward_static_call_array([$this->facade, $method], $arguments);
         $is_safe = ($is_safe && (is_string($result) || method_exists($result, '__toString')));
 
         return ($is_safe) ? new Twig_Markup($result, $this->options['charset']) : $result;

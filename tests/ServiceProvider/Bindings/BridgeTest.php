@@ -16,7 +16,7 @@ class BridgeTest extends Base
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $this->assertInstanceOf('TwigBridge\Bridge', $app['twig.bridge']);
+        $this->assertInstanceOf('TwigBridge\Bridge', $app['twig']);
     }
 
     public function testSetLexer()
@@ -29,9 +29,7 @@ class BridgeTest extends Base
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $bridge = $app['twig.bridge'];
-
-        $this->assertEquals($bridge->getLexer()->fooBar(), 'baz');
+        $this->assertEquals($app['twig']->getLexer()->fooBar(), 'baz');
     }
 
     public function testAddExtensions()
@@ -46,7 +44,7 @@ class BridgeTest extends Base
             $called = true;
         });
 
-        $app['twig.bridge'];
+        $app['twig'];
         $this->assertTrue($called);
     }
 }

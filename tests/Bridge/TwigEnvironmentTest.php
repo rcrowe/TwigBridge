@@ -13,31 +13,8 @@ class TwigEnvironmentTest extends Base
         m::close();
     }
 
-    public function testNoParams()
+    public function testInstance()
     {
-        $twig = m::mock('Twig_Environment');
-        $twig->shouldReceive('getExtensions');
-
-        $app = $this->getApplication();
-        $app->instance('twig', $twig);
-
-        $bridge = new Bridge($app);
-
-        $bridge->getExtensions();
-    }
-
-    public function testMultipleParams()
-    {
-        for ($i = 0; $i <= 6; $i++) {
-            $twig = m::mock('Twig_Environment');
-            $twig->shouldReceive('getExtensions');
-
-            $app = $this->getApplication();
-            $app->instance('twig', $twig);
-
-            $bridge = new Bridge($app);
-
-            call_user_func_array(array($bridge, 'getExtensions'), range(0, $i));
-        }
+        $this->assertInstanceOf('Twig_Environment', new Bridge);
     }
 }
