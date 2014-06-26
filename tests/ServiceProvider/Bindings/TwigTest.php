@@ -57,7 +57,7 @@ class TwigTest extends Base
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $this->assertSame($app['twig.extensions'], $app['config']->get('twigbridge::extensions.enabled'));
+        $this->assertSame($app['twig.extensions.config'], $app['config']->get('twigbridge::extensions.enabled'));
     }
 
     public function testExtensionsWithDebug()
@@ -73,7 +73,7 @@ class TwigTest extends Base
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $this->assertSame($app['twig.extensions'][0], 'Twig_Extension_Debug');
+        $this->assertSame($app['twig.extensions.config'][0], 'Twig_Extension_Debug');
     }
 
     public function testLoaderPath()

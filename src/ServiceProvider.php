@@ -14,7 +14,6 @@ namespace TwigBridge;
 use Illuminate\View\ViewServiceProvider;
 use Twig_Loader_Chain;
 use Twig_Loader_Array;
-use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -47,7 +46,6 @@ class ServiceProvider extends ViewServiceProvider
         $this->registerOptions();
         $this->registerLoaders();
         $this->registerEngine();
-        $this->registerBridge();
 
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
@@ -107,9 +105,8 @@ class ServiceProvider extends ViewServiceProvider
             return $options;
         });
 
-        $this->app->bindIf('twig.extensions', function () {
-            $load       = $this->app['config']->get('twigbridge::extensions.enabled', []);
-            $extensions = [];
+        $this->app->bindIf('twig.extensions.config', function () {
+            $load = $this->app['config']->get('twigbridge::extensions.enabled', []);
 
             // Is debug enabled?
             // If so enable debug extension
@@ -119,6 +116,13 @@ class ServiceProvider extends ViewServiceProvider
             if ($isDebug) {
                 array_unshift($load, 'Twig_Extension_Debug');
             }
+
+            return $load;
+        });
+
+        $this->app->bindIf('twig.extensions', function () {
+            $load       = $this->app['twig.extensions.config'];
+            $extensions = [];
 
             // Instantiate extensions
             foreach ($load as $extension) {
@@ -188,11 +192,13 @@ class ServiceProvider extends ViewServiceProvider
     {
         if (!$this->app->bound('twig')) {
             $this->app->singleton('twig', function () {
+
                 $extensions = $this->app['twig.extensions'];
                 $lexer      = $this->app['twig.lexer'];
-                $twig       = new Twig_Environment(
+                $twig       = new Bridge(
                     $this->app['twig.loader'],
-                    $this->app['twig.options']
+                    $this->app['twig.options'],
+                    $this->app
                 );
 
                 // Add extensions
@@ -225,18 +231,6 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
-     * Register TwigBridge bindings.
-     *
-     * @return void
-     */
-    protected function registerBridge()
-    {
-        $this->app->bindIf('twig.bridge', function () {
-            return new Bridge($this->app);
-        });
-    }
-
-    /**
      * Get the services provided by the provider.
      *
      * @return array
@@ -245,7 +239,6 @@ class ServiceProvider extends ViewServiceProvider
     {
         return array(
             'twig',
-            'twig.bridge',
             'twig.engine',
             'twig.extensions',
             'twig.options',

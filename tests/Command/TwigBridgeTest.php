@@ -27,7 +27,7 @@ class TwigBridgeTest extends Base
             '<info>Twig</info> version        <comment>'.Twig_Environment::VERSION.'</comment>'
         );
         $output->shouldReceive('writeln')->with(
-            '<info>Twig Bridge</info> version <comment>'.Bridge::VERSION.'</comment>'
+            '<info>Twig Bridge</info> version <comment>'.Bridge::BRIDGE_VERSION.'</comment>'
         );
 
         $command->run(

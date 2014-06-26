@@ -9,7 +9,7 @@ class VersionTest extends Base
 {
     public function testVersion()
     {
-        $version = Bridge::VERSION;
+        $version = Bridge::BRIDGE_VERSION;
         $semver  = explode('.', $version);
 
         $this->assertCount(3, $semver);

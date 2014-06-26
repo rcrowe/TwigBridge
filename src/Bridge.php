@@ -11,19 +11,21 @@
 
 namespace TwigBridge;
 
+use Twig_Environment;
+use Twig_LoaderInterface;
 use Illuminate\Foundation\Application;
 use InvalidArgumentException;
 use Twig_Error;
 
 /**
- * TwigBridge deals with creating an instance of Twig.
+ * Bridge functions between Laravel & Twig
  */
-class Bridge
+class Bridge extends Twig_Environment
 {
     /**
      * @var string TwigBridge version
      */
-    const VERSION = '0.6.0';
+    const BRIDGE_VERSION = '0.6.0';
 
     /**
      * @var \Illuminate\Foundation\Application
@@ -31,48 +33,35 @@ class Bridge
     protected $app;
 
     /**
-     * Create a new instance.
-     *
-     * @param \Illuminate\Foundation\Application $app
+     * {@inheritdoc}
      */
-    public function __construct(Application $app)
+    public function __construct(Twig_LoaderInterface $loader = null, $options = [], Application $app = null)
     {
+        parent::__construct($loader, $options);
+
         $this->app = $app;
     }
 
     /**
-     * Handle dynamic, static calls.
+     * Get the Laravel app.
      *
-     * All dynamic calls are passed to \Twig_Environment.
-     *
-     * @param  string  $method
-     * @param  array   $args
-     *
-     * @return mixed
+     * @return \Illuminate\Foundation\Application
      */
-    public function __call($method, $args)
+    public function getApplication()
     {
-        $instance = $this->app['twig'];
+        return $this->app;
+    }
 
-        switch (count($args)) {
-            case 0:
-                return $instance->$method();
-
-            case 1:
-                return $instance->$method($args[0]);
-
-            case 2:
-                return $instance->$method($args[0], $args[1]);
-
-            case 3:
-                return $instance->$method($args[0], $args[1], $args[2]);
-
-            case 4:
-                return $instance->$method($args[0], $args[1], $args[2], $args[3]);
-
-            default:
-                return call_user_func_array(array($instance, $method), $args);
-        }
+    /**
+     * Set the Laravel app.
+     *
+     * @param \Illuminate\Foundation\Application $app
+     *
+     * @return void
+     */
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
     }
 
     /**
@@ -84,7 +73,6 @@ class Bridge
      */
     public function lint($file)
     {
-        $twig     = $this->app['twig'];
         $template = $this->app['twig.loader.viewfinder']->getSource($file);
 
         if (!$template) {
@@ -92,7 +80,7 @@ class Bridge
         }
 
         try {
-            $twig->parse($twig->tokenize($template, $file));
+            $this->parse($this->tokenize($template, $file));
         } catch (Twig_Error $e) {
             return false;
         }

@@ -5,7 +5,6 @@ namespace TwigBridge\Tests\Bridge;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Bridge;
-use Twig_Environment;
 
 class LintTest extends Base
 {
@@ -19,43 +18,40 @@ class LintTest extends Base
      */
     public function testUnknownFile()
     {
+        $bridge = new Bridge;
         $app    = $this->getApplication();
-        $bridge = new Bridge($app);
-
-        $app['twig'] = new Twig_Environment;
 
         $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
         $finder->shouldReceive('getSource')->andReturn(false);
         $app['twig.loader.viewfinder'] = $finder;
 
+        $bridge->setApplication($app);
         $bridge->lint('test.twig');
     }
 
     public function testInvalidFile()
     {
+        $bridge = new Bridge;
         $app    = $this->getApplication();
-        $bridge = new Bridge($app);
-
-        $app['twig'] = new Twig_Environment;
 
         $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
         $finder->shouldReceive('getSource')->andReturn('{{ name }');
         $app['twig.loader.viewfinder'] = $finder;
 
+        $bridge->setApplication($app);
         $this->assertFalse($bridge->lint('test.twig'));
     }
 
     public function testValidFile()
     {
+        $bridge = new Bridge;
         $app    = $this->getApplication();
-        $bridge = new Bridge($app);
-
-        $app['twig'] = new Twig_Environment;
 
         $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
         $finder->shouldReceive('getSource')->andReturn('{{ name }}');
         $app['twig.loader.viewfinder'] = $finder;
 
+        $bridge->setApplication($app);
         $this->assertTrue($bridge->lint('test.twig'));
     }
 }

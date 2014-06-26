@@ -25,6 +25,6 @@ class Twig extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'twig.bridge';
+        return 'twig';
     }
 }
