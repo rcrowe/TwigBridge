@@ -96,7 +96,7 @@ class Compiler implements CompilerInterface
         try {
             $template = $this->twig->loadTemplate($path);
         } catch (Twig_Error_Loader $e) {
-            throw new InvalidArgumentException("Error in $name: ". $e->getMessage(), $e->getCode(), $e);
+            throw new InvalidArgumentException("Error loading $path: ". $e->getMessage(), $e->getCode(), $e);
         }
 
         if ($template instanceof Template) {

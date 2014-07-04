@@ -109,7 +109,7 @@ class Twig extends CompilerEngine
             $file = $this->finder->findTemplate($templateFile);
         }
 
-        if ($file) {
+        if (isset($file) && $file) {
             $ex = new ErrorException($ex->getMessage(), 0, 1, $file, $templateLine, $ex);
         }
 
