@@ -29,6 +29,10 @@ abstract class Template extends Twig_Template
      */
     public function display(array $context, array $blocks = [])
     {
+        if (!isset($context['__env'])) {
+            $context = $this->env->mergeShared($context);
+        }
+
         if ($this->shouldFireEvents()) {
             $context = $this->fireEvents($context);
         }

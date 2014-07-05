@@ -87,4 +87,24 @@ class Bridge extends Twig_Environment
 
         return true;
     }
+
+    /**
+     * Merges a context with the shared variables, same as mergeGlobals()
+     *
+     * @param array $context An array representing the context
+     *
+     * @return array The context merged with the globals
+     */
+    public function mergeShared(array $context)
+    {
+        // we don't use array_merge as the context being generally
+        // bigger than globals, this code is faster.
+        foreach ($this->app['view']->getShared() as $key => $value) {
+            if (!array_key_exists($key, $context)) {
+                $context[$key] = $value;
+            }
+        }
+
+        return $context;
+    }
 }
