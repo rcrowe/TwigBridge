@@ -159,7 +159,7 @@ class ServiceProvider extends ViewServiceProvider
                 $this->app['twig.loader.path'],
                 $this->app['twig.loader.viewfinder'],
             ]);
-        });
+        }, true);
     }
 
     /**
@@ -169,40 +169,38 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerEngine()
     {
-        if (!$this->app->bound('twig')) {
-            $this->app->singleton('twig', function () {
+        $this->app->bindIf('twig', function () {
 
-                $extensions = $this->app['twig.extensions'];
-                $lexer      = $this->app['twig.lexer'];
-                $twig       = new Bridge(
-                    $this->app['twig.loader'],
-                    $this->app['twig.options'],
-                    $this->app
-                );
+            $extensions = $this->app['twig.extensions'];
+            $lexer      = $this->app['twig.lexer'];
+            $twig       = new Bridge(
+                $this->app['twig.loader'],
+                $this->app['twig.options'],
+                $this->app
+            );
 
-                // Instantiate and add extensions
-                foreach ($extensions as $extension) {
-                    // Get an instance of the extension
-                    // Support for string, closure and an object
-                    if (is_string($extension)) {
-                        $extension = $this->app->make($extension);
-                    } elseif (is_callable($extension)) {
-                        $extension = $extension($this->app, $twig);
-                    } elseif (!is_a($extension, 'Twig_Extension')) {
-                        throw new InvalidArgumentException('Incorrect extension type');
-                    }
-
-                    $twig->addExtension($extension);
+            // Instantiate and add extensions
+            foreach ($extensions as $extension) {
+                // Get an instance of the extension
+                // Support for string, closure and an object
+                if (is_string($extension)) {
+                    $extension = $this->app->make($extension);
+                } elseif (is_callable($extension)) {
+                    $extension = $extension($this->app, $twig);
+                } elseif (!is_a($extension, 'Twig_Extension')) {
+                    throw new InvalidArgumentException('Incorrect extension type');
                 }
 
-                // Set lexer
-                if (is_a($lexer, 'Twig_LexerInterface')) {
-                    $twig->setLexer($lexer);
-                }
+                $twig->addExtension($extension);
+            }
 
-                return $twig;
-            });
-        }
+            // Set lexer
+            if (is_a($lexer, 'Twig_LexerInterface')) {
+                $twig->setLexer($lexer);
+            }
+
+            return $twig;
+        }, true);
 
         $this->app->bindIf('twig.compiler', function () {
             return new Engine\Compiler($this->app['twig']);
