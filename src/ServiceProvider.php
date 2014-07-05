@@ -12,6 +12,7 @@
 namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
+use InvalidArgumentException;
 use Twig_Loader_Chain;
 use Twig_Loader_Array;
 
@@ -105,7 +106,7 @@ class ServiceProvider extends ViewServiceProvider
             return $options;
         });
 
-        $this->app->bindIf('twig.extensions.config', function () {
+        $this->app->bindIf('twig.extensions', function () {
             $load = $this->app['config']->get('twigbridge::extensions.enabled', []);
 
             // Is debug enabled?
@@ -118,28 +119,6 @@ class ServiceProvider extends ViewServiceProvider
             }
 
             return $load;
-        });
-
-        $this->app->bindIf('twig.extensions', function () {
-            $load       = $this->app['twig.extensions.config'];
-            $extensions = [];
-
-            // Instantiate extensions
-            foreach ($load as $extension) {
-                // Get an instance of the extension
-                // Support for string, closure and an object
-                if (is_string($extension)) {
-                    $extension = $this->app->make($extension);
-                } elseif (is_callable($extension)) {
-                    $extension = $extension($this->app, $twig);
-                } elseif (!is_a($extension, 'Twig_Extension')) {
-                    throw new InvalidArgumentException('Incorrect extension type');
-                }
-
-                $extensions[] = $extension;
-            }
-
-            return $extensions;
         });
 
         $this->app->bindIf('twig.lexer', function () {
@@ -201,11 +180,19 @@ class ServiceProvider extends ViewServiceProvider
                     $this->app
                 );
 
-                // Add extensions
-                if (is_array($extensions)) {
-                    foreach ($extensions as $extension) {
-                        $twig->addExtension($extension);
+                // Instantiate and add extensions
+                foreach ($extensions as $extension) {
+                    // Get an instance of the extension
+                    // Support for string, closure and an object
+                    if (is_string($extension)) {
+                        $extension = $this->app->make($extension);
+                    } elseif (is_callable($extension)) {
+                        $extension = $extension($this->app, $twig);
+                    } elseif (!is_a($extension, 'Twig_Extension')) {
+                        throw new InvalidArgumentException('Incorrect extension type');
                     }
+
+                    $twig->addExtension($extension);
                 }
 
                 // Set lexer
