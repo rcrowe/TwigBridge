@@ -81,7 +81,7 @@ class Lint extends Command
      */
     public function fire()
     {
-        $this->twig = $this->laravel['twig.bridge'];
+        $this->twig = $this->laravel['twig'];
         $format     = $this->option('format');
 
         // Check STDIN for the template
