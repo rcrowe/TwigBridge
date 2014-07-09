@@ -13,7 +13,7 @@ class Base extends BridgeBase
     {
         $app = parent::getApplication($customConfig);
         $app['twig.extension'] = 'twig';
-        $app['twig.bridge']    = m::mock('TwigBridge\Bridge');
+        $app['twig']    = m::mock('TwigBridge\Bridge');
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('name');
