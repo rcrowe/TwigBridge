@@ -101,33 +101,19 @@ abstract class Template extends Twig_Template
         $isDefinedTest = false,
         $ignoreStrictCheck = false
     ) {
-        // We need to handle accessing attributes/methods on an Eloquent instance differently
-        if (is_a($object, 'Illuminate\Database\Eloquent\Model')) {
-            if (method_exists($object, $item)) {
-                $ret = call_user_func_array([$object, $item], $arguments);
-            } else {
-                // Calling getAttributes lets us deal with accessors, mutators & relations
-                $ret = $object->getAttribute($item);
-
-                // getAttributes doesn't deal with attributes that aren't part of the models data
-                if ($ret === null && isset($object->$item)) {
-                    $ret = $object->$item;
-                }
+        // We need to handle accessing attributes on an Eloquent instance differently
+        if (Twig_Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
+            // We can't easily find out if an attribute actually exists, so return true
+            if ($isDefinedTest) {
+                return true;
             }
+
+            // Call the attribute, the Model object does the rest of the magic
+            return $object->$item;
         } else {
-            $ret = parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
+            return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
         }
 
-        // We need to handle relations differently when dealing with Eloquent objects
-        if (is_a($ret, 'Illuminate\Database\Eloquent\Relations\Relation')) {
-            // Grab the value from the relation
-            $ret = $object->getAttribute($item);
-        }
 
-        if ($ret && $isDefinedTest) {
-            return true;
-        }
-
-        return $ret;
     }
 }
