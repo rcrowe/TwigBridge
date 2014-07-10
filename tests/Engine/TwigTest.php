@@ -19,7 +19,7 @@ class TwigTest extends Base
 
     public function testInstance()
     {
-        $viewfinder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $viewfinder = m::mock('TwigBridge\Twig\Loader');
         $global   = array('name' => 'Rob');
         $compiler = new Compiler(new Twig_Environment);
         $engine   = new Engine($compiler, $viewfinder, $global);
@@ -30,7 +30,7 @@ class TwigTest extends Base
 
     public function testSetGlobalData()
     {
-        $viewfinder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $viewfinder = m::mock('TwigBridge\Twig\Loader');
         $global   = array('package' => 'TwigBridge');
         $compiler = new Compiler(new Twig_Environment);
         $engine   = new Engine($compiler, $viewfinder);
@@ -51,7 +51,7 @@ class TwigTest extends Base
         $compiler = m::mock('TwigBridge\Engine\Compiler');
         $compiler->shouldReceive('load')->once()->with($path)->andReturn($template);
 
-        $viewfinder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $viewfinder = m::mock('TwigBridge\Twig\Loader');
 
         $engine = new Engine($compiler, $viewfinder);
         $engine->get($path, $data);
@@ -69,7 +69,7 @@ class TwigTest extends Base
         $compiler = m::mock('TwigBridge\Engine\Compiler');
         $compiler->shouldReceive('load')->once()->with($path)->andReturn($template);
 
-        $viewfinder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $viewfinder = m::mock('TwigBridge\Twig\Loader');
 
         $engine = new Engine($compiler, $viewfinder, $globalData);
         $engine->get($path, $data);

@@ -76,15 +76,6 @@ class TwigTest extends Base
         $this->assertSame($app['twig.extensions'][0], 'Twig_Extension_Debug');
     }
 
-    public function testLoaderPath()
-    {
-        $app      = $this->getApplication();
-        $provider = new ServiceProvider($app);
-        $provider->boot();
-
-        $this->assertInstanceOf('TwigBridge\Twig\Loader\Path', $app['twig.loader.path']);
-    }
-
     public function testLoaderViewfinder()
     {
         $app      = $this->getApplication();
@@ -94,7 +85,7 @@ class TwigTest extends Base
         $app['twig.bridge'] = m::mock('stdClass');
         $app['twig.bridge']->shouldReceive('getExtension')->andReturn('twig');
 
-        $this->assertInstanceOf('TwigBridge\Twig\Loader\Viewfinder', $app['twig.loader.viewfinder']);
+        $this->assertInstanceOf('TwigBridge\Twig\Loader', $app['twig.loader.viewfinder']);
     }
 
     public function testLoaderChain()

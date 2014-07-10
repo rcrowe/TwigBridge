@@ -12,7 +12,7 @@
 namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\CompilerEngine;
-use TwigBridge\Twig\Loader\Viewfinder;
+use TwigBridge\Twig\Loader;
 use Twig_Error;
 use ErrorException;
 
@@ -31,22 +31,22 @@ class Twig extends CompilerEngine
     /**
      * Used to find the file that has failed.
      *
-     * @var \TwigBridge\Twig\Loader\Viewfinder
+     * @var \TwigBridge\Twig\Loader
      */
-    protected $finder = [];
+    protected $loader = [];
 
     /**
      * Create a new Twig view engine instance.
      *
      * @param \TwigBridge\Engine\Compiler        $compiler
-     * @param \TwigBridge\Twig\Loader\Viewfinder $finder
+     * @param \TwigBridge\Twig\Loader            $loader
      * @param array                              $globalData
      */
-    public function __construct(Compiler $compiler, Viewfinder $finder, array $globalData = [])
+    public function __construct(Compiler $compiler, Loader $loader, array $globalData = [])
     {
         parent::__construct($compiler);
 
-        $this->finder     = $finder;
+        $this->loader     = $loader;
         $this->globalData = $globalData;
     }
 
@@ -106,7 +106,7 @@ class Twig extends CompilerEngine
         if ($templateFile && file_exists($templateFile)) {
             $file = $templateFile;
         } elseif ($templateFile) {
-            $file = $this->finder->findTemplate($templateFile);
+            $file = $this->loader->findTemplate($templateFile);
         }
 
         if (isset($file) && $file) {

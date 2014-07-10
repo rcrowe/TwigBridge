@@ -21,7 +21,7 @@ class LintTest extends Base
         $bridge = new Bridge;
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn(false);
         $app['twig.loader.viewfinder'] = $finder;
 
@@ -34,7 +34,7 @@ class LintTest extends Base
         $bridge = new Bridge;
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn('{{ name }');
         $app['twig.loader.viewfinder'] = $finder;
 
@@ -47,7 +47,7 @@ class LintTest extends Base
         $bridge = new Bridge;
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader\Viewfinder');
+        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn('{{ name }}');
         $app['twig.loader.viewfinder'] = $finder;
 

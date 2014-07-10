@@ -33,6 +33,10 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $app['env']          = 'production';
         $app['path.storage'] = __DIR__.'/storage';
 
+        // Filesystem
+        $files = m::mock('Illuminate\Filesystem\Filesystem');
+        $app['files'] = $files;
+
         // View
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');

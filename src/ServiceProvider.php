@@ -142,12 +142,9 @@ class ServiceProvider extends ViewServiceProvider
             return new Twig_Loader_Array($app['twig.templates']);
         });
 
-        $this->app->bindIf('twig.loader.path', function () {
-            return new Twig\Loader\Path;
-        });
-
         $this->app->bindIf('twig.loader.viewfinder', function () {
-            return new Twig\Loader\Viewfinder(
+            return new Twig\Loader(
+                $this->app['files'],
                 $this->app['view']->getFinder(),
                 $this->app['twig.extension']
             );
@@ -156,7 +153,6 @@ class ServiceProvider extends ViewServiceProvider
         $this->app->bindIf('twig.loader', function () {
             return new Twig_Loader_Chain([
                 $this->app['twig.loader.array'],
-                $this->app['twig.loader.path'],
                 $this->app['twig.loader.viewfinder'],
             ]);
         }, true);
@@ -229,7 +225,6 @@ class ServiceProvider extends ViewServiceProvider
             'twig.options',
             'twig.loader',
             'twig.loader.array',
-            'twig.loader.path',
             'twig.loader.viewfinder',
             'twig.templates',
             'command.twig',
