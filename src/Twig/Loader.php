@@ -58,23 +58,21 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
     /**
      * Return path to template without the need for the extension.
      *
-     * @param string $name Template file path.
+     * @param string $name Template file name or path.
      *
      * @throws \Twig_Error_Loader
-     * @return string|bool Path to template or FALSE if not found.
+     * @return string Path to template
      */
     public function findTemplate($name)
     {
+        if ($this->files->exists($name)) {
+            return $name;
+        }
+
+        $name = $this->normalizeName($name);
+
         if (isset($this->cache[$name])) {
             return $this->cache[$name];
-        }
-
-        if ($this->files->exists($name)) {
-            return $this->cache[$name] = $name;
-        }
-
-        if ($this->files->extension($name) === $this->extension) {
-            $name = substr($name, 0, - (strlen($this->extension) + 1));
         }
 
         try {
@@ -82,7 +80,20 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
         } catch (InvalidArgumentException $ex) {
             throw new Twig_Error_Loader($ex->getMessage());
         }
+    }
 
+    /**
+     * Normalize the Twig template name to a name the ViewFinder can use
+     *
+     * @param  string $name Template file name.
+     * @return string The parsed name
+     */
+    protected function normalizeName($name)
+    {
+        if ($this->files->extension($name) === $this->extension) {
+            $name = substr($name, 0, - (strlen($this->extension) + 1));
+        }
+        return $name;
     }
 
     /**
