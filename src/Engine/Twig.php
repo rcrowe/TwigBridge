@@ -106,7 +106,10 @@ class Twig extends CompilerEngine
         if ($templateFile && file_exists($templateFile)) {
             $file = $templateFile;
         } elseif ($templateFile) {
-            $file = $this->loader->findTemplate($templateFile);
+            try {
+                $file = $this->loader->findTemplate($templateFile);
+            } catch (Twig_Error_Loader $exception) {
+            }
         }
 
         if (isset($file) && $file) {
