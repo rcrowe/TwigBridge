@@ -100,34 +100,35 @@ abstract class Template extends Twig_Template
         $type = Twig_Template::ANY_CALL,
         $isDefinedTest = false,
         $ignoreStrictCheck = false
-    ) {
-	    // we need a reflection to identify static methods, which are outside laravel's model
-	    if(method_exists($object, $item))
-		    $reflection     = new \ReflectionMethod($object, $item);
-	    else
-		    $reflection     = null;
-	    // seek out eloquent models
-	    if(
-		    !($reflection && $reflection -> isStatic())
-		    && is_a($object, 'Illuminate\Database\Eloquent\Model'))
-	    {
-		    // load all relations from the eloquent model
-		    $relations          = $object -> getRelations();
-		    // relation called as method
-		    if(array_get($relations, $item,false) && $type == Twig_Template::METHOD_CALL)
-			    return $object -> $item();
-		    // if called as normal property
-		    if(array_get($relations, $item,false))
-			    return $object -> $item;
-		    // if this is a true method, call it
-		    if($reflection && $reflection -> isPublic())
-			    return $reflection -> invokeArgs($object, $arguments);
-		    // otherwise use the build in model handler
-		    return $object -> getAttribute($item);
-	    }
-	    else
-	    {
-		    return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
-	    }
+    )
+    {
+        // we need a reflection to identify static methods, which are outside laravel's model
+        if( method_exists( $object, $item ) )
+            $reflection = new \ReflectionMethod($object, $item);
+        else
+            $reflection = null;
+        // seek out eloquent models
+        if(
+            !($reflection && $reflection->isStatic())
+            && is_a( $object, 'Illuminate\Database\Eloquent\Model' )
+        )
+        {
+            // load all relations from the eloquent model
+            $relations = $object->getRelations();
+            // relation called as method
+            if( array_get( $relations, $item, false ) && $type == Twig_Template::METHOD_CALL )
+                return $object->$item();
+            // if called as normal property
+            if( array_get( $relations, $item, false ) )
+                return $object->$item;
+            // if this is a true method, call it
+            if( $reflection && $reflection->isPublic() )
+                return $reflection->invokeArgs( $object, $arguments );
+            // otherwise use the build in model handler
+            return $object->getAttribute( $item );
+        } else
+        {
+            return parent::getAttribute( $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck );
+        }
     }
 }
