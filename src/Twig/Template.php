@@ -101,19 +101,33 @@ abstract class Template extends Twig_Template
         $isDefinedTest = false,
         $ignoreStrictCheck = false
     ) {
-        // We need to handle accessing attributes on an Eloquent instance differently
-        if (Twig_Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
-            // We can't easily find out if an attribute actually exists, so return true
-            if ($isDefinedTest) {
-                return true;
-            }
-
-            // Call the attribute, the Model object does the rest of the magic
-            return $object->$item;
-        } else {
-            return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
-        }
-
-
+	    // we need a reflection to identify static methods, which are outside laravel's model
+	    if(method_exists($object, $item))
+		    $reflection     = new \ReflectionMethod($object, $item);
+	    else
+		    $reflection     = null;
+	    // seek out eloquent models
+	    if(
+		    !($reflection && $reflection -> isStatic())
+		    && is_a($object, 'Illuminate\Database\Eloquent\Model'))
+	    {
+		    // load all relations from the eloquent model
+		    $relations          = $object -> getRelations();
+		    // relation called as method
+		    if(array_get($relations, $item,false) && $type == Twig_Template::METHOD_CALL)
+			    return $object -> $item();
+		    // if called as normal property
+		    if(array_get($relations, $item,false))
+			    return $object -> $item;
+		    // if this is a true method, call it
+		    if($reflection && $reflection -> isPublic())
+			    return $reflection -> invokeArgs($object, $arguments);
+		    // otherwise use the build in model handler
+		    return $object -> getAttribute($item);
+	    }
+	    else
+	    {
+		    return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
+	    }
     }
 }
