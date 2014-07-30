@@ -11,6 +11,7 @@
 
 namespace TwigBridge\Twig;
 
+use Illuminate\Database\Eloquent\Model;
 use Twig_Template;
 use Illuminate\View\View;
 
@@ -104,10 +105,20 @@ abstract class Template extends Twig_Template
     {
         // seek out eloquent models
         // if this is a true method, call it
-        if( $object instanceof \Eloquent &&
-	        method_exists($object, $item) &&
+        if( $object instanceof Model )
+		{
+			if(method_exists($object, $item) &&
 	        (count($arguments) || $type == Twig_Template::METHOD_CALL) )
-	        return call_user_func_array([$object, $item], $arguments);
+			{
+	        	return call_user_func_array([$object, $item], $arguments);
+			}
+			elseif(method_exists($object, $item) &&
+				!count($arguments) &&
+				$type == Twig_Template::ANY_CALL)
+			{
+				return $object -> $item;
+			}
+		}
         return parent::getAttribute( $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck );
     }
 }
