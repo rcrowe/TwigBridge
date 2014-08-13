@@ -78,6 +78,8 @@ class Twig extends CompilerEngine
      * @param string $path Full file path to Twig template.
      * @param array  $data
      *
+     * @throws \Twig_Error|\ErrorException When unable to load the requested path.
+     *
      * @return string
      */
     public function get($path, array $data = [])
@@ -85,20 +87,22 @@ class Twig extends CompilerEngine
         $data = array_merge($this->globalData, $data);
 
         try {
-            return $this->compiler->load($path)->render($data);
+            $content = $this->compiler->load($path)->render($data);
         } catch (Twig_Error $ex) {
             $this->handleTwigError($ex);
         }
+
+        return $content;
     }
 
     /**
      * Handle a TwigError exception.
      *
-     * @param Twig_Error $ex
+     * @param \Twig_Error $ex
      *
-     * @throws Twig_Error|ErrorException
+     * @throws \Twig_Error|\ErrorException
      */
-    protected function handleTwigError($ex)
+    protected function handleTwigError(Twig_Error $ex)
     {
         $templateFile = $ex->getTemplateFile();
         $templateLine = $ex->getTemplateLine();
@@ -106,13 +110,15 @@ class Twig extends CompilerEngine
         if ($templateFile && file_exists($templateFile)) {
             $file = $templateFile;
         } elseif ($templateFile) {
+            // Attempt to locate full path to file
             try {
                 $file = $this->loader->findTemplate($templateFile);
             } catch (Twig_Error_Loader $exception) {
+                // Unable to load template
             }
         }
 
-        if (isset($file) && $file) {
+        if (isset($file)) {
             $ex = new ErrorException($ex->getMessage(), 0, 1, $file, $templateLine, $ex);
         }
 

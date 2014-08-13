@@ -3,6 +3,7 @@
 namespace TwigBridge\Tests\Command\Lint;
 
 use Mockery as m;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use TwigBridge\Command\Lint;
 
@@ -28,7 +29,7 @@ class FormatTest extends Base
         $finder->shouldReceive('name')->andReturn([]);
         $command->setFinder($finder);
 
-        $input  = new \Symfony\Component\Console\Input\ArrayInput([]);
+        $input  = new ArrayInput([]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
         $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
         $output->shouldReceive('writeln')->with('<comment>0/0 valid files</comment>');
@@ -49,7 +50,7 @@ class FormatTest extends Base
         $finder->shouldReceive('name')->andReturn([]);
         $command->setFinder($finder);
 
-        $input  = new \Symfony\Component\Console\Input\ArrayInput([
+        $input  = new ArrayInput([
             '--format' => 'json'
         ]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
@@ -75,7 +76,7 @@ class FormatTest extends Base
         $finder->shouldReceive('name')->andReturn([]);
         $command->setFinder($finder);
 
-        $input  = new \Symfony\Component\Console\Input\ArrayInput([
+        $input  = new ArrayInput([
             '--format' => 'foo'
         ]);
         $output = m::mock('Symfony\Component\Console\Output\OutputInterface');

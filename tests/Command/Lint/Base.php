@@ -5,7 +5,6 @@ namespace TwigBridge\Tests\Command\Lint;
 use TwigBridge\Tests\Base as BridgeBase;
 use Mockery as m;
 use Symfony\Component\Console\Output\StreamOutput;
-use TwigBridge\Command\Lint;
 
 class Base extends BridgeBase
 {

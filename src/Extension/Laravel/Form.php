@@ -29,7 +29,7 @@ class Form extends Twig_Extension
     /**
      * Create a new form extension
      *
-     * @param \Illuminate\Config\Repository
+     * @param \Illuminate\Html\FormBuilder
      */
     public function __construct(FormBuilder $form)
     {

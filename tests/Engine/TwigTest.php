@@ -8,7 +8,6 @@ use TwigBridge\Engine\Twig as Engine;
 use TwigBridge\Engine\Compiler;
 use Twig_Environment;
 use Twig_Loader_Array;
-use InvalidArgumentException;
 
 class TwigTest extends Base
 {

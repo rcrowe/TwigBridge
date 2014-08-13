@@ -142,6 +142,7 @@ class Facades extends Twig_Extension
     public function getShortcut($name)
     {
         $key = strtolower($name);
+
         return (array_key_exists($key, $this->shortcuts)) ? $this->shortcuts[$key] : $name;
     }
 
@@ -188,6 +189,7 @@ class Facades extends Twig_Extension
     public function getLookup($name)
     {
         $name = strtolower($name);
+
         return (array_key_exists($name, $this->lookup)) ? $this->lookup[$name] : false;
     }
 

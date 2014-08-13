@@ -71,7 +71,7 @@ class Caller
      *
      * Supports marking the method as safe, i.e. the returned HTML won't be escaped.
      *
-     * @param string $name
+     * @param string $method
      * @param array  $arguments
      *
      * @return mixed

@@ -44,7 +44,7 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
     protected $cache = [];
 
     /**
-     * @param \Illuminate\Filesystem\Filesystem     $files The filesystem
+     * @param \Illuminate\Filesystem\Filesystem     $files     The filesystem
      * @param \Illuminate\View\ViewFinderInterface  $finder
      * @param string                                $extension Twig file extension.
      */
@@ -76,10 +76,12 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
         }
 
         try {
-            return $this->cache[$name] = $this->finder->find($name);
+            $this->cache[$name] = $this->finder->find($name);
         } catch (InvalidArgumentException $ex) {
             throw new Twig_Error_Loader($ex->getMessage());
         }
+
+        return $this->cache[$name];
     }
 
     /**
@@ -93,6 +95,7 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
         if ($this->files->extension($name) === $this->extension) {
             $name = substr($name, 0, - (strlen($this->extension) + 1));
         }
+
         return $name;
     }
 
@@ -103,11 +106,11 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
     {
         try {
             $this->findTemplate($name);
-
-            return true;
         } catch (Twig_Error_Loader $exception) {
             return false;
         }
+
+        return true;
     }
 
     /**

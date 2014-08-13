@@ -4,6 +4,7 @@ namespace TwigBridge\Tests\ServiceProvider\Bindings;
 
 use Mockery as m;
 use Illuminate\View\Factory;
+use Illuminate\View\Engines\EngineResolver;
 use TwigBridge\Tests\Base;
 use TwigBridge\ServiceProvider;
 
@@ -42,9 +43,9 @@ class TwigTest extends Base
         $this->assertEquals('twig', $app['twig.extension']);
 
         // Change extension
-        $app = $this->getApplication(array(
-            'twig' => array('extension' => 'twig.html'),
-        ));
+        $app = $this->getApplication([
+            'twig' => ['extension' => 'twig.html'],
+        ]);
         $provider = new ServiceProvider($app);
         $provider->boot();
 
@@ -62,13 +63,13 @@ class TwigTest extends Base
 
     public function testExtensionsWithDebug()
     {
-        $app = $this->getApplication(array(
-            'twig' => array(
-                'environment' => array(
+        $app = $this->getApplication([
+            'twig' => [
+                'environment' => [
                     'debug' => true,
-                ),
-            )
-        ));
+                ],
+            ]
+        ]);
 
         $provider = new ServiceProvider($app);
         $provider->boot();
@@ -100,8 +101,8 @@ class TwigTest extends Base
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
-        $finder->shouldReceive('getPaths')->andReturn(array());
-        $finder->shouldReceive('getHints')->andReturn(array());
+        $finder->shouldReceive('getPaths')->andReturn([]);
+        $finder->shouldReceive('getHints')->andReturn([]);
 
         $app['view'] = new Factory(
             $engine,
@@ -124,7 +125,7 @@ class TwigTest extends Base
         $provider->boot();
 
         // Extensions
-        $app['twig.extensions'] = array();
+        $app['twig.extensions'] = [];
 
         // View
         $engine = m::mock('Illuminate\View\Engines\EngineResolver');
@@ -132,8 +133,8 @@ class TwigTest extends Base
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
-        $finder->shouldReceive('getPaths')->andReturn(array());
-        $finder->shouldReceive('getHints')->andReturn(array());
+        $finder->shouldReceive('getPaths')->andReturn([]);
+        $finder->shouldReceive('getHints')->andReturn([]);
 
         $app['view'] = new Factory(
             $engine,
@@ -151,7 +152,7 @@ class TwigTest extends Base
         $provider->boot();
 
         // Extensions
-        $app['twig.extensions'] = array();
+        $app['twig.extensions'] = [];
 
         // View
         $engine = m::mock('Illuminate\View\Engines\EngineResolver');
@@ -159,8 +160,8 @@ class TwigTest extends Base
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
-        $finder->shouldReceive('getPaths')->andReturn(array());
-        $finder->shouldReceive('getHints')->andReturn(array());
+        $finder->shouldReceive('getPaths')->andReturn([]);
+        $finder->shouldReceive('getHints')->andReturn([]);
 
         $app['view'] = new Factory(
             $engine,
@@ -176,12 +177,12 @@ class TwigTest extends Base
         $app = $this->getApplication();
 
         // View
-        $engine = new \Illuminate\View\Engines\EngineResolver;
+        $engine = new EngineResolver;
 
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
-        $finder->shouldReceive('getPaths')->andReturn(array());
-        $finder->shouldReceive('getHints')->andReturn(array());
+        $finder->shouldReceive('getPaths')->andReturn([]);
+        $finder->shouldReceive('getHints')->andReturn([]);
 
         $app['view'] = new Factory(
             $engine,
@@ -192,7 +193,7 @@ class TwigTest extends Base
         $provider = new ServiceProvider($app);
         $provider->boot();
 
-        $app['twig.extensions'] = array();
+        $app['twig.extensions'] = [];
 
 
         $this->assertInstanceOf('TwigBridge\Engine\Twig', $app['view']->getEngineResolver()->resolve('twig'));
