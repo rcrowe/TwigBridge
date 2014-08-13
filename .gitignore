@@ -9,6 +9,9 @@
 ## VIM
 *.swp
 
+# PHPStorm
+.idea/
+
 ## PHPDoc files
 *.ini
 
