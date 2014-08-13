@@ -6,8 +6,13 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 [![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png?branch=0.6)](https://coveralls.io/r/rcrowe/TwigBridge?branch=0.6)
 [![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
 
-Installation
-============
+# Requirements
+
+TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.2.
+
+If you need to support <=5.3 or Laravel 4.0/4.2 checkout out TwigBridge <=0.5.
+
+# Installation
 
 Add `rcrowe\twigbridge` as a requirement to composer.json:
 
@@ -38,8 +43,7 @@ Twig::addExtension('TwigBridge\Extension\Loader\Functions');
 Twig::render('mytemplate', $data);
 ```
 
-Configuration
-=============
+# Configuration
 
 TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/config.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/config.php.
 
@@ -49,8 +53,7 @@ You can quickly publish a configuration file by running the following Artisan co
 $ php artisan config:publish rcrowe/twigbridge
 ```
 
-Usage
-=====
+# Usage
 
 You call the Twig template like you would any other view:
 
@@ -85,9 +88,8 @@ And output variables, escaped by default. Use the `raw` filter to skip escaping.
 {{ html_var | raw }}
 {{ long_var | str_limit(50) }}
 ```
-    
-Extensions
-==========
+
+# Extensions
 
 Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/extensions.php a list of extensions for Twig to load.
 
@@ -130,22 +132,19 @@ To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 - TwigBridge\Extension\Laravel\Legacy\Facades
 
 
-FilterLoader and FunctionLoader
------------
+## FilterLoader and FunctionLoader
 
 These loader extensions exposes Laravel helpers as both Twig functions and filters.
 
 Check out the config/extensions.php file to see a list of defined function / filters. You can also add your own.
 
-FacadeLoader
------------
+## FacadeLoader
 
 The FacadeLoader extension allows you to call any facade you have configured in config/extensions.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
 To use the Laravel integration (or indeed any aliased class and method), just add your facades to the config and call them like `URL.to(link)` (instead of `URL::to($link)`)
 
-Functions/Filters/Variables
------------
+## Functions/Filters/Variables
 
 The following helpers/filters are added by the default Extensions. They are based on the helpers and/or facades, so should be self explaining.
 
@@ -161,18 +160,17 @@ Functions:
  * str_* (All the Str::* methods, snake_cased)
  * trans, trans_choice
  * url_* (All the URL::* methods, snake_cased)
- 
+
 Filters:
  * camel_case, snake_case, studly_case
  * str_* (All the Str::* methods, snake_cased)
  * trans, trans_choice
- 
+
 Global variables:
  * app: the Illuminate\Foundation\Application object
  * errors: The $errors MessageBag from the Validator (always available)
 
-Artisan Commands
-================
+# Artisan Commands
 
 TwigBridge offers a command for CLI Interaction.
 
