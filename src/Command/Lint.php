@@ -261,7 +261,6 @@ class Lint extends Command
      * Output the results as json.
      *
      * @param array $details Validation results from all linted files.
-     * @param bool  $verbose
      *
      * @return int
      */
