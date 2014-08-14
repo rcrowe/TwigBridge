@@ -8,9 +8,9 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 
 # Requirements
 
-TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.2.
+TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.1+.
 
-If you need to support PHP 5.3 or Laravel 4.0/4.2 checkout out TwigBridge <=0.5.
+If you need to support PHP 5.3 or Laravel 4.0 checkout out TwigBridge 0.5.*
 
 # Installation
 
