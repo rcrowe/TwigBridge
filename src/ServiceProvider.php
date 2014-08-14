@@ -225,18 +225,21 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function provides()
     {
-        return array(
-            'twig',
-            'twig.engine',
-            'twig.extensions',
-            'twig.options',
-            'twig.loader',
-            'twig.loader.array',
-            'twig.loader.viewfinder',
-            'twig.templates',
+        return [
             'command.twig',
             'command.twig.clean',
             'command.twig.lint',
-        );
+            'twig.extension',
+            'twig.options',
+            'twig.extensions',
+            'twig.lexer',
+            'twig.templates',
+            'twig.loader.array',
+            'twig.loader.viewfinder',
+            'twig.loader',
+            'twig',
+            'twig.compiler',
+            'twig.engine',
+        ];
     }
 }
