@@ -39,8 +39,6 @@ class BindingsTest extends Base
             $provider               = new ServiceProvider($app);
             $provider->boot();
 
-            $this->assertNotNull($app[$name]);
-
             $app[$name] = null;
             $provider->boot();
 
