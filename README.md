@@ -59,7 +59,7 @@ You call the Twig template like you would any other view:
 
 ```php
 // Without the file extension
-View::make('i_am_twig', array(...))
+View::make('i_am_twig', [...])
 ```
 
 TwigBridge also supports views in other packages:
@@ -102,14 +102,14 @@ Sometimes you want to extend / add new functions for use in Twig templates. Add 
 TwigBridge supports both a string or a closure as a callback, so for example you might implement the [Assetic](https://github.com/kriswallsmith/assetic) Twig extension as follows:
 
 ```php
-'extensions' => array(
+'extensions' => [
     function($app) {
         $factory = new Assetic\Factory\AssetFactory($app['path'].'/../some/path/');
         $factory->setDebug(false);
         // etc.....
         return new Assetic\Extension\Twig\AsseticExtension($factory);
     }
-)
+]
 ```
 
 TwigBridge comes with the following extensions enabled by default:
