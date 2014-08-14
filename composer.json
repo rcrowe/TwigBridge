@@ -16,8 +16,8 @@
     "require": {
         "php": ">=5.4.0",
         "twig/twig": "~1.15",
-        "illuminate/support": "~4.0",
-        "illuminate/view": "~4.0"
+        "illuminate/support": "~4.1",
+        "illuminate/view": "~4.1"
     },
     "require-dev": {
         "laravel/framework": "~4.2.0",
@@ -33,6 +33,11 @@
         "psr-4": {
             "TwigBridge\\": "src",
             "TwigBridge\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6-dev"
         }
     }
 }
