@@ -5,6 +5,3 @@
 /.gitignore export-ignore
 /.travis.yml export-ignore
 /phpunit.xml export-ignore
-/CHANGELOG.md export-ignore
-/README.md export-ignore
-/UPGRADE.md export-ignore
