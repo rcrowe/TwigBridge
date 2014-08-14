@@ -87,7 +87,9 @@ class Compiler implements CompilerInterface
      * Compile the view at the given path.
      *
      * @param string $path
+     * 
      * @throws \InvalidArgumentException
+     * 
      * @return string \TwigBridge\Twig\Template
      */
     public function load($path)
