@@ -53,19 +53,40 @@ abstract class Template extends Twig_Template
             return $context;
         }
 
+        /** @var \Illuminate\View\Factory $env */
         $env  = $context['__env'];
         $view = new View(
             $env,
             $env->getEngineResolver()->resolve('twig'),
-            $this->getTemplateName(),
+            $this->getNormalizedName($env),
             null,
             $context
         );
-
         $env->callCreator($view);
         $env->callComposer($view);
-
         return $view->getData();
+    }
+
+    /**
+     * Get the normalized name, for creator/composer events
+     *
+     * @param  \Illuminate\View\Factory $viewEnvironment
+     * @return string
+     */
+    protected function getNormalizedName($viewEnvironment)
+    {
+        $paths = $viewEnvironment->getFinder()->getPaths();
+        $name = $this->getTemplateName();
+
+        // Replace absolute paths, trim slashes, remove extension
+        $name = str_replace($paths, '', $name);
+        $name = ltrim($name, '/');
+
+        if (substr($name, -5, 5) === '.twig') {
+            $name = substr($name, 0, -5);
+        }
+
+        return $name;
     }
 
     /**
