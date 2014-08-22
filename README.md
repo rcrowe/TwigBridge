@@ -94,7 +94,7 @@ And output variables, escaped by default. Use the `raw` filter to skip escaping.
 Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/extensions.php a list of extensions for Twig to load.
 
 ```php
-'extensions' => array(
+'enabled' => array(
     'TwigBridge\Extensions\Example'
 )
 ```
@@ -102,7 +102,7 @@ Sometimes you want to extend / add new functions for use in Twig templates. Add 
 TwigBridge supports both a string or a closure as a callback, so for example you might implement the [Assetic](https://github.com/kriswallsmith/assetic) Twig extension as follows:
 
 ```php
-'extensions' => [
+'enabled' => [
     function($app) {
         $factory = new Assetic\Factory\AssetFactory($app['path'].'/../some/path/');
         $factory->setDebug(false);
