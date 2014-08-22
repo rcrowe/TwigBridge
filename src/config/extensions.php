@@ -22,6 +22,7 @@ return [
     | Enabled extensions.
     |
     | `Twig_Extension_Debug` is enabled automatically if twig.debug is TRUE.
+    | If you also have Twig filters that extend \Twig_extension, add them here
     |
     */
     'enabled' => [
@@ -107,6 +108,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Available filters. Access like `{{ variable|filter }}`.
+    |
+    | NOTE: Do not add filters that extend \Twig_extension add them into the `enabled` section above
     |
     | Each filter can take an optional array of options. These options are
     | passed directly to `Twig_SimpleFilter`.
