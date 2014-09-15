@@ -16,11 +16,11 @@
     "require": {
         "php": ">=5.4.0",
         "twig/twig": "~1.15",
-        "illuminate/support": "~4.1",
-        "illuminate/view": "~4.1"
+        "illuminate/support": "~4.1|5.0.x",
+        "illuminate/view": "~4.1|5.0.x"
     },
     "require-dev": {
-        "laravel/framework": "~4.2.0",
+        "laravel/framework": "~4.2.0|5.0.x",
         "mockery/mockery": "~0.9.0",
         "phpunit/phpunit": "~4.0",
         "squizlabs/php_codesniffer": "~1.5",
