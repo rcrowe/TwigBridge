@@ -187,7 +187,7 @@ class ServiceProvider extends ViewServiceProvider
                     if (is_string($extension)) {
                         try {
                             $extension = $this->app->make($extension);
-                        } catch(\Exception $e) {
+                        } catch (\Exception $e) {
                             throw new InvalidArgumentException("Cannot instantiate Twig extension '$extension': " . $e->getMessage());
                         }
                     } elseif (is_callable($extension)) {
