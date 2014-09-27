@@ -14,6 +14,7 @@ namespace TwigBridge\Engine;
 use Illuminate\View\Engines\CompilerEngine;
 use TwigBridge\Twig\Loader;
 use Twig_Error;
+use Illuminate\View\Factory;
 use ErrorException;
 
 /**
@@ -36,18 +37,24 @@ class Twig extends CompilerEngine
     protected $loader = [];
 
     /**
+     * @var Illuminate\View\Factory
+     */
+    protected $viewFactory; 
+
+    /**
      * Create a new Twig view engine instance.
      *
      * @param \TwigBridge\Engine\Compiler        $compiler
      * @param \TwigBridge\Twig\Loader            $loader
      * @param array                              $globalData
      */
-    public function __construct(Compiler $compiler, Loader $loader, array $globalData = [])
+    public function __construct(Compiler $compiler, Loader $loader, array $globalData = [], Factory $viewFactory)
     {
         parent::__construct($compiler);
 
         $this->loader     = $loader;
         $this->globalData = $globalData;
+        $this->viewFactory = $viewFactory;
     }
 
     /**
@@ -84,10 +91,15 @@ class Twig extends CompilerEngine
      */
     public function get($path, array $data = [])
     {
-        $data = array_merge($this->globalData, $data);
+        $sharedData = $this->viewFactory->getShared();
+        $sharedData = array_merge($this->globalData, $sharedData);
 
         try {
-            $content = $this->compiler->load($path)->render($data);
+            $template = $this->compiler->load($path);
+            foreach ($sharedData as $key => $value) {
+                $template->getEnvironment()->addGlobal($key, $value);
+            }
+            $content = $template->render($data);
         } catch (Twig_Error $ex) {
             $this->handleTwigError($ex);
         }

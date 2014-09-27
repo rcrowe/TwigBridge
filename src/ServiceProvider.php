@@ -219,7 +219,8 @@ class ServiceProvider extends ViewServiceProvider
             return new Engine\Twig(
                 $this->app['twig.compiler'],
                 $this->app['twig.loader.viewfinder'],
-                $this->app['config']->get('twigbridge::twig.globals', [])
+                $this->app['config']->get('twigbridge::twig.globals', []),
+                $this->app['view']
             );
         });
     }
