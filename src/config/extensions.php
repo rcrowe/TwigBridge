@@ -69,7 +69,17 @@ return [
     | in order to be marked as safe.
     |
     */
-    'facades' => [],
+    'facades' => [
+        'Auth',
+        'Config',
+        'Form',
+        'Html',
+        'Input',
+        'Session',
+        'String',
+        'Translator',
+        'Url',
+    ],
 
     /*
     |--------------------------------------------------------------------------
