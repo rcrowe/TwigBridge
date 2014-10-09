@@ -23,6 +23,7 @@ abstract class Template extends Twig_Template
      * @var bool Have the creator/composer events fired.
      */
     protected $firedEvents = false;
+    protected $name = null;
 
     /**
      * {@inheritdoc}
@@ -53,12 +54,12 @@ abstract class Template extends Twig_Template
             return $context;
         }
 
-        /** @var \Illuminate\View\Factory $env */
+        /** @var \Illuminate\View\Factory $factory */
         $env  = $context['__env'];
         $view = new View(
             $env,
             $env->getEngineResolver()->resolve('twig'),
-            $this->getNormalizedName($env),
+            $this->name,
             null,
             $context
         );
@@ -68,26 +69,13 @@ abstract class Template extends Twig_Template
     }
 
     /**
-     * Get the normalized name, for creator/composer events
-     *
-     * @param  \Illuminate\View\Factory $viewEnvironment
-     * @return string
+     * Set the name of this template, as called by the developer.
      */
-    protected function getNormalizedName($viewEnvironment)
+    public function setName($name)
     {
-        $paths = $viewEnvironment->getFinder()->getPaths();
-        $name = $this->getTemplateName();
-
-        // Replace absolute paths, trim slashes, remove extension
-        $name = str_replace($paths, '', $name);
-        $name = ltrim($name, '/');
-
-        if (substr($name, -5, 5) === '.twig') {
-            $name = substr($name, 0, -5);
-        }
-
-        return $name;
+        $this->name = $name;
     }
+
 
     /**
      * Determine whether events should fire for this view.
