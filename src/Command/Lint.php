@@ -126,6 +126,12 @@ class Lint extends Command
         // Get files from passed in options
         $search = $files;
         $paths  = $this->laravel['view']->getFinder()->getPaths();
+        $hints = $this->laravel['view']->getFinder()->getHints();
+        if (is_array($hints) && !empty($hints)) {
+            $paths = array_reduce($hints, function($package, $paths) {
+                return array_merge($paths, $package);
+            }, $paths);
+        }
 
         if (!empty($filename)) {
             $search[] = $filename;
