@@ -64,6 +64,15 @@ class Bridge extends Twig_Environment
         $this->app = $app;
     }
 
+    public function loadTemplate($name, $index = null)
+    {
+        $template = parent::loadTemplate($name, $index);
+
+        $template->setName($this->normalizeName($name));
+
+        return $template;
+    }
+
     /**
      * Lint (check) the syntax of a file on the view paths.
      *
@@ -106,5 +115,24 @@ class Bridge extends Twig_Environment
         }
 
         return $context;
+    }
+
+    /**
+     * Normalize a view name.
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    protected function normalizeName($name)
+    {
+        $extension = '.' . $this->app['twig.extension'];
+        $length = strlen($extension);
+
+        if (substr($name, -$length, $length) === $extension) {
+            $name = substr($name, 0, -$length);
+        }
+
+        return $name;
     }
 }
