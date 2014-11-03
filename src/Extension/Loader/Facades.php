@@ -47,7 +47,7 @@ class Facades extends Loader
         foreach ($load as $facade => $options) {
             list($facade, $callable, $options) = $this->parseCallable($facade, $options);
 
-            $globals[$facade] = new Caller($facade, $options);
+            $globals[$facade] = new Caller($callable, $options);
         }
 
         return $globals;

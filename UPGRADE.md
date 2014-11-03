@@ -14,5 +14,6 @@ Some of noticable changes are:
  - The TwigBridge events are removed. Similar results can be achieved by simply using the Twig facade or IoC bindings
  - The Compile command has been removed. Templates are now automaticcaly compiled on the `php artisan optimize` command.
  - The package configuration has been split in 2 files. Republish the config and re-apply your settings.
+ - The getAttributes() functions has changed, make sure you call attributes/methods correctly on your models. `model.attribute` will get the function, `model.attribute()` the Relation object. Other methods on models will also have to use parentheses.
  
 For more changes see the changelog in CONTRIBUTING.md
