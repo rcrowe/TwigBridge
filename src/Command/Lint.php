@@ -128,7 +128,7 @@ class Lint extends Command
         $paths  = $this->laravel['view']->getFinder()->getPaths();
         $hints = $this->laravel['view']->getFinder()->getHints();
         if (is_array($hints) && !empty($hints)) {
-            $paths = array_reduce($hints, function($package, $paths) {
+            $paths = array_reduce($hints, function ($package, $paths) {
                 return array_merge($paths, $package);
             }, $paths);
         }
