@@ -51,6 +51,7 @@ class Session extends Twig_Extension
         return [
             new Twig_SimpleFunction('csrf_token', [$this->session, 'token'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('session_get', [$this->session, 'get']),
+            new Twig_SimpleFunction('session_pull', [$this->session, 'pull']),
             new Twig_SimpleFunction('session_has', [$this->session, 'has']),
         ];
     }
