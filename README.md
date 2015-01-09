@@ -8,28 +8,21 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 
 # Requirements
 
-TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.1+.
+TwigBridge >=0.7 requires PHP 5.4+ & Laravel 5+.
 
-If you need to support PHP 5.3 or Laravel 4.0 checkout out TwigBridge 0.5.*
+If you need to support for Laravel 4.0 checkout out TwigBridge 0.6.*
 
 # Installation
 
-Add `rcrowe\twigbridge` as a requirement to composer.json:
+Require this package with Composer
 
-```javascript
-{
-    "require": {
-        "rcrowe/twigbridge": "0.6.*"
-    }
-}
-```
+    composer require rcrowe/twigbridge
 
-Update your packages with `composer update` or install with `composer install`.
 
-Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up app/config/app.php and find the providers key towards the bottom and add:
+Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
 
 ```php
-'TwigBridge\ServiceProvider'
+'TwigBridge\ServiceProvider',
 ```
 
 You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig_Environment).
@@ -45,13 +38,7 @@ Twig::render('mytemplate', $data);
 
 # Configuration
 
-TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/config.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/config.php.
-
-You can quickly publish a configuration file by running the following Artisan command.
-
-```
-$ php artisan config:publish rcrowe/twigbridge
-```
+TwigBridge's configuration file can be extended in your ConfigServiceProvider, onder the `twigbridge` key. You can find the default configuration file at vendor/rcrowe/twigbridge/config.
 
 # Usage
 
