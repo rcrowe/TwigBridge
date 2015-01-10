@@ -10,7 +10,7 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 
 TwigBridge >=0.7 requires Laravel 5.
 
-If you need to support for Laravel 4.1+ checkout out TwigBridge 0.6.x, or 0.5.x for Laravel 4.0
+If you need to support for Laravel 4.1/4.2 checkout out TwigBridge 0.6.x, or 0.5.x for Laravel 4.0.
 
 # Installation
 
