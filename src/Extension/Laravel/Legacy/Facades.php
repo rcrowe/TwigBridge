@@ -70,7 +70,7 @@ class Facades extends Twig_Extension
         $this->config = $config;
 
         $aliases   = $this->config->get('app.aliases', []);
-        $shortcuts = $this->config->get('twigbridge::alias_shortcuts', []);
+        $shortcuts = $this->config->get('twigbridge.alias_shortcuts', []);
 
         $this->setAliases($aliases);
         $this->setShortcuts($shortcuts);

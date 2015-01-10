@@ -41,7 +41,7 @@ class Facades extends Loader
      */
     public function getGlobals()
     {
-        $load    = $this->config->get('twigbridge::extensions.facades', []);
+        $load    = $this->config->get('twigbridge.extensions.facades', []);
         $globals = [];
 
         foreach ($load as $facade => $options) {
