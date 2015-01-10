@@ -211,6 +211,8 @@ class ServiceProvider extends ViewServiceProvider
             },
             true
         );
+        
+        $this->app->alias('twig', 'TwigBridge\Bridge');
 
         $this->app->bindIf('twig.compiler', function () {
             return new Engine\Compiler($this->app['twig']);
