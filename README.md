@@ -45,7 +45,7 @@ Twig::render('mytemplate', $data);
 
 # Configuration
 
-TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/config.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/config.php.
+TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/twig.php` and `extensions.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/.
 
 You can quickly publish a configuration file by running the following Artisan command.
 
