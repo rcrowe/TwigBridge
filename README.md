@@ -39,7 +39,7 @@ Twig::render('mytemplate', $data);
 
 # Configuration
 
-TwigBridge's configuration file can be extended in your ConfigServiceProvider, onder the `twigbridge` key. You can find the default configuration file at vendor/rcrowe/twigbridge/config.
+TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at vendor/rcrowe/twigbridge/config.
 
 # Usage
 
