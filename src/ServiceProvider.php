@@ -211,7 +211,8 @@ class ServiceProvider extends ViewServiceProvider
             },
             true
         );
-        
+
+        $this->app->alias('twig', 'Twig_Environment');
         $this->app->alias('twig', 'TwigBridge\Bridge');
 
         $this->app->bindIf('twig.compiler', function () {
