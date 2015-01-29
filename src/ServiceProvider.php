@@ -34,9 +34,9 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function register()
     {
-        // Register the package configuration with the loader.
-        $this->app['config']->set('twigbridge.extensions', require __DIR__.'/../config/extensions.php');
-        $this->app['config']->set('twigbridge.twig', require __DIR__.'/../config/twig.php');
+        $configPath = __DIR__ . '/../config/twigbridge.php';
+        $this->mergeConfigFrom($configPath, 'twigbridge');
+        $this->publishes([$configPath => config_path('twigbridge.php')]);
     }
 
     /**
