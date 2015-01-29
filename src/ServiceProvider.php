@@ -37,6 +37,11 @@ class ServiceProvider extends ViewServiceProvider
         $configPath = __DIR__ . '/../config/twigbridge.php';
         $this->mergeConfigFrom($configPath, 'twigbridge');
         $this->publishes([$configPath => config_path('twigbridge.php')]);
+        
+        $this->registerCommands();
+        $this->registerOptions();
+        $this->registerLoaders();
+        $this->registerEngine();
     }
 
     /**
@@ -44,11 +49,6 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        $this->registerCommands();
-        $this->registerOptions();
-        $this->registerLoaders();
-        $this->registerEngine();
-
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
             'twig',
