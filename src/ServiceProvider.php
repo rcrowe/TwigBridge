@@ -46,7 +46,7 @@ class ServiceProvider extends ViewServiceProvider
     public function boot()
     {
         $configPath = __DIR__ . '/../config/twigbridge.php';
-        $this->publishes([$configPath => config_path('twigbridge.php')]);
+        $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
         $this->mergeConfigFrom($configPath, 'twigbridge');
 		
         $this->app['view']->addExtension(
