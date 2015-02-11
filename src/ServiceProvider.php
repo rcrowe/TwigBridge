@@ -101,7 +101,7 @@ class ServiceProvider extends ViewServiceProvider
             // Check whether we have the cache path set
             if (empty($options['cache'])) {
                 // No cache path set for Twig, lets set to the Laravel views storage folder
-                $options['cache'] = storage_path('framework/views');
+                $options['cache'] = storage_path('framework/views/twig');
             }
 
             return $options;
