@@ -28,7 +28,7 @@
     },
     "suggest": {
         "twig/extensions": "~1.0",
-        "illuminate/html": "For bringing back html/form in Laravel 5.x"
+        "laravelcollective/html": "For bringing back html/form in Laravel 5.x"
     },
     "autoload": {
         "psr-4": {
