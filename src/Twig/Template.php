@@ -56,10 +56,11 @@ abstract class Template extends Twig_Template
 
         /** @var \Illuminate\View\Factory $factory */
         $env  = $context['__env'];
+        $view_name = empty($this->name) ? $this->getTemplateName() : $this->name;
         $view = new View(
             $env,
             $env->getEngineResolver()->resolve('twig'),
-            $this->name,
+            $view_name,
             null,
             $context
         );
