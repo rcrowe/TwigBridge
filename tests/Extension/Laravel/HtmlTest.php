@@ -37,13 +37,13 @@ class HtmlTest extends Base
                 continue;
             }
 
-            $this->assertInstanceOf('Illuminate\Html\HtmlBuilder', $function->getCallable()[0]);
+            $this->assertInstanceOf('Collective\Html\HtmlBuilder', $function->getCallable()[0]);
         }
     }
 
     public function testWildcardFunctions()
     {
-        $builder = m::mock('Illuminate\Html\HtmlBuilder');
+        $builder = m::mock('Collective\Html\HtmlBuilder');
         $builder->shouldReceive('fooBar')->once();
 
         $html      = new Html($builder);
@@ -71,6 +71,6 @@ class HtmlTest extends Base
 
     protected function getHtml()
     {
-        return new Html(m::mock('Illuminate\Html\HtmlBuilder'));
+        return new Html(m::mock('Collective\Html\HtmlBuilder'));
     }
 }
