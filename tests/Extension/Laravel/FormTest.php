@@ -20,7 +20,7 @@ class FormTest extends Base
 
     public function testFunctionCallback()
     {
-        $builder = m::mock('Illuminate\Html\FormBuilder');
+        $builder = m::mock('Collective\Html\FormBuilder');
         $builder->shouldReceive('fooBar')->once();
 
         $form = new Form($builder);
@@ -40,6 +40,6 @@ class FormTest extends Base
 
     protected function getForm()
     {
-        return new Form(m::mock('Illuminate\Html\FormBuilder'));
+        return new Form(m::mock('Collective\Html\FormBuilder'));
     }
 }

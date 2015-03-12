@@ -13,7 +13,7 @@ namespace TwigBridge\Extension\Laravel;
 
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Illuminate\Html\FormBuilder;
+use Collective\Html\FormBuilder;
 use Illuminate\Support\Str;
 
 /**
@@ -22,14 +22,14 @@ use Illuminate\Support\Str;
 class Form extends Twig_Extension
 {
     /**
-     * @var \Illuminate\Html\FormBuilder
+     * @var \Collective\Html\FormBuilder
      */
     protected $form;
 
     /**
      * Create a new form extension
      *
-     * @param \Illuminate\Html\FormBuilder
+     * @param \Collective\Html\FormBuilder
      */
     public function __construct(FormBuilder $form)
     {
