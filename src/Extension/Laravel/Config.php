@@ -49,6 +49,7 @@ class Config extends Twig_Extension
     public function getFunctions()
     {
         return [
+            new Twig_SimpleFunction('config', [$this->config, 'config']),
             new Twig_SimpleFunction('config_get', [$this->config, 'get']),
             new Twig_SimpleFunction('config_has', [$this->config, 'has']),
         ];

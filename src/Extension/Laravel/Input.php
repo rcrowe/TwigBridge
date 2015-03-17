@@ -51,6 +51,7 @@ class Input extends Twig_Extension
         return [
             new Twig_SimpleFunction('input_get', [$this->request, 'input']),
             new Twig_SimpleFunction('input_old', [$this->request, 'old']),
+            new Twig_SimpleFunction('old', [$this->request, 'old']),
         ];
     }
 }

@@ -174,10 +174,10 @@ return [
         |
         */
         'functions' => [
-            'config',
+            'dd',
             'elixir',
             'head', 
-            'last',            
+            'last',
         ],
 
         /*
