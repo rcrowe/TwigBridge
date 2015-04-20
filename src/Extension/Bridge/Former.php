@@ -31,9 +31,9 @@ class Former extends Twig_Extension
 	 *
 	 * @param  \Former\Former
 	 */
-	public function __construct(/*\Former\Former $former*/)
+	public function __construct(\Former\Former $former)
 	{
-		$this->former = app('former');
+		$this->former = $former;
 	}
 
 	/**
