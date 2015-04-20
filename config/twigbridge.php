@@ -104,7 +104,7 @@ return [
 
             'TwigBridge\Extension\Laravel\Auth',
             'TwigBridge\Extension\Laravel\Config',
-            
+            'TwigBridge\Extension\Laravel\Dump',
             'TwigBridge\Extension\Laravel\Input',
             'TwigBridge\Extension\Laravel\Session',
             'TwigBridge\Extension\Laravel\String',
@@ -174,7 +174,6 @@ return [
         |
         */
         'functions' => [
-            'dd',
             'elixir',
             'head', 
             'last',

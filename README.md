@@ -105,6 +105,7 @@ TwigBridge comes with the following extensions enabled by default:
 - [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extension\Laravel\Auth
 - TwigBridge\Extension\Laravel\Config
+- TwigBridge\Extension\Laravel\Dump
 - TwigBridge\Extension\Laravel\Form
 - TwigBridge\Extension\Laravel\Html
 - TwigBridge\Extension\Laravel\Input
@@ -140,6 +141,7 @@ Functions:
  * asset, action, url, route, secure_url, secure_asset
  * auth_check, auth_guest, auth_user
  * config_get, config_has
+ * dump
  * form_* (All the Form::* methods, snake_cased)
  * html_* (All the Html::* methods, snake_cased)
  * input_get, input_old
