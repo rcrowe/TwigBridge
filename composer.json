@@ -31,6 +31,9 @@
         "laravelcollective/html": "For bringing back html/form in Laravel 5.x"
     },
     "autoload": {
+        "files": [
+            "src/LumenHelpers.php"
+        ],
         "psr-4": {
             "TwigBridge\\": "src",
             "TwigBridge\\Tests\\": "tests"
