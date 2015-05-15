@@ -2,11 +2,10 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 5](
 
 [![Latest Stable Version](https://poser.pugx.org/rcrowe/twigbridge/v/stable.png)](https://packagist.org/packages/rcrowe/twigbridge)
 [![Total Downloads](https://poser.pugx.org/rcrowe/twigbridge/downloads.png)](https://packagist.org/packages/rcrowe/twigbridge)
-[![Build Status](https://travis-ci.org/rcrowe/TwigBridge.png?branch=0.7)](https://travis-ci.org/rcrowe/TwigBridge)
-[![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png?branch=0.7)](https://coveralls.io/r/rcrowe/TwigBridge?branch=0.7)
+[![Build Status](https://travis-ci.org/rcrowe/TwigBridge.png)](https://travis-ci.org/rcrowe/TwigBridge)
+[![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png)](https://coveralls.io/r/rcrowe/TwigBridge)
 [![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
 
-### For Laravel 5.0, use the [0.7 branch](https://github.com/rcrowe/TwigBridge/tree/0.7)
 # Requirements
 
 TwigBridge >=0.7 requires Laravel 5.
@@ -18,7 +17,7 @@ If you need to support for Laravel 4.1/4.2 checkout out TwigBridge 0.6.x, or 0.5
 Require this package with Composer
 
 ```bash
-composer require rcrowe/twigbridge 0.7.x@dev
+composer require rcrowe/twigbridge 0.7.x
 ```
 
 Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
