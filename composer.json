@@ -35,10 +35,5 @@
             "TwigBridge\\": "src",
             "TwigBridge\\Tests\\": "tests"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.6-dev"
-        }
     }
 }
