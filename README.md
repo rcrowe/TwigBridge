@@ -6,7 +6,6 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](
 [![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png?branch=0.6)](https://coveralls.io/r/rcrowe/TwigBridge?branch=0.6)
 [![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
 
-### For Laravel 5.0, use the [0.7 branch](https://github.com/rcrowe/TwigBridge/tree/0.7)
 # Requirements
 
 TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.1+.
