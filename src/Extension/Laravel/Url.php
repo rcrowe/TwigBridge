@@ -15,7 +15,7 @@ use Twig_Extension;
 use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str;
-
+use Illuminate\Contracts\Routing\Registrar;
 /**
  * Access Laravels url class in your Twig templates.
  */
@@ -27,13 +27,20 @@ class Url extends Twig_Extension
     protected $url;
 
     /**
+     * @var \Illuminate\Contracts\Routing\Registrar
+     */
+    protected $router;
+
+    /**
      * Create a new url extension
      *
      * @param \Illuminate\Routing\UrlGenerator
+     * @param \Illuminate\Contracts\Routing\Registrar
      */
-    public function __construct(UrlGenerator $url)
+    public function __construct(UrlGenerator $url, Registrar $router)
     {
         $this->url = $url;
+        $this->router = $router;
     }
 
     /**
@@ -54,6 +61,7 @@ class Url extends Twig_Extension
             new Twig_SimpleFunction('action', [$this->url, 'action'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('route_has', [$this->router, 'has'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction(

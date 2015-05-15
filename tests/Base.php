@@ -47,46 +47,32 @@ abstract class Base extends PHPUnit_Framework_TestCase
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        // Config
-        $config = new Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
+        
 
-        $config->getLoader()->shouldReceive('addNamespace')->with('twigbridge', __DIR__);
-        $config->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(
-            function ($env, $package, $group, $items) {
-                return $items;
-            }
-        );
-        $config->getLoader()->shouldReceive('exists')->with('twig', 'twigbridge')->andReturn(false);
-        $config->getLoader()->shouldReceive('exists')->with('extensions', 'twigbridge')->andReturn(false);
-
-        // Get config data
-        $twigData = array(
-            'twig' => array(
-                'extension' => 'twig',
-                'environment' => array(
-                    'debug'               => false,
-                    'charset'             => 'utf-8',
-                    'base_template_class' => 'TwigBridge\Twig\Template',
-                    'cache'               => null,
-                    'auto_reload'         => true,
-                    'strict_variables'    => false,
-                    'autoescape'          => true,
-                    'optimizations'       => -1,
+        $extensionsData = include $this->twigBridgeRoot.'/../config/extensions.php';
+        
+        $configData = array(
+        	'twigbridge' => array(
+                'extensions' => $extensionsData,
+                'twig' => array(
+                    'extension' => 'twig',
+                    'environment' => array(
+                        'debug'               => false,
+                        'charset'             => 'utf-8',
+                        'base_template_class' => 'TwigBridge\Twig\Template',
+                        'cache'               => null,
+                        'auto_reload'         => true,
+                        'strict_variables'    => false,
+                        'autoescape'          => true,
+                        'optimizations'       => -1,
+                    ),
+                    'globals' => array(),
                 ),
-                'globals' => array(),
-            ),
+    	    ),
         );
-
-        $extensionsData = include $this->twigBridgeRoot.'/config/extensions.php';
-        $extensionsData = array(
-            'extensions' => $extensionsData,
-        );
-
-        $configData = array_replace_recursive($twigData, $extensionsData, $customConfig);
-        $config->getLoader()->shouldReceive('load')->with('production', 'config', 'twigbridge')->andReturn($configData);
-
-        $config->package('foo/twigbridge', __DIR__);
-        $app['config'] = $config;
+        
+        // Config
+        $app['config'] = new Repository($configData);
 
         $app->bind('Illuminate\Config\Repository', function () use ($app) {
             return $app['config'];

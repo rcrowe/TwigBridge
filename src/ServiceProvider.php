@@ -34,8 +34,10 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function register()
     {
-        // Register the package configuration with the loader.
-        $this->app['config']->package('rcrowe/twigbridge', __DIR__.'/config');
+        $this->registerCommands();
+        $this->registerOptions();
+        $this->registerLoaders();
+        $this->registerEngine();
     }
 
     /**
@@ -43,11 +45,10 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        $this->registerCommands();
-        $this->registerOptions();
-        $this->registerLoaders();
-        $this->registerEngine();
-
+        $configPath = __DIR__ . '/../config/twigbridge.php';
+        $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
+        $this->mergeConfigFrom($configPath, 'twigbridge');
+		
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
             'twig',
@@ -91,23 +92,23 @@ class ServiceProvider extends ViewServiceProvider
     protected function registerOptions()
     {
         $this->app->bindIf('twig.extension', function () {
-            return $this->app['config']->get('twigbridge::twig.extension');
+            return $this->app['config']->get('twigbridge.twig.extension');
         });
 
         $this->app->bindIf('twig.options', function () {
-            $options = $this->app['config']->get('twigbridge::twig.environment', []);
+            $options = $this->app['config']->get('twigbridge.twig.environment', []);
 
             // Check whether we have the cache path set
             if (empty($options['cache'])) {
                 // No cache path set for Twig, lets set to the Laravel views storage folder
-                $options['cache'] = $this->app['path.storage'].'/views/twig';
+                $options['cache'] = storage_path('framework/views/twig');
             }
 
             return $options;
         });
 
         $this->app->bindIf('twig.extensions', function () {
-            $load = $this->app['config']->get('twigbridge::extensions.enabled', []);
+            $load = $this->app['config']->get('twigbridge.extensions.enabled', []);
 
             // Is debug enabled?
             // If so enable debug extension
@@ -210,7 +211,8 @@ class ServiceProvider extends ViewServiceProvider
             },
             true
         );
-        
+
+        $this->app->alias('twig', 'Twig_Environment');
         $this->app->alias('twig', 'TwigBridge\Bridge');
 
         $this->app->bindIf('twig.compiler', function () {
@@ -221,7 +223,7 @@ class ServiceProvider extends ViewServiceProvider
             return new Engine\Twig(
                 $this->app['twig.compiler'],
                 $this->app['twig.loader.viewfinder'],
-                $this->app['config']->get('twigbridge::twig.globals', [])
+                $this->app['config']->get('twigbridge.twig.globals', [])
             );
         });
     }

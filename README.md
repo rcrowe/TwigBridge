@@ -1,36 +1,30 @@
-Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 4](http://laravel.com/).
+Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 5](http://laravel.com/).
 
 [![Latest Stable Version](https://poser.pugx.org/rcrowe/twigbridge/v/stable.png)](https://packagist.org/packages/rcrowe/twigbridge)
 [![Total Downloads](https://poser.pugx.org/rcrowe/twigbridge/downloads.png)](https://packagist.org/packages/rcrowe/twigbridge)
-[![Build Status](https://travis-ci.org/rcrowe/TwigBridge.png?branch=master)](https://travis-ci.org/rcrowe/TwigBridge)
-[![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png?branch=0.6)](https://coveralls.io/r/rcrowe/TwigBridge?branch=0.6)
+[![Build Status](https://travis-ci.org/rcrowe/TwigBridge.png?branch=0.7)](https://travis-ci.org/rcrowe/TwigBridge)
+[![Coverage Status](https://coveralls.io/repos/rcrowe/TwigBridge/badge.png?branch=0.7)](https://coveralls.io/r/rcrowe/TwigBridge?branch=0.7)
 [![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
 
 ### For Laravel 5.0, use the [0.7 branch](https://github.com/rcrowe/TwigBridge/tree/0.7)
 # Requirements
 
-TwigBridge >=0.6 requires PHP 5.4+ & Laravel 4.1+.
+TwigBridge >=0.7 requires Laravel 5.
 
-If you need to support PHP 5.3 or Laravel 4.0 checkout out TwigBridge 0.5.*
+If you need to support for Laravel 4.1/4.2 checkout out TwigBridge 0.6.x, or 0.5.x for Laravel 4.0.
 
 # Installation
 
-Add `rcrowe\twigbridge` as a requirement to composer.json:
+Require this package with Composer
 
-```javascript
-{
-    "require": {
-        "rcrowe/twigbridge": "0.6.*"
-    }
-}
+```bash
+composer require rcrowe/twigbridge 0.7.x@dev
 ```
 
-Update your packages with `composer update` or install with `composer install`.
-
-Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up app/config/app.php and find the providers key towards the bottom and add:
+Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
 
 ```php
-'TwigBridge\ServiceProvider'
+'TwigBridge\ServiceProvider',
 ```
 
 You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig_Environment).
@@ -46,13 +40,7 @@ Twig::render('mytemplate', $data);
 
 # Configuration
 
-TwigBridge's configuration file can be extended by creating `app/config/packages/rcrowe/twigbridge/twig.php` and `extensions.php`. You can find the default configuration file at vendor/rcrowe/twigbridge/src/config/.
-
-You can quickly publish a configuration file by running the following Artisan command.
-
-```
-$ php artisan config:publish rcrowe/twigbridge
-```
+TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at vendor/rcrowe/twigbridge/config.
 
 # Usage
 
@@ -118,6 +106,7 @@ TwigBridge comes with the following extensions enabled by default:
 - [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extension\Laravel\Auth
 - TwigBridge\Extension\Laravel\Config
+- TwigBridge\Extension\Laravel\Dump
 - TwigBridge\Extension\Laravel\Form
 - TwigBridge\Extension\Laravel\Html
 - TwigBridge\Extension\Laravel\Input
@@ -153,6 +142,7 @@ Functions:
  * asset, action, url, route, secure_url, secure_asset
  * auth_check, auth_guest, auth_user
  * config_get, config_has
+ * dump
  * form_* (All the Form::* methods, snake_cased)
  * html_* (All the Html::* methods, snake_cased)
  * input_get, input_old
