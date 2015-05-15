@@ -13,7 +13,7 @@ namespace TwigBridge;
 
 use Twig_Environment;
 use Twig_LoaderInterface;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use InvalidArgumentException;
 use Twig_Error;
 
