@@ -45,10 +45,23 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        $this->loadConfiguration();
+        if ( ! $this->isLumen()) {
+            $this->loadConfiguration();
+        }
+
         $this->registerExtension();
     }
-    
+
+    /**
+     * Check if we are running Lumen or not.
+     * 
+     * @return bool
+     */
+    protected function isLumen()
+    {
+        return strpos($this->app->version(), 'Lumen') !== false;
+    }
+
     /**
      * Load the configuration files and allow them to be published.
      * 
@@ -60,7 +73,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
         $this->mergeConfigFrom($configPath, 'twigbridge');
     }
-    
+
     /**
      * Register the Twig extension in the Laravel View component.
      * 
