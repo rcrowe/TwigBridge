@@ -39,7 +39,17 @@ Twig::render('mytemplate', $data);
 
 # Configuration
 
-TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at vendor/rcrowe/twigbridge/config.
+TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at `vendor/rcrowe/twigbridge/config`.
+
+# Installation on Lumen
+
+For Lumen, you need to load the same Service Provider, but you have to disable the `Auth`, `Translator` and `Url` extensions in your local configuration.
+Copy the `config/twigbridge.php` file to your local `config` folder and register the configuration + Service Provider in `bootstrap/app.php`:
+
+```php
+$app->configure('twigbridge'); 
+$app->register('TwigBridge\ServiceProvider');
+```
 
 # Usage
 
