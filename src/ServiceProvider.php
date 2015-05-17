@@ -45,10 +45,7 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
-        if ( ! $this->isLumen()) {
-            $this->loadConfiguration();
-        }
-
+        $this->loadConfiguration();
         $this->registerExtension();
     }
 
@@ -70,7 +67,11 @@ class ServiceProvider extends ViewServiceProvider
     protected function loadConfiguration()
     {
         $configPath = __DIR__ . '/../config/twigbridge.php';
-        $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
+
+        if ( ! $this->isLumen()) {
+            $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
+        }
+
         $this->mergeConfigFrom($configPath, 'twigbridge');
     }
 
