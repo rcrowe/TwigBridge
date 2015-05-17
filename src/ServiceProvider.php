@@ -45,10 +45,29 @@ class ServiceProvider extends ViewServiceProvider
      */
     public function boot()
     {
+        $this->loadConfiguration();
+        $this->registerExtension();
+    }
+    
+    /**
+     * Load the configuration files and allow them to be published.
+     * 
+     * @return void
+     */
+    protected function loadConfiguration()
+    {
         $configPath = __DIR__ . '/../config/twigbridge.php';
         $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
         $this->mergeConfigFrom($configPath, 'twigbridge');
-		
+    }
+    
+    /**
+     * Register the Twig extension in the Laravel View component.
+     * 
+     * @return void
+     */
+    protected function registerExtension()
+    {
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
             'twig',
