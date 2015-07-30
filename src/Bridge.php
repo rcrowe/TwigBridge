@@ -14,6 +14,7 @@ namespace TwigBridge;
 use Twig_Environment;
 use Twig_LoaderInterface;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 use Twig_Error;
 
@@ -133,6 +134,14 @@ class Bridge extends Twig_Environment
             $name = substr($name, 0, -$length);
         }
 
-        return $name;
+        // Normalize namespace and delimiters
+        $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
+        if (strpos($name, $delimiter) === false) {
+            return str_replace('/', '.', $name);
+        }
+
+        list($namespace, $name) = explode($delimiter, $name);
+
+        return $namespace.$delimiter.str_replace('/', '.', $name);
     }
 }
