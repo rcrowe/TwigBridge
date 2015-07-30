@@ -1,3 +1,15 @@
+## 0.8
+
+Changes since 0.7
+
+ - (Breaking) Normalize view events for included templates (folder/file.twig -> folder.file)
+ 
+## 0.7
+
+Changes since 0.6
+
+ - Support Laravel 5.x
+
 ## 0.6.0
 
 Changes since 0.5.x
@@ -12,4 +24,5 @@ Changes since 0.5.x
  - Improve Laravel composer / creator support (#59, #66)
  - Improve/simplify getAttributes() function
  - Render string templates (via ArrayLoader) (#94)
+
  - Improve error handling, use original source in Exceptions (#115)
