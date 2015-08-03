@@ -132,7 +132,7 @@ class ServiceProvider extends ViewServiceProvider
             $options = $this->app['config']->get('twigbridge.twig.environment', []);
 
             // Check whether we have the cache path set
-            if (empty($options['cache'])) {
+            if (!isset($options['cache']) || is_null($options['cache'])) {
                 // No cache path set for Twig, lets set to the Laravel views storage folder
                 $options['cache'] = storage_path('framework/views/twig');
             }
