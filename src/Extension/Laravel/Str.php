@@ -14,12 +14,12 @@ namespace TwigBridge\Extension\Laravel;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
-use Illuminate\Support\Str;
+use Illuminate\Support\Str as IlluminateStr;
 
 /**
  * Access Laravels string class in your Twig templates.
  */
-class String extends Twig_Extension
+class Str extends Twig_Extension
 {
     /**
      * @var string|object
@@ -66,7 +66,7 @@ class String extends Twig_Extension
                 'str_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
-                    $name      = Str::camel($name);
+                    $name      = IlluminateStr::camel($name);
 
                     return call_user_func_array([$this->callback, $name], $arguments);
                 }
@@ -87,7 +87,7 @@ class String extends Twig_Extension
                 'str_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
-                    $name      = Str::camel($name);
+                    $name      = IlluminateStr::camel($name);
 
                     return call_user_func_array([$this->callback, $name], $arguments);
                 }

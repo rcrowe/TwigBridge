@@ -38,6 +38,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->registerOptions();
         $this->registerLoaders();
         $this->registerEngine();
+        $this->registerAliases();
     }
 
     /**
@@ -51,7 +52,7 @@ class ServiceProvider extends ViewServiceProvider
 
     /**
      * Check if we are running Lumen or not.
-     * 
+     *
      * @return bool
      */
     protected function isLumen()
@@ -60,8 +61,18 @@ class ServiceProvider extends ViewServiceProvider
     }
 
     /**
+     * Check if we are running on PHP 7.
+     *
+     * @return bool
+     */
+    protected function isRunningOnPhp7()
+    {
+        return version_compare(PHP_VERSION, '7.0-dev', '>=');
+    }
+
+    /**
      * Load the configuration files and allow them to be published.
-     * 
+     *
      * @return void
      */
     protected function loadConfiguration()
@@ -77,7 +88,7 @@ class ServiceProvider extends ViewServiceProvider
 
     /**
      * Register the Twig extension in the Laravel View component.
-     * 
+     *
      * @return void
      */
     protected function registerExtension()
@@ -259,6 +270,18 @@ class ServiceProvider extends ViewServiceProvider
                 $this->app['config']->get('twigbridge.twig.globals', [])
             );
         });
+    }
+
+    /**
+     * Register aliases for classes that had to be renamed because of reserved names in PHP7.
+     *
+     * @return void
+     */
+    protected function registerAliases()
+    {
+        if (!$this->isRunningOnPhp7()) {
+            class_alias('TwigBridge\Extension\Laravel\Str', 'TwigBridge\Extension\Laravel\String');
+        }
     }
 
     /**
