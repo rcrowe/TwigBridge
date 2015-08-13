@@ -36,7 +36,7 @@ class Bridge extends Twig_Environment
     /**
      * {@inheritdoc}
      */
-    public function __construct(Twig_LoaderInterface $loader = null, $options = [], Application $app = null)
+    public function __construct(Twig_LoaderInterface $loader, $options = [], Application $app = null)
     {
         // Twig 2.0 doesn't support `true` anymore
         if (isset($options['autoescape']) && $options['autoescape'] === true) {
