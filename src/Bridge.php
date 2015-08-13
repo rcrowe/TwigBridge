@@ -26,7 +26,7 @@ class Bridge extends Twig_Environment
     /**
      * @var string TwigBridge version
      */
-    const BRIDGE_VERSION = '0.7.0';
+    const BRIDGE_VERSION = '0.8.0';
 
     /**
      * @var \Illuminate\Foundation\Application
@@ -38,6 +38,11 @@ class Bridge extends Twig_Environment
      */
     public function __construct(Twig_LoaderInterface $loader = null, $options = [], Application $app = null)
     {
+        // Twig 2.0 doesn't support `true` anymore
+        if (isset($options['autoescape']) && $options['autoescape'] === true) {
+            $options['autoescape'] = 'html';
+        }
+        
         parent::__construct($loader, $options);
 
         $this->app = $app;
