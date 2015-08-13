@@ -3,6 +3,7 @@
 Changes since 0.7
 
  - (Breaking) Normalize view events for included templates (folder/file.twig -> folder.file)
+ - (initial) Twig 2.x support
  
 ## 0.7
 
