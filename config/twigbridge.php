@@ -177,8 +177,6 @@ return [
             'elixir',
             'head', 
             'last',
-            'array_get',
-            'data_get',
         ],
 
         /*
@@ -209,6 +207,8 @@ return [
         | </code>
         |
         */
-        'filters' => [],
+        'filters' => [
+            'get' => 'data_get',    
+        ],
     ],  
 ];
