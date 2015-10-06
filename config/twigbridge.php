@@ -177,6 +177,8 @@ return [
             'elixir',
             'head', 
             'last',
+            'array_get',
+            'data_get',
         ],
 
         /*
