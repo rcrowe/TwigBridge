@@ -14,7 +14,7 @@ namespace TwigBridge\Extension\Laravel;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Str;
+use Illuminate\Support\Str as IlluminateStr;
 use Illuminate\Contracts\Routing\Registrar;
 /**
  * Access Laravels url class in your Twig templates.
@@ -68,7 +68,7 @@ class Url extends Twig_Extension
                 'url_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
-                    $name      = Str::camel($name);
+                    $name      = IlluminateStr::camel($name);
 
                     return call_user_func_array([$this->url, $name], $arguments);
                 }

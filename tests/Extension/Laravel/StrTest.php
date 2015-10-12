@@ -4,9 +4,9 @@ namespace TwigBridge\Tests\Extension\Laravel;
 
 use TwigBridge\Tests\Base;
 use Mockery as m;
-use TwigBridge\Extension\Laravel\String;
+use TwigBridge\Extension\Laravel\Str;
 
-class StringTest extends Base
+class StrTest extends Base
 {
     protected $customFilters = [
         'camel_case',
@@ -92,6 +92,6 @@ class StringTest extends Base
 
     protected function getString()
     {
-        return new String;
+        return new Str;
     }
 }
