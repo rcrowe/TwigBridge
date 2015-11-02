@@ -279,7 +279,7 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerAliases()
     {
-        if (!$this->isRunningOnPhp7()) {
+        if (!$this->isRunningOnPhp7() and !class_exists('TwigBridge\Extension\Laravel\String')) {
             class_alias('TwigBridge\Extension\Laravel\Str', 'TwigBridge\Extension\Laravel\String');
         }
     }
