@@ -49,10 +49,29 @@ class Translator extends Twig_Extension
      */
     public function getFunctions()
     {
-        return [
-            new Twig_SimpleFunction('trans', [$this->translator, 'trans']),
-            new Twig_SimpleFunction('trans_choice', [$this->translator, 'transChoice']),
-        ];
+       return [
+           new Twig_SimpleFunction('trans', [$this, 'trans'], ['is_safe' => ['html']]),
+           new Twig_SimpleFunction('trans_choice', [$this->translator, 'transChoice']),
+       ];
+    }
+
+    public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
+    {
+       if( "messages" != $domain)
+       {
+           $id = "$domain.$id";
+       }
+       $message = $this->translator->get($id, $parameters, $locale);
+
+       if($message == $id)
+       {
+           $message = str_replace( $domain.".", "", $message);
+           foreach ($parameters as $key => $value) {
+               $message = str_replace(':'.$key, $value, $message);
+           }
+       }
+
+       return $message;
     }
 
     /**
