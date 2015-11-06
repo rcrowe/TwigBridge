@@ -57,10 +57,7 @@ class Translator extends Twig_Extension
 
     public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
     {
-       if( "messages" != $domain)
-       {
-           $id = "$domain.$id";
-       }
+       $id = "$domain.$id";
        $message = $this->translator->get($id, $parameters, $locale);
 
        if($message == $id)
