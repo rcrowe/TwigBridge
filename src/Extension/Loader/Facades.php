@@ -12,6 +12,7 @@
 namespace TwigBridge\Extension\Loader;
 
 use TwigBridge\Extension\Loader\Facade\Caller;
+use TwigBridge\Twig\Globals;
 
 /**
  * Extension to expose defined facades to the Twig templates.
@@ -26,7 +27,7 @@ use TwigBridge\Extension\Loader\Facade\Caller;
  *     {{ Config.get('app.timezone') }}
  * </code>
  */
-class Facades extends Loader
+class Facades extends Loader implements Globals
 {
     /**
      * {@inheritDoc}
