@@ -67,7 +67,7 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function isRunningOnPhp7()
     {
-        return version_compare(PHP_VERSION, '7.0-dev', '>=');
+        return version_compare(PHP_VERSION, '7.0', '>=');
     }
 
     /**

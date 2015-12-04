@@ -53,7 +53,7 @@ For Lumen, you need to load the same Service Provider, but you have to disable t
 Copy the `config/twigbridge.php` file to your local `config` folder and register the configuration + Service Provider in `bootstrap/app.php`:
 
 ```php
-$app->configure('twigbridge'); 
+$app->configure('twigbridge');
 $app->register('TwigBridge\ServiceProvider');
 ```
 
@@ -135,6 +135,8 @@ TwigBridge comes with the following extensions enabled by default:
 
 To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 - TwigBridge\Extension\Laravel\Legacy\Facades
+
+To support **PHP 7**, replace `TwigBridge\Extension\Laravel\String` with `TwigBridge\Extension\Laravel\Str`.
 
 
 ## FilterLoader and FunctionLoader
