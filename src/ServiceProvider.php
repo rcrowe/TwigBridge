@@ -38,7 +38,6 @@ class ServiceProvider extends ViewServiceProvider
         $this->registerOptions();
         $this->registerLoaders();
         $this->registerEngine();
-        $this->registerAliases();
     }
 
     /**
@@ -58,16 +57,6 @@ class ServiceProvider extends ViewServiceProvider
     protected function isLumen()
     {
         return strpos($this->app->version(), 'Lumen') !== false;
-    }
-
-    /**
-     * Check if we are running on PHP 7.
-     *
-     * @return bool
-     */
-    protected function isRunningOnPhp7()
-    {
-        return version_compare(PHP_VERSION, '7.0', '>=');
     }
 
     /**
@@ -270,18 +259,6 @@ class ServiceProvider extends ViewServiceProvider
                 $this->app['config']->get('twigbridge.twig.globals', [])
             );
         });
-    }
-
-    /**
-     * Register aliases for classes that had to be renamed because of reserved names in PHP7.
-     *
-     * @return void
-     */
-    protected function registerAliases()
-    {
-        if (!$this->isRunningOnPhp7() and !class_exists('TwigBridge\Extension\Laravel\String')) {
-            class_alias('TwigBridge\Extension\Laravel\Str', 'TwigBridge\Extension\Laravel\String');
-        }
     }
 
     /**

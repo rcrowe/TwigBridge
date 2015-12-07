@@ -57,6 +57,10 @@ $app->configure('twigbridge');
 $app->register('TwigBridge\ServiceProvider');
 ```
 
+# Updating
+
+Since _String_ is a reserved keyword in PHP 7, the extension `TwigBridge\Extension\Laravel\String` is replaced with `TwigBridge\Extension\Laravel\Str`. Please update the namespace in your existing twigbridge.php config file.
+
 # Usage
 
 You call the Twig template like you would any other view:
@@ -126,7 +130,7 @@ TwigBridge comes with the following extensions enabled by default:
 - TwigBridge\Extension\Laravel\Html
 - TwigBridge\Extension\Laravel\Input
 - TwigBridge\Extension\Laravel\Session
-- TwigBridge\Extension\Laravel\String
+- TwigBridge\Extension\Laravel\Str
 - TwigBridge\Extension\Laravel\Translator
 - TwigBridge\Extension\Laravel\Url
 - TwigBridge\Extension\Loader\Facades
@@ -135,8 +139,6 @@ TwigBridge comes with the following extensions enabled by default:
 
 To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 - TwigBridge\Extension\Laravel\Legacy\Facades
-
-To support **PHP 7**, replace `TwigBridge\Extension\Laravel\String` with `TwigBridge\Extension\Laravel\Str`.
 
 
 ## FilterLoader and FunctionLoader
