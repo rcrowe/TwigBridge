@@ -75,8 +75,8 @@ View::make('pagination::simple')
 The above rules continue when extending another Twig template:
 
 ```html
-{% extend "parent" %}
-{% extend "pagination::parent" %}
+{% extends "parent" %}
+{% extends "pagination::parent" %}
 ```
 
 You can call functions with parameters:
