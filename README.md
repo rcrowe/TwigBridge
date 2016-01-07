@@ -15,7 +15,7 @@ If you need to support for Laravel 4.1/4.2 checkout out TwigBridge 0.6.x, or 0.5
 Require this package with Composer
 
 ```bash
-composer require rcrowe/twigbridge 0.8.x
+composer require rcrowe/twigbridge
 ```
 
 Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
@@ -75,8 +75,8 @@ View::make('pagination::simple')
 The above rules continue when extending another Twig template:
 
 ```html
-{% extend "parent" %}
-{% extend "pagination::parent" %}
+{% extends "parent" %}
+{% extends "pagination::parent" %}
 ```
 
 You can call functions with parameters:
