@@ -18,6 +18,49 @@ Require this package with Composer
 composer require rcrowe/twigbridge
 ```
 
+# Quick Start
+
+Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key, towards the end of the file, and add 'TwigBridge\ServiceProvider', to the end:
+
+```php
+'providers' => [
+     ...
+                'TwigBridge\ServiceProvider',
+],
+```
+
+Now find the alliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig_Environment):
+
+```php
+'aliases' => [
+    ... 
+                'Twig' => 'TwigBridge\Facade\Twig',
+],
+```
+
+Now that you have both of those lines added to config/app.php we will use Artisan to add the new twig config file:
+
+```php
+php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
+```
+
+At this point you can now begin using twig like you would any other view
+
+```php
+//app/Http/routes.php
+//twig template resources/views/hello.twig
+Route::get('/', function () {
+    return View::make('hello');
+});
+```
+
+You can create the twig files in resources/views with the .twig file extension. 
+```bash
+resources/views/hello.twig
+```
+
+# Configuration
+
 Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
 
 ```php
@@ -34,8 +77,6 @@ You can add the TwigBridge Facade, to have easier access to the TwigBridge (or T
 Twig::addExtension('TwigBridge\Extension\Loader\Functions');
 Twig::render('mytemplate', $data);
 ```
-
-# Configuration
 
 TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at `vendor/rcrowe/twigbridge/config`.  
 
