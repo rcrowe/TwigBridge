@@ -26,7 +26,7 @@ class Bridge extends Twig_Environment
     /**
      * @var string TwigBridge version
      */
-    const BRIDGE_VERSION = '0.9.2';
+    const BRIDGE_VERSION = '0.10.0';
 
     /**
      * @var \Illuminate\Contracts\Container\Container
