@@ -25,7 +25,7 @@ Once Composer has installed or updated your packages you need to register TwigBr
 ```php
 'providers' => [
      ...
-                'TwigBridge\ServiceProvider',
+                TwigBridge\ServiceProvider::class,
 ],
 ```
 
@@ -34,7 +34,7 @@ Now find the alliases key, again towards the end of the file, and add 'Twig' => 
 ```php
 'aliases' => [
     ... 
-                'Twig' => 'TwigBridge\Facade\Twig',
+                'Twig' => TwigBridge\Facade\Twig::class,
 ],
 ```
 
