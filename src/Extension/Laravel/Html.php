@@ -14,7 +14,7 @@ namespace TwigBridge\Extension\Laravel;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Illuminate\Html\HtmlBuilder;
-use Illuminate\Support\Str;
+use Illuminate\Support\Str as IlluminateStr;
 
 /**
  * Access Laravels html builder in your Twig templates.
@@ -58,7 +58,7 @@ class Html extends Twig_Extension
                 'html_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
-                    $name      = Str::camel($name);
+                    $name      = IlluminateStr::camel($name);
 
                     return call_user_func_array([$this->html, $name], $arguments);
                 },
