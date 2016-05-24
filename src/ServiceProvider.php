@@ -47,6 +47,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->registerOptions();
         $this->registerLoaders();
         $this->registerEngine();
+        $this->registerAliases();
 
         $this->app['view']->addExtension(
             $this->app['twig.extension'],
@@ -55,6 +56,16 @@ class ServiceProvider extends ViewServiceProvider
                 return $this->app['twig.engine'];
             }
         );
+    }
+
+    /**
+     * Check if we are running on PHP 7.
+     *
+     * @return bool
+     */
+    protected function isRunningOnPhp7()
+    {
+        return version_compare(PHP_VERSION, '7.0-dev', '>=');
     }
 
     /**
@@ -210,7 +221,7 @@ class ServiceProvider extends ViewServiceProvider
             },
             true
         );
-        
+
         $this->app->alias('twig', 'TwigBridge\Bridge');
 
         $this->app->bindIf('twig.compiler', function () {
@@ -224,6 +235,18 @@ class ServiceProvider extends ViewServiceProvider
                 $this->app['config']->get('twigbridge::twig.globals', [])
             );
         });
+    }
+
+    /**
+     * Register aliases for classes that had to be renamed because of reserved names in PHP7.
+     *
+     * @return void
+     */
+    protected function registerAliases()
+    {
+        if (!$this->isRunningOnPhp7()) {
+            class_alias('TwigBridge\Extension\Laravel\Str', 'TwigBridge\Extension\Laravel\String');
+        }
     }
 
     /**

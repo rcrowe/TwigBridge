@@ -14,7 +14,7 @@ namespace TwigBridge\Extension\Laravel;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Illuminate\Html\FormBuilder;
-use Illuminate\Support\Str;
+use Illuminate\Support\Str as IlluminateStr;
 
 /**
  * Access Laravels form builder in your Twig templates.
@@ -54,7 +54,7 @@ class Form extends Twig_Extension
                 'form_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
-                    $name      = Str::camel($name);
+                    $name      = IlluminateStr::camel($name);
 
                     return call_user_func_array([$this->form, $name], $arguments);
                 },
