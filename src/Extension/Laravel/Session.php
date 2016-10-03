@@ -13,7 +13,7 @@ namespace TwigBridge\Extension\Laravel;
 
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Illuminate\Session\SessionManager;
+use Illuminate\Session\Store;
 
 /**
  * Access Laravels session class in your Twig templates.
@@ -21,16 +21,16 @@ use Illuminate\Session\SessionManager;
 class Session extends Twig_Extension
 {
     /**
-     * @var \Illuminate\Session\SessionManager
+     * @var \Illuminate\Session\Store
      */
     protected $session;
 
     /**
      * Create a new session extension
      *
-     * @param \Illuminate\Session\SessionManager
+     * @param \Illuminate\Session\Store
      */
-    public function __construct(SessionManager $session)
+    public function __construct(Store $session)
     {
         $this->session = $session;
     }
