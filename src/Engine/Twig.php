@@ -14,6 +14,7 @@ namespace TwigBridge\Engine;
 use Illuminate\View\Engines\CompilerEngine;
 use TwigBridge\Twig\Loader;
 use Twig_Error;
+use Twig_Error_Loader;
 use ErrorException;
 
 /**
