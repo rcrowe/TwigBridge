@@ -15,7 +15,7 @@ use Illuminate\View\Engines\CompilerEngine;
 use TwigBridge\Twig\Loader;
 use Twig_Error;
 use Twig_Error_Loader;
-use ErrorException;
+use ReflectionClass;
 
 /**
  * View engine for Twig files.
@@ -119,8 +119,14 @@ class Twig extends CompilerEngine
             }
         }
 
-        if (isset($file)) {
-            $ex = new ErrorException($ex->getMessage(), 0, 1, $file, $templateLine, $ex);
+        if (isset($file) && $file !== $templateFile) {            
+
+            $reflection = new ReflectionClass($ex);
+
+            $property = $reflection->getProperty('filename');
+            $property->setAccessible(true);
+            $property->setValue($ex, $file);
+
         }
 
         throw $ex;
