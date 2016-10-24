@@ -105,15 +105,15 @@ class Twig extends CompilerEngine
      */
     protected function handleTwigError(Twig_Error $ex)
     {
-        $templateFile = $ex->getTemplateFile();
+        $templateName = $ex->getTemplateName();
         $templateLine = $ex->getTemplateLine();
 
-        if ($templateFile && file_exists($templateFile)) {
-            $file = $templateFile;
-        } elseif ($templateFile) {
+        if ($templateName && file_exists($templateName)) {
+            $file = $templateName;
+        } elseif ($templateName) {
             // Attempt to locate full path to file
             try {
-                $file = $this->loader->findTemplate($templateFile);
+                $file = $this->loader->findTemplate($templateName);
             } catch (Twig_Error_Loader $exception) {
                 // Unable to load template
             }
