@@ -119,6 +119,10 @@ abstract class Template extends Twig_Template
                 return true;
             }
 
+            if ($this->env->hasExtension('sandbox')) {
+                $this->env->getExtension('sandbox')->checkPropertyAllowed($object, $item);
+            }
+
             // Call the attribute, the Model object does the rest of the magic
             return $object->$item;
         } else {

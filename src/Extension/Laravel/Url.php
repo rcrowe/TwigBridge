@@ -78,6 +78,10 @@ class Url extends Twig_Extension
 
     public function url($path = null, $parameters = [], $secure = null)
     {
+        if (! $path) {
+            return $this->url;
+        }
+
         return $this->url->to($path, $parameters, $secure);
     }
 }

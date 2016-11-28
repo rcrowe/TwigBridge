@@ -13,7 +13,7 @@ namespace TwigBridge;
 
 use Twig_Environment;
 use Twig_LoaderInterface;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container; 
 use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 use Twig_Error;
@@ -26,17 +26,17 @@ class Bridge extends Twig_Environment
     /**
      * @var string TwigBridge version
      */
-    const BRIDGE_VERSION = '0.8.0';
+    const BRIDGE_VERSION = '0.10.0';
 
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
      */
     protected $app;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(Twig_LoaderInterface $loader, $options = [], Application $app = null)
+    public function __construct(Twig_LoaderInterface $loader, $options = [], Container $app = null)
     {
         // Twig 2.0 doesn't support `true` anymore
         if (isset($options['autoescape']) && $options['autoescape'] === true) {
@@ -51,7 +51,7 @@ class Bridge extends Twig_Environment
     /**
      * Get the Laravel app.
      *
-     * @return \Illuminate\Foundation\Application
+     * @return \Illuminate\Contracts\Container\Container
      */
     public function getApplication()
     {
@@ -61,11 +61,11 @@ class Bridge extends Twig_Environment
     /**
      * Set the Laravel app.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Contracts\Container\Container $app
      *
      * @return void
      */
-    public function setApplication(Application $app)
+    public function setApplication(Container $app)
     {
         $this->app = $app;
     }

@@ -12,7 +12,7 @@
 namespace TwigBridge\Extension\Loader;
 
 use Twig_Extension;
-use Illuminate\Config\Repository as Config;
+use Illuminate\Contracts\Config\Repository as Config;
 
 /**
  * Base loader extension.
