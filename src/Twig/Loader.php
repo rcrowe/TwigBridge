@@ -124,6 +124,18 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
     /**
      * {@inheritdoc}
      */
+    public function getSourceContext($name)
+    {
+		if (false === $source = $this->getSource( $name)) {
+			throw new Twig_Error_Loader(sprintf('Template "%s" does not exist.', $name));
+		}
+
+		return new \Twig_Source($source, $name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCacheKey($name)
     {
         return $this->findTemplate($name);
