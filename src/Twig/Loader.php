@@ -11,7 +11,7 @@
 
 namespace TwigBridge\Twig;
 
-use Twig_LoaderInterface;
+use Twig_SourceContextLoaderInterface;
 use Twig_Error_Loader;
 use Twig_ExistsLoaderInterface;
 use InvalidArgumentException;
@@ -21,7 +21,7 @@ use Illuminate\View\ViewFinderInterface;
 /**
  * Basic loader using absolute paths.
  */
-class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
+class Loader implements Twig_SourceContextLoaderInterface, Twig_ExistsLoaderInterface
 {
     /**
      * @var \Illuminate\Filesystem\Filesystem
@@ -116,9 +116,11 @@ class Loader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSource($name)
+    public function getSourceContext($name)
     {
-        return $this->files->get($this->findTemplate($name));
+        $path = $this->findTemplate($name);
+
+        return new \Twig_Source($this->files->get($path), $name, $path);
     }
 
     /**
