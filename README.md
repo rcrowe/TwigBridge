@@ -201,7 +201,7 @@ Functions:
  * dump
  * form_* (All the Form::* methods, snake_cased)
  * html_* (All the Html::* methods, snake_cased)
- * input_get, input_old
+ * input_get, input_old, input_has
  * link_to, link_to_asset, link_to_route, link_to_action
  * session_has, session_get, csrf_token
  * str_* (All the Str::* methods, snake_cased)
