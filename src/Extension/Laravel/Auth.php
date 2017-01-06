@@ -24,6 +24,7 @@ class Auth extends Twig_Extension
      * @var \Illuminate\Auth\AuthManager
      */
     protected $auth;
+    protected $guard;
 
     /**
      * Create a new auth extension.
@@ -33,6 +34,7 @@ class Auth extends Twig_Extension
     public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
+        $this->guard = $this->auth->guard();
     }
 
     /**
@@ -51,7 +53,7 @@ class Auth extends Twig_Extension
         return [
             new Twig_SimpleFunction('auth_check', [$this->auth, 'check']),
             new Twig_SimpleFunction('auth_guest', [$this->auth, 'guest']),
-            new Twig_SimpleFunction('auth_user', [$this->auth, 'user']),
+            new Twig_SimpleFunction('auth_user', [$this->guard, 'user']),
             new Twig_SimpleFunction('auth_guard', [$this->auth, 'guard']),
         ];
     }
