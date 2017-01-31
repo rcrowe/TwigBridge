@@ -178,6 +178,8 @@ return [
             'elixir',
             'head',
             'last',
+            'dd',
+            'd',
         ],
 
         /*
