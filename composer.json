@@ -32,7 +32,11 @@
     },
     "autoload": {
         "psr-4": {
-            "TwigBridge\\": "src",
+            "TwigBridge\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "TwigBridge\\Tests\\": "tests"
         }
     },
