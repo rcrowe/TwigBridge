@@ -1,5 +1,5 @@
 {
-    "name": "rcrowe/twigbridge",
+    "name": "stayforlong/twigstay",
     "description": "Adds the power of Twig to Laravel",
     "keywords": ["laravel", "twig"],
     "license": "MIT",
