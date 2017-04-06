@@ -11,6 +11,7 @@
 
 namespace TwigBridge\Twig;
 
+use Illuminate\Database\Eloquent\Model;
 use Twig_Template;
 use Illuminate\View\View;
 
@@ -110,20 +111,24 @@ abstract class Template extends Twig_Template
         $type = Twig_Template::ANY_CALL,
         $isDefinedTest = false,
         $ignoreStrictCheck = false
-    ) {
-        // We need to handle accessing attributes on an Eloquent instance differently
-        if (Twig_Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
-            // We can't easily find out if an attribute actually exists, so return true
-            if ($isDefinedTest) {
-                return true;
-            }
-
-            // Call the attribute, the Model object does the rest of the magic
-            return $object->$item;
-        } else {
-            return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
-        }
-
-
+    )
+    {
+        // seek out eloquent models
+        // if this is a true method, call it
+        if( $object instanceof Model )
+		{
+			if(method_exists($object, $item) &&
+	        (count($arguments) || $type == Twig_Template::METHOD_CALL) )
+			{
+	        	return call_user_func_array([$object, $item], $arguments);
+			}
+			elseif(method_exists($object, $item) &&
+				!count($arguments) &&
+				$type == Twig_Template::ANY_CALL)
+			{
+				return $object -> $item;
+			}
+		}
+        return parent::getAttribute( $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck );
     }
 }
