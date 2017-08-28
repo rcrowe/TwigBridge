@@ -203,7 +203,7 @@ Functions:
  * html_* (All the Html::* methods, snake_cased)
  * input_get, input_old, input_has
  * link_to, link_to_asset, link_to_route, link_to_action
- * session_has, session_get, csrf_token
+ * session_has, session_get, csrf_token, csrf_field, method_field
  * str_* (All the Str::* methods, snake_cased)
  * trans, trans_choice
  * url_* (All the URL::* methods, snake_cased)
