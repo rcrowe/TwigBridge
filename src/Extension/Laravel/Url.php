@@ -16,6 +16,7 @@ use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str as IlluminateStr;
 use Illuminate\Contracts\Routing\Registrar;
+
 /**
  * Access Laravels url class in your Twig templates.
  */

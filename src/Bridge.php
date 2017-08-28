@@ -13,7 +13,7 @@ namespace TwigBridge;
 
 use Twig_Environment;
 use Twig_LoaderInterface;
-use Illuminate\Contracts\Container\Container; 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 use Twig_Error;
@@ -42,7 +42,7 @@ class Bridge extends Twig_Environment
         if (isset($options['autoescape']) && $options['autoescape'] === true) {
             $options['autoescape'] = 'html';
         }
-        
+
         parent::__construct($loader, $options);
 
         $this->app = $app;

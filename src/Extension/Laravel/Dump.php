@@ -30,9 +30,17 @@ class Dump extends \Twig_Extension
 
     public function getFunctions()
     {
-        return array(
-          new \Twig_SimpleFunction('dump', array($this, 'dump'), array('is_safe' => array('html'), 'needs_context' => true, 'needs_environment' => true)),
-        );
+        return [
+            new \Twig_SimpleFunction(
+                'dump',
+                [$this, 'dump'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_context' => true,
+                    'needs_environment' => true
+                ]
+            ),
+        ];
     }
 
     public function getName()

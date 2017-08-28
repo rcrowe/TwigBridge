@@ -47,12 +47,12 @@ abstract class Base extends PHPUnit_Framework_TestCase
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        
+
 
         $extensionsData = include $this->twigBridgeRoot.'/../config/extensions.php';
-        
+
         $configData = array(
-        	'twigbridge' => array(
+            'twigbridge' => array(
                 'extensions' => $extensionsData,
                 'twig' => array(
                     'extension' => 'twig',
@@ -68,9 +68,9 @@ abstract class Base extends PHPUnit_Framework_TestCase
                     ),
                     'globals' => array(),
                 ),
-    	    ),
+            ),
         );
-        
+
         // Config
         $app['config'] = new Repository($configData);
 
