@@ -390,4 +390,11 @@ class Lint extends Command
             ],
         ];
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function handle() {
+        return $this->fire();
+    }
 }
