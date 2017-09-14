@@ -113,6 +113,14 @@ class Lint extends Command
     }
 
     /**
+     * Alias to fire method
+     */
+    public function handle()
+    {
+        $this->fire();
+    }
+
+    /**
      * Gets an array of files to lint.
      *
      * @param string $filename    Single file to check.

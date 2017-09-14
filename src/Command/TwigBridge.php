@@ -44,4 +44,12 @@ class TwigBridge extends Command
         $this->line('<info>Twig</info> version        <comment>'.Twig_Environment::VERSION.'</comment>');
         $this->line('<info>Twig Bridge</info> version <comment>'.Bridge::BRIDGE_VERSION.'</comment>');
     }
+
+    /**
+     * Alias to fire method
+     */
+    public function handle()
+    {
+        $this->fire();
+    }
 }
