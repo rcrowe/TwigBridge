@@ -47,4 +47,12 @@ class Clean extends Command
             $this->info('Twig cache cleaned');
         }
     }
+
+    /**
+     * Alias to fire method
+     */
+    public function handle()
+    {
+        $this->fire();
+    }
 }
