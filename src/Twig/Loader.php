@@ -11,8 +11,9 @@
 
 namespace TwigBridge\Twig;
 
-use Twig_LoaderInterface;
+use Twig_Source;
 use Twig_Error_Loader;
+use Twig_LoaderInterface;
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\ViewFinderInterface;
@@ -92,7 +93,7 @@ class Loader implements Twig_LoaderInterface
     protected function normalizeName($name)
     {
         if ($this->files->extension($name) === $this->extension) {
-            $name = substr($name, 0, - (strlen($this->extension) + 1));
+            return $this->files->name($name);
         }
 
         return $name;
@@ -133,7 +134,7 @@ class Loader implements Twig_LoaderInterface
     {
         $path = $this->findTemplate($name);
 
-        return new \Twig_Source($this->files->get($path), $name, $path);
+        return new Twig_Source($this->files->get($path), $name, $path);
     }
 
     /**
