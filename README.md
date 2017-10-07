@@ -217,6 +217,10 @@ Global variables:
  * app: the Illuminate\Foundation\Application object
  * errors: The $errors MessageBag from the Validator (always available)
 
+## Customize your Facades/Functions/Filters
+
+If you like to customize your own, check out the instruction comments of each section in `config/twigbridge.php`.
+
 # Artisan Commands
 
 TwigBridge offers a command for CLI Interaction.
