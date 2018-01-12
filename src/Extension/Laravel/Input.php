@@ -52,6 +52,8 @@ class Input extends Twig_Extension
             new Twig_SimpleFunction('input_get', [$this->request, 'input']),
             new Twig_SimpleFunction('input_old', [$this->request, 'old']),
             new Twig_SimpleFunction('input_has', [$this->request, 'has']),
+            new Twig_SimpleFunction('input_only', [$this->request, 'only']),
+            new Twig_SimpleFunction('input_except', [$this->request, 'except']),
             new Twig_SimpleFunction('old', [$this->request, 'old']),
         ];
     }
