@@ -113,20 +113,6 @@ class Loader implements Twig_LoaderInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @deprecated Will be dropped with support of 1.x in favour of getSourceContext()
-     *
-     * @return string
-     */
-    public function getSource($name)
-    {
-        $path = $this->findTemplate($name);
-
-        return $this->files->get($path);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getSourceContext($name)
