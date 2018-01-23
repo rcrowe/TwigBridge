@@ -30,7 +30,7 @@ class CleanTest extends Base
         $command = new Clean;
         $command->setLaravel($app);
 
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
         $output->shouldReceive('writeln')->with('<error>Twig cache failed to be cleaned</error>');
 
         $command->run(
@@ -53,7 +53,7 @@ class CleanTest extends Base
         $command = new Clean;
         $command->setLaravel($app);
 
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
         $output->shouldReceive('writeln')->with('<info>Twig cache cleaned</info>');
 
         $command->run(

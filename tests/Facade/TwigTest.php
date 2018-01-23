@@ -18,7 +18,6 @@ class TwigTest extends Base
     protected function bootApplication()
     {
         $app = $this->getApplication();
-        $app['config']->getLoader()->shouldReceive('addNamespace');
 
         $app['twig.extensions'] = [];
 
