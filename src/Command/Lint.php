@@ -169,7 +169,7 @@ class Lint extends Command
      */
     protected function getContents($file)
     {
-        return $this->laravel['twig.loader']->getSource($file);
+        return $this->laravel['twig.loader']->getSourceContext($file);
     }
 
     /**

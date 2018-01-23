@@ -12,7 +12,7 @@
 namespace TwigBridge\Extension\Laravel\Legacy;
 
 use Twig_Extension;
-use Twig_Function_Function;
+use Twig\TwigFunction;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Foundation\Application;
 
@@ -184,7 +184,7 @@ class Facades extends Twig_Extension
      *
      * @param string $name Function name.
      *
-     * @return Twig_Function_Function|false
+     * @return TwigFunction|false
      */
     public function getLookup($name)
     {
@@ -196,12 +196,12 @@ class Facades extends Twig_Extension
     /**
      * Add undefined function to the cache.
      *
-     * @param string                 $name     Function name.
-     * @param Twig_Function_Function $function Function to cache.
+     * @param string         $name     Function name.
+     * @param TwigFunction $function Function to cache.
      *
      * @return void
      */
-    public function setLookup($name, Twig_Function_Function $function)
+    public function setLookup($name, TwigFunction $function)
     {
         $this->lookup[strtolower($name)] = $function;
     }
@@ -211,7 +211,7 @@ class Facades extends Twig_Extension
      *
      * @param string $name Undefined function name.
      *
-     * @return Twig_Function_Function|false
+     * @return TwigFunction|false
      */
     public function getFunction($name)
     {
@@ -236,7 +236,7 @@ class Facades extends Twig_Extension
         if (array_key_exists($class, $this->aliases)) {
 
             $class    = $this->aliases[$class];
-            $function = new Twig_Function_Function($class.'::'.$method);
+            $function = new TwigFunction($name, $class.'::'.$method);
 
             $this->setLookup($name, $function);
 

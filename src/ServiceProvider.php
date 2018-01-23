@@ -247,7 +247,7 @@ class ServiceProvider extends ViewServiceProvider
                 }
 
                 // Set lexer
-                if (is_a($lexer, 'Twig_LexerInterface')) {
+                if (is_a($lexer, 'Twig_Lexer')) {
                     $twig->setLexer($lexer);
                 }
 
