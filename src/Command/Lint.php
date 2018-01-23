@@ -79,7 +79,7 @@ class Lint extends Command
     /**
      * {@inheritdoc}
      */
-    public function fire()
+    public function handle()
     {
         $this->twig = $this->laravel['twig'];
         $format     = $this->option('format');
@@ -389,5 +389,10 @@ class Lint extends Command
                 'text',
             ],
         ];
+    }
+
+    public function fire()
+    {
+        return $this->handle();
     }
 }
