@@ -15,7 +15,7 @@ use Twig_Extension;
 use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str as IlluminateStr;
-use Illuminate\Contracts\Routing\Registrar;
+use Illuminate\Routing\Router;
 /**
  * Access Laravels url class in your Twig templates.
  */
@@ -27,7 +27,7 @@ class Url extends Twig_Extension
     protected $url;
 
     /**
-     * @var \Illuminate\Contracts\Routing\Registrar
+     * @var \Illuminate\Routing\Router
      */
     protected $router;
 
@@ -35,9 +35,9 @@ class Url extends Twig_Extension
      * Create a new url extension
      *
      * @param \Illuminate\Routing\UrlGenerator
-     * @param \Illuminate\Contracts\Routing\Registrar
+     * @param \Illuminate\Routing\Router
      */
-    public function __construct(UrlGenerator $url, Registrar $router)
+    public function __construct(UrlGenerator $url, Router $router)
     {
         $this->url = $url;
         $this->router = $router;
