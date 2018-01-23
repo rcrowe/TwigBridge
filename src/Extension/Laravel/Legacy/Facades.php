@@ -11,10 +11,10 @@
 
 namespace TwigBridge\Extension\Laravel\Legacy;
 
-use Twig_Extension;
-use Twig\TwigFunction;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Foundation\Application;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Handles undefined function calls in a Twig template by checking
@@ -23,7 +23,7 @@ use Illuminate\Foundation\Application;
  *
  * {{ auth_check() }} would call Auth::check()
  */
-class Facades extends Twig_Extension
+class Facades extends AbstractExtension
 {
     /**
      * @var \Illuminate\Foundation\Application

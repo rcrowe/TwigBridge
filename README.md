@@ -29,11 +29,11 @@ Once Composer has installed or updated your packages you need to register TwigBr
 ],
 ```
 
-Now find the alliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig_Environment):
+Now find the alliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig\Environment):
 
 ```php
 'aliases' => [
-    ... 
+    ...
                 'Twig' => TwigBridge\Facade\Twig::class,
 ],
 ```
@@ -54,7 +54,7 @@ Route::get('/', function () {
 });
 ```
 
-You can create the twig files in resources/views with the .twig file extension. 
+You can create the twig files in resources/views with the .twig file extension.
 ```bash
 resources/views/hello.twig
 ```
@@ -67,7 +67,7 @@ Once Composer has installed or updated your packages you need to register TwigBr
 'TwigBridge\ServiceProvider',
 ```
 
-You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig_Environment).
+You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig\Environment).
 
 ```php
 'Twig' => 'TwigBridge\Facade\Twig',
@@ -94,7 +94,7 @@ For Lumen, you need to load the same Service Provider, but you have to disable t
 Copy the `config/twigbridge.php` file to your local `config` folder and register the configuration + Service Provider in `bootstrap/app.php`:
 
 ```php
-$app->configure('twigbridge'); 
+$app->configure('twigbridge');
 $app->register('TwigBridge\ServiceProvider');
 ```
 
@@ -159,7 +159,7 @@ TwigBridge supports both a string or a closure as a callback, so for example you
 
 TwigBridge comes with the following extensions enabled by default:
 
-- [Twig_Extension_Debug](http://twig.sensiolabs.org/doc/extensions/debug.html)
+- [Twig\Extension\DebugExtension](http://twig.sensiolabs.org/doc/extensions/debug.html)
 - TwigBridge\Extension\Laravel\Auth
 - TwigBridge\Extension\Laravel\Config
 - TwigBridge\Extension\Laravel\Dump

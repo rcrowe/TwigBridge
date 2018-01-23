@@ -11,13 +11,13 @@
 
 namespace TwigBridge\Twig;
 
-use Twig_Template;
 use Illuminate\View\View;
+use Twig\Template as TwigTemplate;
 
 /**
  * Default base class for compiled templates.
  */
-abstract class Template extends Twig_Template
+abstract class Template extends TwigTemplate
 {
     /**
      * @var bool Have the creator/composer events fired.
@@ -108,12 +108,12 @@ abstract class Template extends Twig_Template
         $object,
         $item,
         array $arguments = [],
-        $type = Twig_Template::ANY_CALL,
+        $type = TwigTemplate::ANY_CALL,
         $isDefinedTest = false,
         $ignoreStrictCheck = false
     ) {
         // We need to handle accessing attributes on an Eloquent instance differently
-        if (Twig_Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
+        if (TwigTemplate::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
             // We can't easily find out if an attribute actually exists, so return true
             if ($isDefinedTest) {
                 return true;
