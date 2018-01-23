@@ -33,8 +33,7 @@ class ContentTest extends Base
         $input  = new ArrayInput([
             'filename' => 'foo.txt',
         ]);
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
-        $output->shouldReceive('isVerbose')->andReturn(StreamOutput::VERBOSITY_QUIET);
+        $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
 
         $command->run($input, $output);
     }

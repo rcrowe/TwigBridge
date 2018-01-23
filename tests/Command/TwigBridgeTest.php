@@ -20,9 +20,12 @@ class TwigBridgeTest extends Base
 
     public function testOutput()
     {
-        $command = new TwigBridge;
+        $app = $this->getApplication();
 
-        $output = m::mock('Symfony\Component\Console\Output\OutputInterface');
+        $command = new TwigBridge;
+        $command->setLaravel($app);
+
+        $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
         $output->shouldReceive('writeln')->with(
             '<info>Twig</info> version        <comment>'.Twig_Environment::VERSION.'</comment>'
         );

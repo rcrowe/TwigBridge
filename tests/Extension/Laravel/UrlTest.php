@@ -65,7 +65,8 @@ class UrlTest extends Base
         $generator->shouldReceive('to')->once();
         $generator->shouldReceive('fooBar')->once();
 
-        $url       = new Url($generator);
+        $dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
+        $url = new Url($generator, m::mock('Illuminate\Routing\Router', [ $dispatcher ])->makePartial());
         $functions = $url->getFunctions();
 
         foreach ($functions as $function) {
@@ -94,6 +95,6 @@ class UrlTest extends Base
 
     protected function getUrl()
     {
-        return new Url(m::mock('Illuminate\Routing\UrlGenerator'));
+        return new Url(m::mock('Illuminate\Routing\UrlGenerator'), m::mock('Illuminate\Routing\Router'));
     }
 }

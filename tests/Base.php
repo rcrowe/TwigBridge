@@ -31,6 +31,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $app->instance('path', __DIR__);
 
         $app['env']          = 'production';
+        $app['path.config']  = __DIR__.'/config';
         $app['path.storage'] = __DIR__.'/storage';
 
         // Filesystem
@@ -47,13 +48,11 @@ abstract class Base extends PHPUnit_Framework_TestCase
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        
+        $config = include $this->twigBridgeRoot.'/../config/twigbridge.php';
 
-        $extensionsData = include $this->twigBridgeRoot.'/../config/extensions.php';
-        
         $configData = array(
         	'twigbridge' => array(
-                'extensions' => $extensionsData,
+                'extensions' => $config['extensions'],
                 'twig' => array(
                     'extension' => 'twig',
                     'environment' => array(
@@ -70,7 +69,9 @@ abstract class Base extends PHPUnit_Framework_TestCase
                 ),
     	    ),
         );
-        
+
+        $configData['twigbridge'] = array_replace_recursive($configData['twigbridge'], $customConfig);
+
         // Config
         $app['config'] = new Repository($configData);
 

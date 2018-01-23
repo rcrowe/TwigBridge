@@ -17,32 +17,13 @@ class BindingsTest extends Base
             $this->assertFalse($app->bound($binding));
         }
 
-        // Boot provider
+        // Register and boot provider
+        $provider->register();
         $provider->boot();
 
         // Now make sure bounded
         foreach ($provider->provides() as $binding) {
             $this->assertTrue($app->bound($binding));
-        }
-    }
-
-    public function testBindIf()
-    {
-        $app = $this->getApplication();
-
-        $provider = new ServiceProvider($app);
-        $provides = $provider->provides();
-
-        foreach ($provides as $name) {
-            $app                    = $this->getApplication();
-            $app['twig.extensions'] = [];
-            $provider               = new ServiceProvider($app);
-            $provider->boot();
-
-            $app[$name] = null;
-            $provider->boot();
-
-            $this->assertNull($app[$name]);
         }
     }
 }
