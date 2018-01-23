@@ -136,7 +136,7 @@ And output variables, escaped by default. Use the `raw` filter to skip escaping.
 
 # Extensions
 
-Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/extensions.php a list of extensions for Twig to load.
+Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/twigbridge.php a list of extensions for Twig to load.
 
 ```php
 'enabled' => array(
@@ -182,11 +182,11 @@ To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 
 These loader extensions exposes Laravel helpers as both Twig functions and filters.
 
-Check out the config/extensions.php file to see a list of defined function / filters. You can also add your own.
+Check out the config/twigbridge.php file to see a list of defined function / filters. You can also add your own.
 
 ## FacadeLoader
 
-The FacadeLoader extension allows you to call any facade you have configured in config/extensions.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
+The FacadeLoader extension allows you to call any facade you have configured in config/twigbridge.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
 To use the Laravel integration (or indeed any aliased class and method), just add your facades to the config and call them like `URL.to(link)` (instead of `URL::to($link)`)
 
