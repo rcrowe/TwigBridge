@@ -22,21 +22,6 @@ use Illuminate\Translation\Translator as LaravelTranslator;
 class Translator extends Twig_Extension
 {
     /**
-     * @var \Illuminate\Translation\Translator
-     */
-    protected $translator;
-
-    /**
-     * Create a new translator extension
-     *
-     * @param \Illuminate\Translation\Translator
-     */
-    public function __construct(LaravelTranslator $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getName()
@@ -49,9 +34,10 @@ class Translator extends Twig_Extension
      */
     public function getFunctions()
     {
+        $translator = app(LaravelTranslator::class);
         return [
-            new Twig_SimpleFunction('trans', [$this->translator, 'trans']),
-            new Twig_SimpleFunction('trans_choice', [$this->translator, 'transChoice']),
+            new Twig_SimpleFunction('trans', [$translator, 'trans']),
+            new Twig_SimpleFunction('trans_choice', [$translator, 'transChoice']),
         ];
     }
 
@@ -60,10 +46,11 @@ class Translator extends Twig_Extension
      */
     public function getFilters()
     {
+        $translator = app(LaravelTranslator::class);
         return [
             new Twig_SimpleFilter(
                 'trans',
-                [$this->translator, 'trans'],
+                [$translator, 'trans'],
                 [
                     'pre_escape' => 'html',
                     'is_safe'    => ['html'],
@@ -71,7 +58,7 @@ class Translator extends Twig_Extension
             ),
             new Twig_SimpleFilter(
                 'trans_choice',
-                [$this->translator, 'transChoice'],
+                [$translator, 'transChoice'],
                 [
                     'pre_escape' => 'html',
                     'is_safe'    => ['html'],
