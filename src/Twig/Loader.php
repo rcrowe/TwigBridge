@@ -16,6 +16,7 @@ use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 use Twig_Error_Loader;
 use Twig_LoaderInterface;
+use TwigBridge\Twig\Normalizers\Normalizer;
 
 /**
  * Basic loader using absolute paths.
@@ -32,6 +33,9 @@ class Loader implements Twig_LoaderInterface
      */
     protected $finder;
 
+    /**
+     * @var \TwigBridge\Twig\Normalizers\Normalizer
+     */
     protected $normalizer;
 
     /**
@@ -40,8 +44,9 @@ class Loader implements Twig_LoaderInterface
     protected $cache = [];
 
     /**
-     * @param \Illuminate\Filesystem\Filesystem    $files The filesystem
-     * @param \Illuminate\View\ViewFinderInterface $finder
+     * @param \Illuminate\Filesystem\Filesystem       $files The filesystem
+     * @param \Illuminate\View\ViewFinderInterface    $finder
+     * @param \TwigBridge\Twig\Normalizers\Normalizer $normalizer
      */
     public function __construct(Filesystem $files, ViewFinderInterface $finder, Normalizer $normalizer)
     {

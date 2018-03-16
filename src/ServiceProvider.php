@@ -98,7 +98,10 @@ class ServiceProvider extends ViewServiceProvider
         /** @var \Illuminate\View\Factory $view */
         $view = $this->app['view'];
 
-        foreach ($this->app['twig.file_extensions'] as $extension) {
+        /** @var array $extensions */
+        $extensions = $this->app['twig.file_extensions'];
+
+        foreach ($extensions as $extension) {
             $view->addExtension($extension, 'twig', function () {
                 return $this->app['twig.engine'];
             });
@@ -145,7 +148,7 @@ class ServiceProvider extends ViewServiceProvider
             return new DefaultNormalizer($this->app['twig.file_extensions']);
         });
 
-        $this->app->alias('twig.normalizer', Normalizer::class);
+        $this->app->alias(Normalizer::class, 'twig.normalizer');
 
         $this->app->bindIf('twig.options', function () use ($config) {
             $options = $config->get('twigbridge.twig.environment', []);
@@ -190,7 +193,7 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         $this->app->bindIf('twig.loader.viewfinder', function () {
-            return new Twig\Loader($this->app['files'], $this->app['view']->getFinder(), $this->app['twig.extension']);
+            return new Twig\Loader($this->app['files'], $this->app['view']->getFinder(), $this->app['twig.normalizer']);
         });
 
         $this->app->bindIf('twig.loader', function () {
