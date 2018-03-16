@@ -54,7 +54,7 @@ Route::get('/', function () {
 });
 ```
 
-You can create the twig files in resources/views with the .twig file extension. 
+You can create the twig files in resources/views with the `.twig` or `.html.twig` file extension. 
 ```bash
 resources/views/hello.twig
 ```
