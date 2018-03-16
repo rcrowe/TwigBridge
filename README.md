@@ -20,9 +20,11 @@ $ composer require rcrowe/twigbridge
 ```
 
 # Quick Start
+
+## Laravel
 Once Composer has installed or updated your packages you need to register TwigBridge with
 Laravel itself. Open up `config/app.php` and find the `providers` key, towards the end of
-the file, and add `TwigBridge\ServiceProvider::class`, to the end:
+the file, and add `TwigBridge\ServiceProvider::class` to the end:
 
 ```php
 'providers' => [
@@ -65,14 +67,7 @@ Route::get('/', function () {
 });
 ```
 
-# Configuration
-To tell this package to load your Twig files from multiple locations, update the `paths` array
-in `config/view.php`.
-
-Your Twig files can have any of the file extensions configured in `config/twigbridge.php`
-under the `twig.file_extensions` key. By default, `.html.twig` and `.twig` are supported.
-
-# Installation on Lumen
+## Lumen
 For Lumen, you need to load the same Service Provider, but you have to disable the `Auth`,
 `Translator` and `Url` extensions in your local configuration. Copy the `config/twigbridge.php`
 file to your local `config` folder and register the configuration and Service Provider in
@@ -82,6 +77,13 @@ file to your local `config` folder and register the configuration and Service Pr
 $app->configure('twigbridge'); 
 $app->register('TwigBridge\ServiceProvider');
 ```
+
+# Configuration
+To tell this package to load your Twig files from multiple locations, update the `paths` array
+in `config/view.php`.
+
+Your Twig files can have any of the file extensions configured in `config/twigbridge.php`
+under the `twig.file_extensions` key. By default, `.html.twig` and `.twig` are supported.
 
 # Usage
 You call the Twig template like you would any other view:
@@ -184,7 +186,7 @@ to the config and call them like `URL.to(link)` (instead of `URL::to($link)`).
 The following helpers/filters are added by the default Extensions. They are based on 
 Laravel's standard helper functions.
 
-Functions:
+### Functions:
  * `asset`, `action`, `url`, `route`, `secure_url`, `secure_asset`
  * `auth_check`, `auth_guest`, `auth_user`
  * `config_get`, `config_has`
@@ -198,12 +200,12 @@ Functions:
  * `trans`, `trans_choice`
  * `url_*` (All the `URL::*` methods, snake_cased)
 
-Filters:
+### Filters:
  * `camel_case`, `snake_case`, `studly_case`
  * `str_*` (All the `Str::*` methods, snake_cased)
  * `trans`, `trans_choice`
 
-Global variables:
+### Global variables:
  * `app`: the `Illuminate\Foundation\Application` object
  * `errors`: The `$errors` `MessageBag` from the Validator
 
