@@ -13,10 +13,11 @@ namespace TwigBridge;
 
 use Twig_Environment;
 use Twig_LoaderInterface;
-use Illuminate\Contracts\Container\Container; 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
 use Twig_Error;
+use TwigBridge\Twig\Normalizers\Normalizer;
 
 /**
  * Bridge functions between Laravel & Twig
@@ -34,18 +35,24 @@ class Bridge extends Twig_Environment
     protected $app;
 
     /**
+     * @var \TwigBridge\Twig\Normalizers\Normalizer
+     */
+    protected $normalizer;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct(Twig_LoaderInterface $loader, $options = [], Container $app = null)
+    public function __construct(Twig_LoaderInterface $loader, $options = [], Normalizer $normalizer, Container $app = null)
     {
         // Twig 2.0 doesn't support `true` anymore
         if (isset($options['autoescape']) && $options['autoescape'] === true) {
             $options['autoescape'] = 'html';
         }
-        
+
         parent::__construct($loader, $options);
 
         $this->app = $app;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -70,6 +77,15 @@ class Bridge extends Twig_Environment
         $this->app = $app;
     }
 
+    /**
+     * @param string $name
+     * @param null   $index
+     *
+     * @return \Twig_TemplateInterface
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function loadTemplate($name, $index = null)
     {
         $template = parent::loadTemplate($name, $index);
@@ -132,15 +148,10 @@ class Bridge extends Twig_Environment
      */
     protected function normalizeName($name)
     {
-        $extension = '.' . $this->app['twig.extension'];
-        $length = strlen($extension);
+        $name = $this->normalizer->normalize($name);
 
-        if (substr($name, -$length, $length) === $extension) {
-            $name = substr($name, 0, -$length);
-        }
-
-        // Normalize namespace and delimiters
         $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
+
         if (strpos($name, $delimiter) === false) {
             return str_replace('/', '.', $name);
         }
