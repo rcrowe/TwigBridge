@@ -17,13 +17,13 @@ return [
     'twig' => [
         /*
         |--------------------------------------------------------------------------
-        | Extension
+        | File Extensions
         |--------------------------------------------------------------------------
         |
-        | File extension for Twig view files.
+        | File extensions for Twig view files.
         |
         */
-        'extension' => 'twig',
+        'file_extensions' => ['twig', 'html.twig'],
 
         /*
         |--------------------------------------------------------------------------
@@ -210,7 +210,7 @@ return [
         |
         */
         'filters' => [
-            'get' => 'data_get',    
+            'get' => 'data_get',
         ],
-    ],  
+    ],
 ];

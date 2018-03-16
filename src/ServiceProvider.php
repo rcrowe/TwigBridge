@@ -47,7 +47,7 @@ class ServiceProvider extends ViewServiceProvider
     public function boot()
     {
         $this->loadConfiguration();
-        $this->registerExtension();
+        $this->registerExtensions();
     }
 
     /**
@@ -91,15 +91,16 @@ class ServiceProvider extends ViewServiceProvider
      *
      * @return void
      */
-    protected function registerExtension()
+    protected function registerExtensions()
     {
-        $this->app['view']->addExtension(
-            $this->app['twig.extension'],
-            'twig',
-            function () {
+        /** @var \Illuminate\View\Factory $view */
+        $view = $this->app['view'];
+
+        foreach ($this->app['twig.file_extensions'] as $extension) {
+            $view->addExtension($extension, 'twig', function () {
                 return $this->app['twig.engine'];
-            }
-        );
+            });
+        }
     }
 
     /**
@@ -137,6 +138,10 @@ class ServiceProvider extends ViewServiceProvider
     {
         $this->app->bindIf('twig.extension', function () {
             return $this->app['config']->get('twigbridge.twig.extension');
+        });
+
+        $this->app->bindIf('twig.file_extensions', function () {
+            return $this->app['config']->get('twigbridge.twig.file_extensions');
         });
 
         $this->app->bindIf('twig.options', function () {
