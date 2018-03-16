@@ -47,7 +47,7 @@ Now find the aliases key, again towards the end of the file, and add
 Now that you have both of those lines added to `config/app.php` we will use Artisan to
 publish this package's configuration file:
 
-```php
+```bash
 $ php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
 ```
 
