@@ -13,8 +13,12 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use InvalidArgumentException;
-use Twig_Loader_Chain;
-use Twig_Loader_Array;
+use Twig\Environment;
+use Twig\Lexer;
+use Twig\Extension\DebugExtension;
+use Twig\Extension\ExtensionInterface;
+use Twig\Loader\ArrayLoader;
+use Twig\Loader\ChainLoader;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -160,7 +164,7 @@ class ServiceProvider extends ViewServiceProvider
             $isDebug = (bool) (isset($options['debug'])) ? $options['debug'] : false;
 
             if ($isDebug) {
-                array_unshift($load, 'Twig_Extension_Debug');
+                array_unshift($load, DebugExtension::class);
             }
 
             return $load;
@@ -184,7 +188,7 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         $this->app->bindIf('twig.loader.array', function ($app) {
-            return new Twig_Loader_Array($app['twig.templates']);
+            return new ArrayLoader($app['twig.templates']);
         });
 
         $this->app->bindIf('twig.loader.viewfinder', function () {
@@ -198,7 +202,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->app->bindIf(
             'twig.loader',
             function () {
-                return new Twig_Loader_Chain([
+                return new ChainLoader([
                     $this->app['twig.loader.array'],
                     $this->app['twig.loader.viewfinder'],
                 ]);
@@ -239,7 +243,7 @@ class ServiceProvider extends ViewServiceProvider
                         }
                     } elseif (is_callable($extension)) {
                         $extension = $extension($this->app, $twig);
-                    } elseif (!is_a($extension, 'Twig_Extension')) {
+                    } elseif (!is_a($extension, ExtensionInterface::class)) {
                         throw new InvalidArgumentException('Incorrect extension type');
                     }
 
@@ -247,7 +251,7 @@ class ServiceProvider extends ViewServiceProvider
                 }
 
                 // Set lexer
-                if (is_a($lexer, 'Twig_LexerInterface')) {
+                if (is_a($lexer, Lexer::class)) {
                     $twig->setLexer($lexer);
                 }
 
@@ -256,8 +260,8 @@ class ServiceProvider extends ViewServiceProvider
             true
         );
 
-        $this->app->alias('twig', 'Twig_Environment');
-        $this->app->alias('twig', 'TwigBridge\Bridge');
+        $this->app->alias('twig', Environment::class);
+        $this->app->alias('twig', Bridge::class);
 
         $this->app->bindIf('twig.compiler', function () {
             return new Engine\Compiler($this->app['twig']);

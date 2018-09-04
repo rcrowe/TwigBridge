@@ -11,16 +11,17 @@
 
 namespace TwigBridge\Twig;
 
-use Twig_LoaderInterface;
-use Twig_Error_Loader;
-use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\ViewFinderInterface;
+use InvalidArgumentException;
+use Twig\Source;
+use Twig\Error\LoaderError;
+use Twig\Loader\LoaderInterface;
 
 /**
  * Basic loader using absolute paths.
  */
-class Loader implements Twig_LoaderInterface
+class Loader implements LoaderInterface
 {
     /**
      * @var \Illuminate\Filesystem\Filesystem
@@ -59,7 +60,7 @@ class Loader implements Twig_LoaderInterface
      *
      * @param string $name Template file name or path.
      *
-     * @throws \Twig_Error_Loader
+     * @throws LoaderError
      * @return string Path to template
      */
     public function findTemplate($name)
@@ -77,7 +78,7 @@ class Loader implements Twig_LoaderInterface
         try {
             $this->cache[$name] = $this->finder->find($name);
         } catch (InvalidArgumentException $ex) {
-            throw new Twig_Error_Loader($ex->getMessage());
+            throw new LoaderError($ex->getMessage());
         }
 
         return $this->cache[$name];
@@ -105,25 +106,11 @@ class Loader implements Twig_LoaderInterface
     {
         try {
             $this->findTemplate($name);
-        } catch (Twig_Error_Loader $exception) {
+        } catch (LoaderError $exception) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @deprecated Will be dropped with support of 1.x in favour of getSourceContext()
-     *
-     * @return string
-     */
-    public function getSource($name)
-    {
-        $path = $this->findTemplate($name);
-
-        return $this->files->get($path);
     }
 
     /**
@@ -133,7 +120,7 @@ class Loader implements Twig_LoaderInterface
     {
         $path = $this->findTemplate($name);
 
-        return new \Twig_Source($this->files->get($path), $name, $path);
+        return new Source($this->files->get($path), $name, $path);
     }
 
     /**

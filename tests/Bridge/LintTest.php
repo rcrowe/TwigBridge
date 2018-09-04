@@ -22,7 +22,7 @@ class LintTest extends Base
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder->shouldReceive('getSource')->andReturn(false);
+        $finder->shouldReceive('getSourceContext')->andReturn(false);
         $app['twig.loader.viewfinder'] = $finder;
 
         $bridge->setApplication($app);
@@ -35,7 +35,7 @@ class LintTest extends Base
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder->shouldReceive('getSource')->andReturn('{{ name }');
+        $finder->shouldReceive('getSourceContext')->andReturn(new \Twig\Source('{{ name }', 'test.twig'));
         $app['twig.loader.viewfinder'] = $finder;
 
         $bridge->setApplication($app);
@@ -48,7 +48,7 @@ class LintTest extends Base
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder->shouldReceive('getSource')->andReturn('{{ name }}');
+        $finder->shouldReceive('getSourceContext')->andReturn(new \Twig\Source('{{ name }}', 'test.twig'));
         $app['twig.loader.viewfinder'] = $finder;
 
         $bridge->setApplication($app);

@@ -11,15 +11,15 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Support\Str as IlluminateStr;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels html builder in your Twig templates.
  */
-class Html extends Twig_Extension
+class Html extends AbstractExtension
 {
     /**
      * @var \Collective\Html\HtmlBuilder
@@ -50,11 +50,11 @@ class Html extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('link_to', [$this->html, 'link'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_asset', [$this->html, 'linkAsset'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_route', [$this->html, 'linkRoute'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('link_to_action', [$this->html, 'linkAction'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction(
+            new TwigFunction('link_to', [$this->html, 'link'], ['is_safe' => ['html']]),
+            new TwigFunction('link_to_asset', [$this->html, 'linkAsset'], ['is_safe' => ['html']]),
+            new TwigFunction('link_to_route', [$this->html, 'linkRoute'], ['is_safe' => ['html']]),
+            new TwigFunction('link_to_action', [$this->html, 'linkAction'], ['is_safe' => ['html']]),
+            new TwigFunction(
                 'html_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);

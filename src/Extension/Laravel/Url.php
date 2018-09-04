@@ -11,15 +11,16 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str as IlluminateStr;
 use Illuminate\Routing\Router;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
+
 /**
  * Access Laravels url class in your Twig templates.
  */
-class Url extends Twig_Extension
+class Url extends AbstractExtension
 {
     /**
      * @var \Illuminate\Routing\UrlGenerator
@@ -57,14 +58,14 @@ class Url extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('asset', [$this->url, 'asset'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('action', [$this->url, 'action'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('route_has', [$this->router, 'has'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction(
+            new TwigFunction('asset', [$this->url, 'asset'], ['is_safe' => ['html']]),
+            new TwigFunction('action', [$this->url, 'action'], ['is_safe' => ['html']]),
+            new TwigFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
+            new TwigFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
+            new TwigFunction('route_has', [$this->router, 'has'], ['is_safe' => ['html']]),
+            new TwigFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
+            new TwigFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
+            new TwigFunction(
                 'url_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);

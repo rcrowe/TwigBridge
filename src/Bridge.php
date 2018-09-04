@@ -11,17 +11,17 @@
 
 namespace TwigBridge;
 
-use Twig_Environment;
-use Twig_LoaderInterface;
-use Illuminate\Contracts\Container\Container; 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
-use Twig_Error;
+use Twig\Environment;
+use Twig\Error\Error;
+use Twig\Loader\LoaderInterface;
 
 /**
  * Bridge functions between Laravel & Twig
  */
-class Bridge extends Twig_Environment
+class Bridge extends Environment
 {
     /**
      * @var string TwigBridge version
@@ -36,13 +36,13 @@ class Bridge extends Twig_Environment
     /**
      * {@inheritdoc}
      */
-    public function __construct(Twig_LoaderInterface $loader, $options = [], Container $app = null)
+    public function __construct(LoaderInterface $loader, $options = [], Container $app = null)
     {
         // Twig 2.0 doesn't support `true` anymore
         if (isset($options['autoescape']) && $options['autoescape'] === true) {
             $options['autoescape'] = 'html';
         }
-        
+
         parent::__construct($loader, $options);
 
         $this->app = $app;
@@ -88,7 +88,7 @@ class Bridge extends Twig_Environment
      */
     public function lint($file)
     {
-        $template = $this->app['twig.loader.viewfinder']->getSource($file);
+        $template = $this->app['twig.loader.viewfinder']->getSourceContext($file);
 
         if (!$template) {
             throw new InvalidArgumentException('Unable to find file: '.$file);
@@ -96,7 +96,7 @@ class Bridge extends Twig_Environment
 
         try {
             $this->parse($this->tokenize($template, $file));
-        } catch (Twig_Error $e) {
+        } catch (Error $e) {
             return false;
         }
 

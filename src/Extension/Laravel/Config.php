@@ -11,14 +11,14 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Config\Repository as ConfigRepository;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels config class in your Twig templates.
  */
-class Config extends Twig_Extension
+class Config extends AbstractExtension
 {
     /**
      * @var \Illuminate\Config\Repository
@@ -49,9 +49,9 @@ class Config extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('config', [$this->config, 'get']),
-            new Twig_SimpleFunction('config_get', [$this->config, 'get']),
-            new Twig_SimpleFunction('config_has', [$this->config, 'has']),
+            new TwigFunction('config', [$this->config, 'get']),
+            new TwigFunction('config_get', [$this->config, 'get']),
+            new TwigFunction('config_has', [$this->config, 'has']),
         ];
     }
 }
