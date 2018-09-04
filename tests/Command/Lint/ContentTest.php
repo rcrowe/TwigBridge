@@ -25,7 +25,7 @@ class ContentTest extends Base
         $app     = $this->getApplication();
 
         $loader = m::mock('Twig_LoaderInterface');
-        $loader->shouldReceive('getSource')->andThrow(new \Twig_Error_Loader('test'));
+        $loader->shouldReceive('getSourceContext')->andThrow(new \Twig_Error_Loader('test'));
         $app['twig.loader'] = $loader;
 
         $command->setLaravel($app);

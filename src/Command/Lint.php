@@ -12,13 +12,13 @@
 namespace TwigBridge\Command;
 
 use Illuminate\Console\Command;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
-use Twig_Error_Loader;
-use Twig_Error;
-use RuntimeException;
-use InvalidArgumentException;
+use Twig\Error\Error;
+use Twig\Error\LoaderError;
 
 /**
  * Artisan command to check the syntax of Twig templates.
@@ -102,7 +102,7 @@ class Lint extends Command
         foreach ($files as $file) {
             try {
                 $template = $this->getContents($file);
-            } catch (Twig_Error_Loader $e) {
+            } catch (LoaderError $e) {
                 throw new RuntimeException(sprintf('File or directory "%s" is not readable', $file));
             }
 
@@ -169,7 +169,7 @@ class Lint extends Command
      */
     protected function getContents($file)
     {
-        return $this->laravel['twig.loader']->getSource($file);
+        return $this->laravel['twig.loader']->getSourceContext($file);
     }
 
     /**
@@ -184,7 +184,7 @@ class Lint extends Command
     {
         try {
             $this->twig->parse($this->twig->tokenize($template, $file));
-        } catch (Twig_Error $e) {
+        } catch (Error $e) {
             return [
                 'template'  => $template,
                 'file'      => $file,

@@ -11,15 +11,15 @@
 
 namespace TwigBridge\Extension\Bridge;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Use Former in your Twig templates.
  *
  * @see https://github.com/formers/former
  */
-class Former extends Twig_Extension
+class Former extends AbstractExtension
 {
 	/**
 	 * @var \Former\Former
@@ -50,7 +50,7 @@ class Former extends Twig_Extension
 	public function getFunctions()
 	{
 		return [
-		  new Twig_SimpleFunction(
+		  new TwigFunction(
 			'former_*',
 			function ($name) {
 				$arguments = array_slice(func_get_args(), 1);

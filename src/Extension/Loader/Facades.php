@@ -11,6 +11,7 @@
 
 namespace TwigBridge\Extension\Loader;
 
+use Twig\Extension\GlobalsInterface;
 use TwigBridge\Extension\Loader\Facade\Caller;
 use TwigBridge\Twig\Globals;
 
@@ -27,7 +28,7 @@ use TwigBridge\Twig\Globals;
  *     {{ Config.get('app.timezone') }}
  * </code>
  */
-class Facades extends Loader implements Globals
+class Facades extends Loader implements GlobalsInterface
 {
     /**
      * {@inheritDoc}

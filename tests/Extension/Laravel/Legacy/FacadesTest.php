@@ -79,8 +79,8 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getLookup('FOO'));
-        $facade->setLookup('FoO', m::mock('Twig_Function_Function'));
-        $this->assertInstanceOf('Twig_Function_Function', $facade->getLookup('foo'));
+        $facade->setLookup('FoO', m::mock(\Twig\TwigFunction::class));
+        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getLookup('foo'));
     }
 
     public function testFunctionLookup()
@@ -88,8 +88,8 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getFunction('foo'));
-        $facade->setLookup('FOO', m::mock('Twig_Function_Function'));
-        $this->assertInstanceOf('Twig_Function_Function', $facade->getFunction('foo'));
+        $facade->setLookup('FOO', m::mock(\Twig\TwigFunction::class));
+        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo'));
     }
 
     public function testFunctionNotAliased()
@@ -111,11 +111,11 @@ class FacadesTest extends Base
         $this->assertFalse($facade->getLookup('foo_bar'));
 
         $result = $facade->getFunction('foo_bar');
-        $this->assertInstanceOf('Twig_Function_Function', $result);
-        $this->assertEquals('Baz::bar', $result->compile());
+        $this->assertInstanceOf(\Twig\TwigFunction::class, $result);
+        $this->assertEquals('Baz::bar', $result->getCallable());
 
         // Check lookup now set
-        $this->assertInstanceOf('Twig_Function_Function', $facade->getFunction('foo_bar'));
+        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo_bar'));
     }
 
     protected function getFacade(Twig_Environment $twig = null)
