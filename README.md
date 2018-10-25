@@ -29,7 +29,7 @@ Once Composer has installed or updated your packages you need to register TwigBr
 ],
 ```
 
-Now find the alliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig\Environment):
+Now find the aliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig\Environment):
 
 ```php
 'aliases' => [
