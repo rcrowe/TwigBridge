@@ -79,7 +79,7 @@ class TwigTest extends Base
         $provider->register();
         $provider->boot();
 
-        $this->assertSame($app['twig.extensions'][0], 'Twig_Extension_Debug');
+        $this->assertSame($app['twig.extensions'][0], \Twig\Extension\DebugExtension::class);
     }
 
     public function testLoaderViewfinder()

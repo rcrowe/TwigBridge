@@ -11,11 +11,11 @@
 
 namespace TwigBridge\Engine;
 
-use Illuminate\View\Compilers\CompilerInterface;
-use Twig_Environment;
-use Twig_Error_Loader;
 use Exception;
+use Illuminate\View\Compilers\CompilerInterface;
 use InvalidArgumentException;
+use Twig\Environment;
+use Twig\LoaderError;
 use TwigBridge\Twig\Template;
 
 /**
@@ -24,16 +24,16 @@ use TwigBridge\Twig\Template;
 class Compiler implements CompilerInterface
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
     /**
      * Create a new instance of the Twig compiler.
      *
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
@@ -41,7 +41,7 @@ class Compiler implements CompilerInterface
     /**
      * Returns the instance of Twig used to render the template.
      *
-     * @return \Twig_Environment
+     * @return Environment
      */
     public function getTwig()
     {
@@ -87,9 +87,9 @@ class Compiler implements CompilerInterface
      * Compile the view at the given path.
      *
      * @param string $path
-     * 
+     *
      * @throws \InvalidArgumentException
-     * 
+     *
      * @return string \TwigBridge\Twig\Template
      */
     public function load($path)
@@ -97,7 +97,7 @@ class Compiler implements CompilerInterface
         // Load template
         try {
             $template = $this->twig->loadTemplate($path);
-        } catch (Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             throw new InvalidArgumentException("Error loading $path: ". $e->getMessage(), $e->getCode(), $e);
         }
 

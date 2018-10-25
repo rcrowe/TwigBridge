@@ -20,7 +20,7 @@ class TwigTest extends Base
     {
         $viewfinder = m::mock('TwigBridge\Twig\Loader');
         $global   = array('name' => 'Rob');
-        $compiler = new Compiler(new Twig_Environment);
+        $compiler = new Compiler(new Twig_Environment(new Twig_Loader_Array));
         $engine   = new Engine($compiler, $viewfinder, $global);
 
         $this->assertInstanceOf('Illuminate\View\Engines\CompilerEngine', $engine);
@@ -31,7 +31,7 @@ class TwigTest extends Base
     {
         $viewfinder = m::mock('TwigBridge\Twig\Loader');
         $global   = array('package' => 'TwigBridge');
-        $compiler = new Compiler(new Twig_Environment);
+        $compiler = new Compiler(new Twig_Environment(new Twig_Loader_Array));
         $engine   = new Engine($compiler, $viewfinder);
 
         $engine->setGlobalData($global);
