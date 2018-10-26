@@ -100,33 +100,4 @@ abstract class Template extends TwigTemplate
     {
         $this->firedEvents = $fired;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAttribute(
-        $object,
-        $item,
-        array $arguments = [],
-        $type = TwigTemplate::ANY_CALL,
-        $isDefinedTest = false,
-        $ignoreStrictCheck = false
-    ) {
-        // We need to handle accessing attributes on an Eloquent instance differently
-        if (TwigTemplate::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
-            // We can't easily find out if an attribute actually exists, so return true
-            if ($isDefinedTest) {
-                return true;
-            }
-
-            if ($this->env->hasExtension('sandbox')) {
-                $this->env->getExtension('sandbox')->checkPropertyAllowed($object, $item);
-            }
-
-            // Call the attribute, the Model object does the rest of the magic
-            return $object->$item;
-        } else {
-            return parent::getAttribute($object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
-        }
-    }
 }
