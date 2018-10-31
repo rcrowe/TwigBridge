@@ -13,12 +13,12 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use InvalidArgumentException;
-use Twig\Environment;
 use Twig\Lexer;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
+use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -260,7 +260,7 @@ class ServiceProvider extends ViewServiceProvider
             true
         );
 
-        $this->app->alias('twig', Environment::class);
+        $this->app->alias('twig', Twig_Environment::class);
         $this->app->alias('twig', Bridge::class);
 
         $this->app->bindIf('twig.compiler', function () {
