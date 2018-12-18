@@ -1,9 +1,13 @@
 {
-    "name": "rcrowe/twigbridge",
+    "name": "synergitech/twigbridge",
     "description": "Adds the power of Twig to Laravel",
     "keywords": ["laravel", "twig"],
     "license": "MIT",
     "authors": [
+        {
+            "name": "Synergi Tech",
+            "homepage": "http://github.com/SynergiTech"
+        },
         {
             "name": "Rob Crowe",
             "email": "hello@vivalacrowe.com"

@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the TwigBridge package.
- *
- * @copyright Robert Crowe <hello@vivalacrowe.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace TwigBridge\Engine;
 
 use Illuminate\View\Engines\CompilerEngine;
