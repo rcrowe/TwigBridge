@@ -54,7 +54,7 @@ class Url extends AbstractExtension
             new TwigFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
             new TwigFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
             new TwigFunction('route_has', [$this->router, 'has'], ['is_safe' => ['html']]),
-            new TwigFunction('route_is', [$this->router, 'has'], ['is_safe' => ['html']]),
+            new TwigFunction('route_is', [$this->router, 'is'], ['is_safe' => ['html']]),
             new TwigFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
             new TwigFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
             new TwigFunction(
