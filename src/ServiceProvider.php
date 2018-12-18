@@ -66,7 +66,7 @@ class ServiceProvider extends ViewServiceProvider
     {
         $configPath = __DIR__ . '/../config/twigbridge.php';
 
-        if ( ! $this->isLumen()) {
+        if (! $this->isLumen()) {
             $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
         }
 

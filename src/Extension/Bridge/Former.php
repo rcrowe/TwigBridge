@@ -12,42 +12,43 @@ use Twig\Extension\AbstractExtension;
  */
 class Former extends AbstractExtension
 {
-	/**
-	 * @var \Former\Former
-	 */
-	protected $former;
+    /**
+     * @var \Former\Former
+     */
+    protected $former;
 
-	/**
-	 * Create a new Former extension.
-	 *
-	 * @param  \Former\Former
-	 */
-	public function __construct(\Former\Former $former)
-	{
-		$this->former = $former;
-	}
+    /**
+     * Create a new Former extension.
+     *
+     * @param  \Former\Former
+     */
+    public function __construct(\Former\Former $former)
+    {
+        $this->former = $former;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'TwigBridge_Extension_Bridge_Former';
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'TwigBridge_Extension_Bridge_Former';
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getFunctions()
-	{
-		return [
-		  new TwigFunction(
-			'former_*',
-			function ($name) {
-				$arguments = array_slice(func_get_args(), 1);
-				return call_user_func_array([$this->former, $name], $arguments);
-			}, ['is_safe' => ['html']]
-		  ),
-		];
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction(
+                'former_*',
+                function ($name) {
+                    $arguments = array_slice(func_get_args(), 1);
+                    return call_user_func_array([$this->former, $name], $arguments);
+                },
+                ['is_safe' => ['html']]
+            ),
+        ];
+    }
 }

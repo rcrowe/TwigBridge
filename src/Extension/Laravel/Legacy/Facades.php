@@ -151,7 +151,6 @@ class Facades extends AbstractExtension
     public function getAliasParts($name)
     {
         if (strpos($name, '_') !== false) {
-
             $parts = explode('_', $name);
             $parts = array_filter($parts); // Remove empty elements
 
@@ -225,7 +224,6 @@ class Facades extends AbstractExtension
 
         // Does that alias exist
         if (array_key_exists($class, $this->aliases)) {
-
             $class    = $this->aliases[$class];
             $function = new TwigFunction($name, $class.'::'.$method);
 

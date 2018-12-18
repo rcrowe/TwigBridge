@@ -26,7 +26,15 @@ class Dump extends AbstractExtension
     public function getFunctions()
     {
         return array(
-          new TwigFunction('dump', array($this, 'dump'), array('is_safe' => array('html'), 'needs_context' => true, 'needs_environment' => true)),
+            new TwigFunction(
+                'dump',
+                array($this, 'dump'),
+                array(
+                    'is_safe' => array('html'),
+                    'needs_context' => true,
+                    'needs_environment' => true
+                )
+            ),
         );
     }
 

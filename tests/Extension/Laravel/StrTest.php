@@ -26,7 +26,6 @@ class StrTest extends Base
         $this->assertEquals('Illuminate\Support\Str', $string->getCallback());
         $string->setCallback('FooBar');
         $this->assertEquals('FooBar', $string->getCallback());
-
     }
 
     public function testName()

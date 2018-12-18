@@ -51,7 +51,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $config = include $this->twigBridgeRoot.'/../config/twigbridge.php';
 
         $configData = array(
-        	'twigbridge' => array(
+            'twigbridge' => array(
                 'extensions' => $config['extensions'],
                 'twig' => array(
                     'extension' => 'twig',
@@ -67,7 +67,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
                     ),
                     'globals' => array(),
                 ),
-    	    ),
+            ),
         );
 
         $configData['twigbridge'] = array_replace_recursive($configData['twigbridge'], $customConfig);
