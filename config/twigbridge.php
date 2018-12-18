@@ -107,6 +107,7 @@ return [
             // 'TwigBridge\Extension\Laravel\Html',
             // 'TwigBridge\Extension\Laravel\Legacy\Facades',
 
+            // 'TwigBridge\Extension\Bridge\Former',
             // 'TwigBridge\Extension\Bridge\Spatie\Permission',
         ],
 

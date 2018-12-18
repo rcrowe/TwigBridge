@@ -3,8 +3,6 @@
 namespace TwigBridge\Command;
 
 use Illuminate\Console\Command;
-use Twig_Environment;
-use Illuminate\Filesystem\Filesystem;
 
 /**
  * Artisan command to clear the Twig cache.
@@ -37,10 +35,5 @@ class Clean extends Command
         } else {
             $this->info('Twig cache cleaned');
         }
-    }
-
-    public function fire()
-    {
-        return $this->handle();
     }
 }

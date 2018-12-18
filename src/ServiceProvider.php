@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the TwigBridge package.
- *
- * @copyright Robert Crowe <hello@vivalacrowe.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
@@ -22,14 +13,6 @@ use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
- *
- * You need to include this `ServiceProvider` in your app.php file:
- *
- * <code>
- *     'providers' => [
- *         'TwigBridge\ServiceProvider'
- *     ];
- * </code>
  */
 class ServiceProvider extends ViewServiceProvider
 {
