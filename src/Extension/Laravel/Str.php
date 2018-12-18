@@ -2,15 +2,15 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
 use Illuminate\Support\Str as IlluminateStr;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels string class in your Twig templates.
  */
-class Str extends Twig_Extension
+class Str extends AbstractExtension
 {
     /**
      * @var string|object
@@ -53,7 +53,7 @@ class Str extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'str_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);
@@ -71,10 +71,10 @@ class Str extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('camel_case', [$this->callback, 'camel']),
-            new Twig_SimpleFilter('snake_case', [$this->callback, 'snake']),
-            new Twig_SimpleFilter('studly_case', [$this->callback, 'studly']),
-            new Twig_SimpleFilter(
+            new TwigFilter('camel_case', [$this->callback, 'camel']),
+            new TwigFilter('snake_case', [$this->callback, 'snake']),
+            new TwigFilter('studly_case', [$this->callback, 'studly']),
+            new TwigFilter(
                 'str_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);

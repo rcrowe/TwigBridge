@@ -2,7 +2,7 @@
 
 namespace TwigBridge\Extension\Loader;
 
-use Twig_SimpleFilter;
+use Twig\TwigFilter;
 
 /**
  * Extension to expose defined filters to the Twig templates.
@@ -31,7 +31,7 @@ class Filters extends Loader
         foreach ($load as $method => $callable) {
             list($method, $callable, $options) = $this->parseCallable($method, $callable);
 
-            $filter = new Twig_SimpleFilter(
+            $filter = new TwigFilter(
                 $method,
                 function () use ($callable) {
                     return call_user_func_array($callable, func_get_args());

@@ -2,11 +2,11 @@
 
 namespace TwigBridge\Engine;
 
-use Illuminate\View\Engines\CompilerEngine;
-use TwigBridge\Twig\Loader;
-use Twig_Error;
-use Twig_Error_Loader;
 use ErrorException;
+use Illuminate\View\Engines\CompilerEngine;
+use Twig\Error\LoaderError;
+use Twig\Error\Error;
+use TwigBridge\Twig\Loader;
 
 /**
  * View engine for Twig files.
@@ -70,7 +70,7 @@ class Twig extends CompilerEngine
      * @param string $path Full file path to Twig template.
      * @param array  $data
      *
-     * @throws \Twig_Error|\ErrorException When unable to load the requested path.
+     * @throws Error|\ErrorException When unable to load the requested path.
      *
      * @return string
      */
@@ -80,7 +80,7 @@ class Twig extends CompilerEngine
 
         try {
             $content = $this->compiler->load($path)->render($data);
-        } catch (Twig_Error $ex) {
+        } catch (Error $ex) {
             $this->handleTwigError($ex);
         }
 
@@ -90,11 +90,11 @@ class Twig extends CompilerEngine
     /**
      * Handle a TwigError exception.
      *
-     * @param \Twig_Error $ex
+     * @param Error $ex
      *
-     * @throws \Twig_Error|\ErrorException
+     * @throws Error|\ErrorException
      */
-    protected function handleTwigError(Twig_Error $ex)
+    protected function handleTwigError(Error $ex)
     {
         $context = $ex->getSourceContext();
 
@@ -111,7 +111,7 @@ class Twig extends CompilerEngine
             // Attempt to locate full path to file
             try {
                 $file = $this->loader->findTemplate($templateFile);
-            } catch (Twig_Error_Loader $exception) {
+            } catch (LoaderError $exception) {
                 // Unable to load template
             }
         }

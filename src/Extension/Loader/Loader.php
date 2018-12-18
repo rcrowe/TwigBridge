@@ -2,8 +2,8 @@
 
 namespace TwigBridge\Extension\Loader;
 
-use Twig_Extension;
 use Illuminate\Contracts\Config\Repository as Config;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Base loader extension.
@@ -12,7 +12,7 @@ use Illuminate\Contracts\Config\Repository as Config;
  * See the `extensions.php` config file for the acceptable options that
  * can be parsed.
  */
-abstract class Loader extends Twig_Extension
+abstract class Loader extends AbstractExtension
 {
     /**
      * Create a new loader extension.

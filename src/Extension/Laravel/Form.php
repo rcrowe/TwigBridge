@@ -2,15 +2,15 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Collective\Html\FormBuilder;
 use Illuminate\Support\Str as IlluminateStr;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels form builder in your Twig templates.
  */
-class Form extends Twig_Extension
+class Form extends AbstractExtension
 {
     /**
      * @var \Collective\Html\FormBuilder
@@ -41,7 +41,7 @@ class Form extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'form_*',
                 function ($name) {
                     $arguments = array_slice(func_get_args(), 1);

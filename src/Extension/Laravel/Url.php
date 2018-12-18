@@ -2,15 +2,16 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Str as IlluminateStr;
 use Illuminate\Routing\Router;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
+
 /**
  * Access Laravels url class in your Twig templates.
  */
-class Url extends Twig_Extension
+class Url extends AbstractExtension
 {
     /**
      * @var \Illuminate\Routing\UrlGenerator

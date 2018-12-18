@@ -2,15 +2,15 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
 use Illuminate\Translation\Translator as LaravelTranslator;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels translator class in your Twig templates.
  */
-class Translator extends Twig_Extension
+class Translator extends AbstractExtension
 {
     /**
      * @var \Illuminate\Translation\Translator
@@ -41,8 +41,8 @@ class Translator extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('trans', [$this->translator, 'trans']),
-            new Twig_SimpleFunction('trans_choice', [$this->translator, 'transChoice']),
+            new TwigFunction('trans', [$this->translator, 'trans']),
+            new TwigFunction('trans_choice', [$this->translator, 'transChoice']),
         ];
     }
 
@@ -52,7 +52,7 @@ class Translator extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter(
+            new TwigFilter(
                 'trans',
                 [$this->translator, 'trans'],
                 [
@@ -60,7 +60,7 @@ class Translator extends Twig_Extension
                     'is_safe'    => ['html'],
                 ]
             ),
-            new Twig_SimpleFilter(
+            new TwigFilter(
                 'trans_choice',
                 [$this->translator, 'transChoice'],
                 [

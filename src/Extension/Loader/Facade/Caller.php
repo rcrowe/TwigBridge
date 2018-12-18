@@ -2,7 +2,7 @@
 
 namespace TwigBridge\Extension\Loader\Facade;
 
-use Twig_Markup;
+use Twig\Markup;
 
 /**
  * Handles calling the method on the called facade.
@@ -79,6 +79,6 @@ class Caller
         $result  = forward_static_call_array([$this->facade, $method], $arguments);
         $is_safe = ($is_safe && (is_string($result) || method_exists($result, '__toString')));
 
-        return ($is_safe) ? new Twig_Markup($result, $this->options['charset']) : $result;
+        return ($is_safe) ? new Markup($result, $this->options['charset']) : $result;
     }
 }

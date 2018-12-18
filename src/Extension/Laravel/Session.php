@@ -2,14 +2,14 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Session\Store;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels session class in your Twig templates.
  */
-class Session extends Twig_Extension
+class Session extends AbstractExtension
 {
     /**
      * @var \Illuminate\Session\Store
@@ -40,13 +40,13 @@ class Session extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('session', [$this->session, 'get']),
-            new Twig_SimpleFunction('csrf_token', [$this->session, 'token'], ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('csrf_field', 'csrf_field', ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('method_field', 'method_field', ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('session_get', [$this->session, 'get']),
-            new Twig_SimpleFunction('session_pull', [$this->session, 'pull']),
-            new Twig_SimpleFunction('session_has', [$this->session, 'has']),
+            new TwigFunction('session', [$this->session, 'get']),
+            new TwigFunction('csrf_token', [$this->session, 'token'], ['is_safe' => ['html']]),
+            new TwigFunction('csrf_field', 'csrf_field', ['is_safe' => ['html']]),
+            new TwigFunction('method_field', 'method_field', ['is_safe' => ['html']]),
+            new TwigFunction('session_get', [$this->session, 'get']),
+            new TwigFunction('session_pull', [$this->session, 'pull']),
+            new TwigFunction('session_has', [$this->session, 'has']),
         ];
     }
 }

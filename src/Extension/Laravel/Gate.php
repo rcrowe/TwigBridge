@@ -2,14 +2,14 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels auth class in your Twig templates.
  */
-class Gate extends Twig_Extension
+class Gate extends AbstractExtension
 {
     /**
      * @var GateContract
@@ -40,7 +40,7 @@ class Gate extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('can', [$this->gate, 'check']),
+            new TwigFunction('can', [$this->gate, 'check']),
         ];
     }
 }
