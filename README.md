@@ -1,48 +1,37 @@
-Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 5](http://laravel.com/).
+# TwigBridge
 
-[![Latest Stable Version](https://poser.pugx.org/rcrowe/twigbridge/v/stable.png)](https://packagist.org/packages/rcrowe/twigbridge)
-[![Total Downloads](https://poser.pugx.org/rcrowe/twigbridge/downloads.png)](https://packagist.org/packages/rcrowe/twigbridge)
-[![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
+[![Build Status](https://travis-ci.org/SynergiTech/TwigBridge.svg?branch=master)](https://travis-ci.org/SynergiTech/TwigBridge)
 
-# Requirements
+_this is a fork that has been updated with various fixes, it will be kept up to date with any changes from upstream_
 
-TwigBridge >=0.7 requires Laravel 5.
+Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel 5](http://laravel.com/) (>= 5.5.0).
 
-If you need to support for Laravel 4.1/4.2 checkout out TwigBridge 0.6.x, or 0.5.x for Laravel 4.0.
+If you need to use an older version of Laravel, have a look at the original [rcrowe/TwigBridge](https://github.com/rcrowe/TwigBridge)
 
-# Installation
+## Installation
 
-Require this package with Composer
-
-```bash
-composer require rcrowe/twigbridge
+```
+composer require synergitech/twigbridge
 ```
 
-# Quick Start
+Laravel should automatically detect the service provider and facade but you should add the config file with artisan:
 
-Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key, towards the end of the file, and add 'TwigBridge\ServiceProvider', to the end:
-
-```php
-'providers' => [
-     ...
-                TwigBridge\ServiceProvider::class,
-],
 ```
-
-Now find the aliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig\Environment):
-
-```php
-'aliases' => [
-    ...
-                'Twig' => TwigBridge\Facade\Twig::class,
-],
-```
-
-Now that you have both of those lines added to config/app.php we will use Artisan to add the new twig config file:
-
-```php
 php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
 ```
+
+### Installation on Lumen
+
+For Lumen, you need to load the same Service Provider but you have to disable the `Auth`, `Translator`, and `Url` extensions in your local configuration.
+
+Copy the `config/twigbridge.php` file to your local `config` folder and register the configuration and Service Provider in `bootstrap/app.php`:
+
+```php
+$app->configure('twigbridge');
+$app->register('TwigBridge\ServiceProvider');
+```
+
+## Usage
 
 At this point you can now begin using twig like you would any other view
 
@@ -54,51 +43,7 @@ Route::get('/', function () {
 });
 ```
 
-You can create the twig files in resources/views with the .twig file extension.
-```bash
-resources/views/hello.twig
-```
-
-# Configuration
-
-Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key towards the bottom and add:
-
-```php
-'TwigBridge\ServiceProvider',
-```
-
-You can add the TwigBridge Facade, to have easier access to the TwigBridge (or Twig\Environment).
-
-```php
-'Twig' => 'TwigBridge\Facade\Twig',
-```
-
-```php
-Twig::addExtension('TwigBridge\Extension\Loader\Functions');
-Twig::render('mytemplate', $data);
-```
-
-TwigBridge's configuration file can be extended in your ConfigServiceProvider, under the `twigbridge` key. You can find the default configuration file at `vendor/rcrowe/twigbridge/config`.  
-
-You _should_ use Artisan to copy the default configuration file from the `/vendor` directory to `/config/twigbridge.php` with the following command:
-
-```bash
-php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
-```
-
-If you make changes to the `/config/twigbridge.php` file you will most likely have to run the `twig:clean` Artisan command for the changes to take effect.
-
-# Installation on Lumen
-
-For Lumen, you need to load the same Service Provider, but you have to disable the `Auth`, `Translator` and `Url` extensions in your local configuration.
-Copy the `config/twigbridge.php` file to your local `config` folder and register the configuration + Service Provider in `bootstrap/app.php`:
-
-```php
-$app->configure('twigbridge');
-$app->register('TwigBridge\ServiceProvider');
-```
-
-# Usage
+You can create the twig files in resources/views with the `.twig` file extension.
 
 You call the Twig template like you would any other view:
 
@@ -134,22 +79,16 @@ And output variables, escaped by default. Use the `raw` filter to skip escaping.
 {{ long_var | str_limit(50) }}
 ```
 
-# Extensions
+## Extensions
 
 Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/twigbridge.php a list of extensions for Twig to load.
-
-```php
-'enabled' => array(
-    'TwigBridge\Extensions\Example'
-)
-```
 
 TwigBridge supports both a string or a closure as a callback, so for example you might implement the [Assetic](https://github.com/kriswallsmith/assetic) Twig extension as follows:
 
 ```php
 'enabled' => [
-    function($app) {
-        $factory = new Assetic\Factory\AssetFactory($app['path'].'/../some/path/');
+    function ($app) {
+        $factory = new Assetic\Factory\AssetFactory($app['path'] . '/../some/path/');
         $factory->setDebug(false);
         // etc.....
         return new Assetic\Extension\Twig\AsseticExtension($factory);
@@ -178,19 +117,19 @@ To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 - TwigBridge\Extension\Laravel\Legacy\Facades
 
 
-## FilterLoader and FunctionLoader
+### FilterLoader and FunctionLoader
 
 These loader extensions exposes Laravel helpers as both Twig functions and filters.
 
 Check out the config/twigbridge.php file to see a list of defined function / filters. You can also add your own.
 
-## FacadeLoader
+### FacadeLoader
 
 The FacadeLoader extension allows you to call any facade you have configured in config/twigbridge.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
 To use the Laravel integration (or indeed any aliased class and method), just add your facades to the config and call them like `URL.to(link)` (instead of `URL::to($link)`)
 
-## Functions/Filters/Variables
+### Functions/Filters/Variables
 
 The following helpers/filters are added by the default Extensions. They are based on the helpers and/or facades, so should be self explaining.
 
@@ -217,16 +156,16 @@ Global variables:
  * app: the Illuminate\Foundation\Application object
  * errors: The $errors MessageBag from the Validator (always available)
 
-# Artisan Commands
+## Artisan Commands
 
-TwigBridge offers a command for CLI Interaction.
+TwigBridge offers commands for CLI Interaction.
 
 Empty the Twig cache:
 ```
-$ php artisan twig:clean
+php artisan twig:clean
 ```
 
 Lint all Twig templates:
 ```
-$ php artisan twig:lint
+php artisan twig:lint
 ```
