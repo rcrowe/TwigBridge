@@ -1,16 +1,13 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
+  - 7.1
+  - 7.2
   - hhvm
 
 matrix:
   fast_finish: true
   allow_failures:
-    - php: 7.0
     - php: hhvm
 
 before_script:
@@ -18,8 +15,9 @@ before_script:
   - composer install --no-interaction --prefer-source --dev
 
 script:
-  - ./vendor/bin/phpunit --configuration phpunit.xml
-  - ./vendor/bin/phpcs --standard=PSR2 -p --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
+  - vendor/bin/phpunit --configuration phpunit.xml
+  - vendor/bin/phpcs --standard=PSR2 -p --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
 
-after_script:
-  - ./vendor/bin/coveralls -v
+cache:
+  directories:
+    - $HOME/.composer/cache/files
