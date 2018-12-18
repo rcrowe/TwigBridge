@@ -53,6 +53,7 @@ class Url extends Twig_Extension
             new Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('route', [$this->url, 'route'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('route_has', [$this->router, 'has'], ['is_safe' => ['html']]),
+            new Twig_SimpleFunction('route_is', [$this->router, 'has'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('secure_url', [$this->url, 'secure'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction('secure_asset', [$this->url, 'secureAsset'], ['is_safe' => ['html']]),
             new Twig_SimpleFunction(
