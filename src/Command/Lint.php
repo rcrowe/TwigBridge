@@ -326,6 +326,11 @@ class Lint extends Command
      */
     protected function getContext($template, $line, $context = 3)
     {
+        // presumably under Twig 2.0, $template is a class
+        if ($template instanceof \Twig_Source) {
+            $template = $template->getCode();
+        }
+
         $lines    = explode("\n", $template);
         $position = max(0, $line - $context);
         $max      = min(count($lines), $line - 1 + $context);
