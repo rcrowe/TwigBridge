@@ -93,7 +93,9 @@ class Lint extends Command
                 $template .= fread(STDIN, 1024);
             }
 
-            return $this->display([$this->validate($template)], $format);
+            if (!empty($template)) {
+                return $this->display([$this->validate($template)], $format);
+            }
         }
 
         $files   = $this->getFiles($this->argument('filename'), $this->option('file'), $this->option('directory'));
