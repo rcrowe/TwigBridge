@@ -163,8 +163,8 @@ TwigBridge comes with the following extensions enabled by default:
 - TwigBridge\Extension\Laravel\Auth
 - TwigBridge\Extension\Laravel\Config
 - TwigBridge\Extension\Laravel\Dump
-- TwigBridge\Extension\Laravel\Form
-- TwigBridge\Extension\Laravel\Html
+- TwigBridge\Extension\Laravel\Form _(as of Laravel 5.1, this is no longer included by default -- see note below)_
+- TwigBridge\Extension\Laravel\Html _(as of Laravel 5.1, this is no longer included by default -- see note below)_
 - TwigBridge\Extension\Laravel\Input
 - TwigBridge\Extension\Laravel\Session
 - TwigBridge\Extension\Laravel\String
@@ -177,6 +177,7 @@ TwigBridge comes with the following extensions enabled by default:
 To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 - TwigBridge\Extension\Laravel\Legacy\Facades
 
+Note that Laravel 5.1 no longer includes the Html service provider by default, and hence TwigBridge does not enable the Form or Html extensions by default. To enable these, you must [install the HtmlServiceProvider](http://laravelcollective.com/docs/5.1/html#installation), then uncomment the `'TwigBridge\Extension\Laravel\Form',` and `'TwigBridge\Extension\Laravel\Html',` lines in `config/twigbridge.php`.
 
 ## FilterLoader and FunctionLoader
 
