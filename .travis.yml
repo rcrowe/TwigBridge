@@ -13,7 +13,7 @@ matrix:
 
 before_script:
   - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+  - composer install --no-interaction --prefer-source
 
 script:
   - ./vendor/bin/phpunit --configuration phpunit.xml
