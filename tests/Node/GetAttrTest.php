@@ -24,8 +24,8 @@ class GetAttrTest extends NodeTestCase
          *  - src/Node/GetAttrNode.php
          */
         $this->assertEquals(
-            '79579273b68a208d25d3fbbc0206e2fe0f43ebd4',
-            sha1_file(__DIR__.'/../../composer.json')
+            '9240961010b38797cff72bc910051cbb',
+            md5_file(__DIR__.'/../../composer.json')
         );
     }
 
