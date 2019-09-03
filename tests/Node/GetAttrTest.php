@@ -2,7 +2,6 @@
 
 namespace TwigBridge\Tests\Node;
 
-use Illuminate\Database\Eloquent\Model;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\LoaderInterface;
@@ -72,7 +71,17 @@ class GetAttrTest extends NodeTestCase
         $object->attr = 'test';
 
         try {
-            GetAttrNode::attribute($twig, $template->getSourceContext(), $object, "attr", [], Template::ANY_CALL, false, false, true);
+            GetAttrNode::attribute(
+                $twig,
+                $template->getSourceContext(),
+                $object,
+                "attr",
+                [],
+                Template::ANY_CALL,
+                false,
+                false,
+                true
+            );
             $this->fail();
         } catch (SecurityError $e) {
             $this->assertContains('is not allowed', $e->getMessage());
@@ -81,7 +90,17 @@ class GetAttrTest extends NodeTestCase
         $object->attr = null;
 
         try {
-            GetAttrNode::attribute($twig, $template->getSourceContext(), $object, "attr", [], Template::ANY_CALL, false, false, true);
+            GetAttrNode::attribute(
+                $twig,
+                $template->getSourceContext(),
+                $object,
+                "attr",
+                [],
+                Template::ANY_CALL,
+                false,
+                false,
+                true
+            );
             $this->fail();
         } catch (SecurityError $e) {
             $this->assertContains('is not allowed', $e->getMessage());
@@ -96,17 +115,39 @@ class GetAttrTest extends NodeTestCase
         $attr = new ConstantExpression('bar', 1);
         $args = new ArrayExpression([], 1);
         $node = $this->getNode($expr, $attr, $args, Template::ANY_CALL);
-        $tests[] = [$node, sprintf('%s%s, "bar", [], "any", false, false, false, 1)', $this->getAttributeGetter(), $this->getVariableGetter('foo', 1))];
+        $tests[] = [
+            $node,
+            sprintf(
+                '%s%s, "bar", [], "any", false, false, false, 1)',
+                $this->getAttributeGetter(),
+                $this->getVariableGetter('foo', 1)
+            )
+        ];
 
         $node = $this->getNode($expr, $attr, $args, Template::ARRAY_CALL);
-        $tests[] = [$node, '(($__internal_%s = // line 1'."\n".
-                    '($context["foo"] ?? null)) && is_array($__internal_%s) || $__internal_%s instanceof ArrayAccess ? ($__internal_%s["bar"] ?? null) : null)', null, true, ];
+        $tests[] = [
+            $node,
+            '(($__internal_%s = // line 1' . "\n"
+                . '($context["foo"] ?? null))'
+                . ' && is_array($__internal_%s)'
+                . ' || $__internal_%s instanceof ArrayAccess ? ($__internal_%s["bar"] ?? null) : null)',
+            null,
+            true,
+        ];
 
         $args = new ArrayExpression([], 1);
         $args->addElement(new NameExpression('foo', 1));
         $args->addElement(new ConstantExpression('bar', 1));
         $node = $this->getNode($expr, $attr, $args, Template::METHOD_CALL);
-        $tests[] = [$node, sprintf('%s%s, "bar", [0 => %s, 1 => "bar"], "method", false, false, false, 1)', $this->getAttributeGetter(), $this->getVariableGetter('foo', 1), $this->getVariableGetter('foo'))];
+        $tests[] = [
+            $node,
+            sprintf(
+                '%s%s, "bar", [0 => %s, 1 => "bar"], "method", false, false, false, 1)',
+                $this->getAttributeGetter(),
+                $this->getVariableGetter('foo', 1),
+                $this->getVariableGetter('foo')
+            )
+        ];
 
         return $tests;
     }
@@ -119,67 +160,13 @@ class GetAttrTest extends NodeTestCase
     protected function getNode($expr, $attr, $args, $type, $lineno = 1)
     {
         $nodes = ['node' => $expr, 'attribute' => $attr, 'arguments' => $args];
-        $attributes = ['type' => $type, 'is_defined_test' => false, 'ignore_strict_check' => false, 'optimizable' => true];
+        $attributes = [
+            'type'                  => $type,
+            'is_defined_test'       => false,
+            'ignore_strict_check'   => false,
+            'optimizable'           => true
+        ];
 
         return new GetAttrNode($nodes, $attributes, $lineno);
-    }
-}
-
-class TemplateModel extends Model
-{
-    //
-}
-
-class TemplateForTest extends Template
-{
-    private $name;
-
-    public function __construct(Environment $env, $name = 'index.twig')
-    {
-        parent::__construct($env);
-        $this->name = $name;
-    }
-
-    public function getZero()
-    {
-        return 0;
-    }
-
-    public function getEmpty()
-    {
-        return '';
-    }
-
-    public function getString()
-    {
-        return 'some_string';
-    }
-
-    public function getTrue()
-    {
-        return true;
-    }
-
-    public function getTemplateName()
-    {
-        return $this->name;
-    }
-
-    public function getDebugInfo()
-    {
-        return [];
-    }
-
-    protected function doGetParent(array $context)
-    {
-        return false;
-    }
-
-    protected function doDisplay(array $context, array $blocks = [])
-    {
-    }
-
-    public function block_name($context, array $blocks = [])
-    {
     }
 }
