@@ -16,18 +16,6 @@ use TwigBridge\Node\GetAttrNode;
 
 class GetAttrTest extends NodeTestCase
 {
-    public function testComposer()
-    {
-        /*
-         * When the twig/twig dependency is updated please ensure the following files are updated:
-         *  - src/Node/GetAttrNode.php
-         */
-        $this->assertEquals(
-            '9240961010b38797cff72bc910051cbb',
-            md5_file(__DIR__.'/../../composer.json')
-        );
-    }
-
     public function testNodeConstructor()
     {
         $expr = new NameExpression('foo', 1);
