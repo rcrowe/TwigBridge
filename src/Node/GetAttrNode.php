@@ -111,9 +111,11 @@ class GetAttrNode extends GetAttrExpression
      * @param bool   $sandboxed
      * @param int    $lineno            The template line where the attribute was called
      *
-     * @return mixed The attribute value, or a Boolean when $isDefinedTest is true, or null when the attribute is not set and $ignoreStrictCheck is true
+     * @return mixed The attribute value, or a Boolean when $isDefinedTest is true, or null when the attribute is not
+     *               set and $ignoreStrictCheck is true
      *
-     * @throws RuntimeError if the attribute does not exist and Twig is running in strict mode and $isDefinedTest is false
+     * @throws RuntimeError if the attribute does not exist and Twig is running in strict mode
+     *         and $isDefinedTest is false
      */
     public static function attribute(
         Environment $env,
@@ -141,7 +143,17 @@ class GetAttrNode extends GetAttrExpression
             return $object->$item;
         }
 
-        return \twig_get_attribute($env, $source, $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck, $sandboxed, $lineno);
+        return \twig_get_attribute(
+            $env,
+            $source,
+            $object,
+            $item,
+            $arguments,
+            $type,
+            $isDefinedTest,
+            $ignoreStrictCheck,
+            $sandboxed,
+            $lineno
+        );
     }
 }
-
