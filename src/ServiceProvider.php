@@ -241,9 +241,9 @@ class ServiceProvider extends ViewServiceProvider
                                 "Cannot instantiate Twig extension '$extension': " . $e->getMessage()
                             );
                         }
-                    } else if (is_callable($extension)) {
+                    } elseif (is_callable($extension)) {
                         $extension = $extension($this->app, $twig);
-                    } else if (! is_a($extension, ExtensionInterface::class)) {
+                    } elseif (! is_a($extension, ExtensionInterface::class)) {
                         throw new InvalidArgumentException('Incorrect extension type');
                     }
 
