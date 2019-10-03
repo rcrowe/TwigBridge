@@ -92,8 +92,9 @@ class Lint extends Command
             while (!feof(STDIN)) {
                 $template .= fread(STDIN, 1024);
             }
-
-            return $this->display([$this->validate($template)], $format);
+            if (ftell(STDIN) !== 0) {
+                return $this->display([$this->validate($template)], $format);
+            }
         }
 
         $files   = $this->getFiles($this->argument('filename'), $this->option('file'), $this->option('directory'));
