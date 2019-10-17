@@ -11,7 +11,7 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Illuminate\Translation\Translator as LaravelTranslator;
+use Illuminate\Contracts\Translation\Translator as LaravelTranslator;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
