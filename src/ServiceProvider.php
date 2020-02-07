@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use Twig\Lexer;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface;
+use Twig\Extension\EscaperExtension;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
 use Twig_Environment;
@@ -228,6 +229,10 @@ class ServiceProvider extends ViewServiceProvider
                     $this->app['twig.options'],
                     $this->app
                 );
+
+                foreach ($this->app['config']->get('twigbridge.twig.safe_classes', []) as $safeClass => $strategy) {
+                    $twig->getExtension(EscaperExtension::class)->addSafeClass($safeClass, $strategy);
+                }
 
                 // Instantiate and add extensions
                 foreach ($extensions as $extension) {
