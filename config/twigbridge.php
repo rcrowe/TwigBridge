@@ -75,6 +75,19 @@ return [
 
         /*
         |--------------------------------------------------------------------------
+        | Safe Classes
+        |--------------------------------------------------------------------------
+        |
+        | When set, the output of the `__string` method of the following classes will not be escaped.
+        | default: Laravel's Htmlable, which the HtmlString class implements.
+        |
+        */
+        'safe_classes' => [
+            \Illuminate\Contracts\Support\Htmlable::class => ['html'],
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
         | Global variables
         |--------------------------------------------------------------------------
         |
