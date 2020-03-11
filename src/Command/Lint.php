@@ -391,4 +391,9 @@ class Lint extends Command
             ],
         ];
     }
+
+    public function fire()
+    {
+        return $this->handle();
+    }
 }
