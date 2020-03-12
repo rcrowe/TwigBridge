@@ -20,7 +20,6 @@ class Base extends BridgeBase
 
         $viewFinder = m::mock('Illuminate\View\ViewFinderInterface');
         $viewFinder->shouldReceive('getPaths')->andReturn([]); // paths
-        $viewFinder->shouldReceive('getHints')->andReturn([]); // hints
         $viewFinder->shouldReceive('files')->andReturn($finder);
 
         $app['view'] = m::mock('Illuminate\View\Factory');
