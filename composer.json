@@ -37,8 +37,13 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "0.10-dev"
+        "laravel": {
+            "providers": [
+                "TwigBridge\\ServiceProvider"
+            ],
+            "aliases": {
+                "Twig": "TwigBridge\\Facade\\Twig"
+            }
         }
     },
     "minimum-stability": "dev"
