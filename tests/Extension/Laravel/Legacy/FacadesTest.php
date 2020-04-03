@@ -2,10 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel\Legacy;
 
+use Twig\Environment;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use Illuminate\Config\Repository;
-use Twig_Environment;
 use TwigBridge\Extension\Laravel\Legacy\Facades;
 
 class FacadesTest extends Base
@@ -22,7 +22,7 @@ class FacadesTest extends Base
 
     public function testUndefinedHandlerRegistered()
     {
-        $twig = m::mock('Twig_Environment');
+        $twig = m::mock(Environment::class);
         $twig->shouldReceive('registerUndefinedFunctionCallback')->with(m::on(function ($callback) {
             return !call_user_func($callback, 'fooBar');
         }));
@@ -79,7 +79,7 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getLookup('FOO'));
-        $facade->setLookup('FoO', m::mock(\Twig\TwigFunction::class));
+        $facade->setLookup('FoO', new \Twig\TwigFunction('testLookup'));
         $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getLookup('foo'));
     }
 
@@ -88,7 +88,7 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getFunction('foo'));
-        $facade->setLookup('FOO', m::mock(\Twig\TwigFunction::class));
+        $facade->setLookup('FOO', new \Twig\TwigFunction('testFunctionLookup'));
         $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo'));
     }
 
@@ -118,14 +118,14 @@ class FacadesTest extends Base
         $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo_bar'));
     }
 
-    protected function getFacade(Twig_Environment $twig = null)
+    protected function getFacade(Environment $twig = null)
     {
         $app = $this->getApplication();
 
         $app['twig'] = $twig;
 
         if (!$twig) {
-            $app['twig'] = m::mock('Twig_Environment');
+            $app['twig'] = m::mock(Environment::class);
             $app['twig']->shouldReceive('registerUndefinedFunctionCallback');
         }
 

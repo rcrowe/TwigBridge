@@ -2,6 +2,7 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
+use Twig\Node\Node;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Extension\Laravel\Session;
@@ -36,7 +37,7 @@ class SessionTest extends Base
     {
         $session   = $this->getSession();
         $functions = $session->getFunctions();
-        $node      = m::mock('Twig_Node');
+        $node      = m::mock(Node::class);
         $check     = [
             'csrf_token'
         ];

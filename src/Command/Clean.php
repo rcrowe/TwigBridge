@@ -12,7 +12,6 @@
 namespace TwigBridge\Command;
 
 use Illuminate\Console\Command;
-use Twig_Environment;
 use Illuminate\Filesystem\Filesystem;
 
 /**

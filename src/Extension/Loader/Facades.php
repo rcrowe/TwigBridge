@@ -41,7 +41,7 @@ class Facades extends Loader implements GlobalsInterface
     /**
      * {@inheritDoc}
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         $load    = $this->config->get('twigbridge.extensions.facades', []);
         $globals = [];

@@ -3,6 +3,7 @@
 namespace TwigBridge\Tests\Node;
 
 use Twig\Environment;
+use Twig\Source;
 use Twig\Template;
 
 class TemplateForTest extends Template
@@ -52,5 +53,15 @@ class TemplateForTest extends Template
 
     protected function doDisplay(array $context, array $blocks = [])
     {
+    }
+
+    /**
+     * Returns information about the original template source code.
+     *
+     * @return Source
+     */
+    public function getSourceContext()
+    {
+        return new Source('', $this->getTemplateName());
     }
 }

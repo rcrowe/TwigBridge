@@ -2,10 +2,10 @@
 
 namespace TwigBridge\Tests\Command;
 
+use Twig\Environment;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Command\TwigBridge;
-use Twig_Environment;
 use TwigBridge\Bridge;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -27,7 +27,7 @@ class TwigBridgeTest extends Base
 
         $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
         $output->shouldReceive('writeln')->with(
-            '<info>Twig</info> version        <comment>'.Twig_Environment::VERSION.'</comment>'
+            '<info>Twig</info> version        <comment>'.Environment::VERSION.'</comment>'
         );
         $output->shouldReceive('writeln')->with(
             '<info>Twig Bridge</info> version <comment>'.Bridge::BRIDGE_VERSION.'</comment>'

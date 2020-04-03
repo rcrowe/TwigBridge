@@ -2,6 +2,7 @@
 
 namespace TwigBridge\Tests\Bridge;
 
+use Twig\Source;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Bridge;
@@ -22,7 +23,7 @@ class LintTest extends Base
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder->shouldReceive('getSourceContext')->andReturn(false);
+        $finder->shouldReceive('getSourceContext')->andReturn(new Source('', 'testUnknownFile'));
         $app['twig.loader.viewfinder'] = $finder;
 
         $bridge->setApplication($app);
