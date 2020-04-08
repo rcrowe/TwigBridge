@@ -122,17 +122,6 @@ class FacadesTest extends Base
     {
         $app = $this->getApplication();
 
-        $app['config'] = new Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
-        $app['config']->getLoader()->shouldReceive('addNamespace')->with('twigbridge', __DIR__);
-        $app['config']->getLoader()->shouldReceive('load')->with('production', 'app', '')->andReturn([]);
-        $app['config']->getLoader()->shouldReceive('load')
-                      ->with('production', 'alias_shortcuts', 'twigbridge')->andReturn([]);
-        $app['config']->getLoader()->shouldReceive('cascadePackage')->andReturnUsing(
-            function ($env, $package, $group, $items) {
-                return $items;
-            }
-        );
-
         $app['twig'] = $twig;
 
         if (!$twig) {

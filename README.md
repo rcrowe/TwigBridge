@@ -29,7 +29,7 @@ Once Composer has installed or updated your packages you need to register TwigBr
 ],
 ```
 
-Now find the alliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig_Environment):
+Now find the aliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig_Environment):
 
 ```php
 'aliases' => [
@@ -136,7 +136,7 @@ And output variables, escaped by default. Use the `raw` filter to skip escaping.
 
 # Extensions
 
-Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/extensions.php a list of extensions for Twig to load.
+Sometimes you want to extend / add new functions for use in Twig templates. Add to the `enabled` array in config/twigbridge.php a list of extensions for Twig to load.
 
 ```php
 'enabled' => array(
@@ -182,11 +182,11 @@ To enable '0.5.x' style Facades, enable the Legacy Facades extension:
 
 These loader extensions exposes Laravel helpers as both Twig functions and filters.
 
-Check out the config/extensions.php file to see a list of defined function / filters. You can also add your own.
+Check out the config/twigbridge.php file to see a list of defined function / filters. You can also add your own.
 
 ## FacadeLoader
 
-The FacadeLoader extension allows you to call any facade you have configured in config/extensions.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
+The FacadeLoader extension allows you to call any facade you have configured in config/twigbridge.php. This gives your Twig templates integration with any Laravel class as well as any other classes you alias.
 
 To use the Laravel integration (or indeed any aliased class and method), just add your facades to the config and call them like `URL.to(link)` (instead of `URL::to($link)`)
 
@@ -201,9 +201,9 @@ Functions:
  * dump
  * form_* (All the Form::* methods, snake_cased)
  * html_* (All the Html::* methods, snake_cased)
- * input_get, input_old
+ * input_get, input_old, input_has
  * link_to, link_to_asset, link_to_route, link_to_action
- * session_has, session_get, csrf_token
+ * session_has, session_get, csrf_token, csrf_field, method_field
  * str_* (All the Str::* methods, snake_cased)
  * trans, trans_choice
  * url_* (All the URL::* methods, snake_cased)

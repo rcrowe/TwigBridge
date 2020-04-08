@@ -19,14 +19,15 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
-        $config  = $app['config']->get('twigbridge::twig.environment');
+        $config  = $app['config']->get('twigbridge.twig.environment');
         $options = $app['twig.options'];
 
         // Make sure that twig.options sets the storage path automatically
         $this->assertEmpty($config['cache']);
-        $this->assertEquals($options['cache'], realpath(__DIR__.'/../..').'/storage/views/twig');
+        $this->assertEquals($options['cache'], realpath(__DIR__.'/../..').'/storage/framework/views/twig');
 
         // Make sure same config is returned
         $options['cache'] = null;
@@ -38,6 +39,7 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $this->assertEquals('twig', $app['twig.extension']);
@@ -47,6 +49,7 @@ class TwigTest extends Base
             'twig' => ['extension' => 'twig.html'],
         ]);
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $this->assertEquals('twig.html', $app['twig.extension']);
@@ -56,9 +59,10 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
-        $this->assertSame($app['twig.extensions'], $app['config']->get('twigbridge::extensions.enabled'));
+        $this->assertSame($app['twig.extensions'], $app['config']->get('twigbridge.extensions.enabled'));
     }
 
     public function testExtensionsWithDebug()
@@ -72,6 +76,7 @@ class TwigTest extends Base
         ]);
 
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $this->assertSame($app['twig.extensions'][0], 'Twig_Extension_Debug');
@@ -81,6 +86,7 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $app['twig.bridge'] = m::mock('stdClass');
@@ -93,6 +99,7 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         // View
@@ -122,6 +129,7 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         // Extensions
@@ -149,6 +157,7 @@ class TwigTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         // Extensions
@@ -191,10 +200,10 @@ class TwigTest extends Base
         );
 
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $app['twig.extensions'] = [];
-
 
         $this->assertInstanceOf('TwigBridge\Engine\Twig', $app['view']->getEngineResolver()->resolve('twig'));
     }

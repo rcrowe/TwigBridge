@@ -18,10 +18,10 @@ class LintTest extends Base
      */
     public function testUnknownFile()
     {
-        $bridge = new Bridge;
+        $finder = m::mock('TwigBridge\Twig\Loader');
+        $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn(false);
         $app['twig.loader.viewfinder'] = $finder;
 
@@ -31,10 +31,10 @@ class LintTest extends Base
 
     public function testInvalidFile()
     {
-        $bridge = new Bridge;
+        $finder = m::mock('TwigBridge\Twig\Loader');
+        $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn('{{ name }');
         $app['twig.loader.viewfinder'] = $finder;
 
@@ -44,10 +44,10 @@ class LintTest extends Base
 
     public function testValidFile()
     {
-        $bridge = new Bridge;
+        $finder = m::mock('TwigBridge\Twig\Loader');
+        $bridge = new Bridge($finder);
         $app    = $this->getApplication();
 
-        $finder = m::mock('TwigBridge\Twig\Loader');
         $finder->shouldReceive('getSource')->andReturn('{{ name }}');
         $app['twig.loader.viewfinder'] = $finder;
 

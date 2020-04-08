@@ -33,7 +33,7 @@ class Clean extends Command
     /**
      * {@inheritdoc}
      */
-    public function fire()
+    public function handle()
     {
         $twig     = $this->laravel['twig'];
         $files    = $this->laravel['files'];
@@ -46,5 +46,10 @@ class Clean extends Command
         } else {
             $this->info('Twig cache cleaned');
         }
+    }
+
+    public function fire()
+    {
+        return $this->handle();
     }
 }

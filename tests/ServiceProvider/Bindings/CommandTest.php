@@ -14,6 +14,7 @@ class CommandTest extends Base
         $this->app = $this->getApplication();
 
         $provider = new ServiceProvider($this->app);
+        $provider->register();
         $provider->boot();
     }
 
