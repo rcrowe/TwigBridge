@@ -17,6 +17,7 @@ class EngineTest extends Base
     {
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         // Resolving the engine will force all extensions to be loaded
@@ -32,6 +33,7 @@ class EngineTest extends Base
         $app                    = $this->getApplication();
         $app['twig.extensions'] = [];
         $provider               = new ServiceProvider($app);
+        $provider->register();
         $provider->boot();
 
         $called = false;

@@ -105,7 +105,13 @@ class Twig extends CompilerEngine
      */
     protected function handleTwigError(Twig_Error $ex)
     {
-        $templateFile = $ex->getTemplateFile();
+        $context = $ex->getSourceContext();
+
+        if (null === $context) {
+            throw $ex;
+        }
+
+        $templateFile = $context->getPath();
         $templateLine = $ex->getTemplateLine();
 
         if ($templateFile && file_exists($templateFile)) {

@@ -178,6 +178,7 @@ return [
             'elixir',
             'head',
             'last',
+            'mix',
         ],
 
         /*

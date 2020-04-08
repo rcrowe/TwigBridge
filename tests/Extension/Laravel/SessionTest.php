@@ -26,7 +26,9 @@ class SessionTest extends Base
         $this->assertInternalType('array', $functions);
 
         foreach ($functions as $function) {
-            $this->assertInstanceOf('Illuminate\Session\SessionManager', $function->getCallable()[0]);
+            if (is_array($function->getCallable())) {
+                $this->assertInstanceOf('Illuminate\Session\Store', $function->getCallable()[0]);
+            }
         }
     }
 
@@ -50,6 +52,6 @@ class SessionTest extends Base
 
     protected function getSession()
     {
-        return new Session(m::mock('Illuminate\Session\SessionManager'));
+        return new Session(m::mock('Illuminate\Session\Store'));
     }
 }
