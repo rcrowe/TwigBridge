@@ -15,6 +15,7 @@ use ErrorException;
 use Illuminate\View\Engines\CompilerEngine;
 use Twig\Error\LoaderError;
 use Twig\Error\Error;
+use Twig\Loader\LoaderInterface;
 use TwigBridge\Twig\Loader;
 
 /**
@@ -43,7 +44,7 @@ class Twig extends CompilerEngine
      * @param \TwigBridge\Twig\Loader            $loader
      * @param array                              $globalData
      */
-    public function __construct(Compiler $compiler, Loader $loader, array $globalData = [])
+    public function __construct(Compiler $compiler, LoaderInterface $loader, array $globalData = [])
     {
         parent::__construct($compiler);
 
@@ -119,7 +120,10 @@ class Twig extends CompilerEngine
         } elseif ($templateFile) {
             // Attempt to locate full path to file
             try {
-                $file = $this->loader->findTemplate($templateFile);
+                if ($this->loader instanceof Loader) {
+                    //Outside of unit test, we should be able to load the file
+                    $file = $this->loader->findTemplate($templateFile);
+                }
             } catch (LoaderError $exception) {
                 // Unable to load template
             }
