@@ -13,8 +13,13 @@ namespace TwigBridge;
 
 use Illuminate\View\ViewServiceProvider;
 use InvalidArgumentException;
-use Twig_Loader_Chain;
-use Twig_Loader_Array;
+use Twig\Lexer;
+use Twig\Extension\DebugExtension;
+use Twig\Extension\ExtensionInterface;
+use Twig\Extension\EscaperExtension;
+use Twig\Loader\ArrayLoader;
+use Twig\Loader\ChainLoader;
+use Twig_Environment;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -79,7 +84,7 @@ class ServiceProvider extends ViewServiceProvider
     {
         $configPath = __DIR__ . '/../config/twigbridge.php';
 
-        if ( ! $this->isLumen()) {
+        if (! $this->isLumen()) {
             $this->publishes([$configPath => config_path('twigbridge.php')], 'config');
         }
 
@@ -143,7 +148,7 @@ class ServiceProvider extends ViewServiceProvider
             $options = $this->app['config']->get('twigbridge.twig.environment', []);
 
             // Check whether we have the cache path set
-            if (!isset($options['cache']) || is_null($options['cache'])) {
+            if (! isset($options['cache']) || is_null($options['cache'])) {
                 // No cache path set for Twig, lets set to the Laravel views storage folder
                 $options['cache'] = storage_path('framework/views/twig');
             }
@@ -160,7 +165,7 @@ class ServiceProvider extends ViewServiceProvider
             $isDebug = (bool) (isset($options['debug'])) ? $options['debug'] : false;
 
             if ($isDebug) {
-                array_unshift($load, 'Twig_Extension_Debug');
+                array_unshift($load, DebugExtension::class);
             }
 
             return $load;
@@ -184,7 +189,7 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         $this->app->bindIf('twig.loader.array', function ($app) {
-            return new Twig_Loader_Array($app['twig.templates']);
+            return new ArrayLoader($app['twig.templates']);
         });
 
         $this->app->bindIf('twig.loader.viewfinder', function () {
@@ -198,7 +203,7 @@ class ServiceProvider extends ViewServiceProvider
         $this->app->bindIf(
             'twig.loader',
             function () {
-                return new Twig_Loader_Chain([
+                return new ChainLoader([
                     $this->app['twig.loader.array'],
                     $this->app['twig.loader.viewfinder'],
                 ]);
@@ -218,12 +223,16 @@ class ServiceProvider extends ViewServiceProvider
             'twig',
             function () {
                 $extensions = $this->app['twig.extensions'];
-                $lexer      = $this->app['twig.lexer'];
-                $twig       = new Bridge(
+                $lexer = $this->app['twig.lexer'];
+                $twig = new Bridge(
                     $this->app['twig.loader'],
                     $this->app['twig.options'],
                     $this->app
                 );
+
+                foreach ($this->app['config']->get('twigbridge.twig.safe_classes', []) as $safeClass => $strategy) {
+                    $twig->getExtension(EscaperExtension::class)->addSafeClass($safeClass, $strategy);
+                }
 
                 // Instantiate and add extensions
                 foreach ($extensions as $extension) {
@@ -239,7 +248,7 @@ class ServiceProvider extends ViewServiceProvider
                         }
                     } elseif (is_callable($extension)) {
                         $extension = $extension($this->app, $twig);
-                    } elseif (!is_a($extension, 'Twig_Extension')) {
+                    } elseif (! is_a($extension, ExtensionInterface::class)) {
                         throw new InvalidArgumentException('Incorrect extension type');
                     }
 
@@ -247,7 +256,7 @@ class ServiceProvider extends ViewServiceProvider
                 }
 
                 // Set lexer
-                if (is_a($lexer, 'Twig_LexerInterface')) {
+                if (is_a($lexer, Lexer::class)) {
                     $twig->setLexer($lexer);
                 }
 
@@ -256,8 +265,8 @@ class ServiceProvider extends ViewServiceProvider
             true
         );
 
-        $this->app->alias('twig', 'Twig_Environment');
-        $this->app->alias('twig', 'TwigBridge\Bridge');
+        $this->app->alias('twig', Twig_Environment::class);
+        $this->app->alias('twig', Bridge::class);
 
         $this->app->bindIf('twig.compiler', function () {
             return new Engine\Compiler($this->app['twig']);
@@ -279,7 +288,7 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerAliases()
     {
-        if (!$this->isRunningOnPhp7() and !class_exists('TwigBridge\Extension\Laravel\String')) {
+        if (! $this->isRunningOnPhp7() and ! class_exists('TwigBridge\Extension\Laravel\String')) {
             class_alias('TwigBridge\Extension\Laravel\Str', 'TwigBridge\Extension\Laravel\String');
         }
     }

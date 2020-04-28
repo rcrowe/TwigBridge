@@ -2,14 +2,14 @@
 
 namespace TwigBridge\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Mockery as m;
 use Illuminate\Foundation\Application;
 use Illuminate\View\Factory;
 use Illuminate\Config\Repository;
 use Illuminate\View\Engines\EngineResolver;
 
-abstract class Base extends PHPUnit_Framework_TestCase
+abstract class Base extends TestCase
 {
     protected $twigBridgeRoot;
 
@@ -17,7 +17,7 @@ abstract class Base extends PHPUnit_Framework_TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->twigBridgeRoot = realpath(__DIR__.'/../src');
+        $this->twigBridgeRoot = realpath(__DIR__ . '/../src');
     }
 
     public function tearDown()
@@ -30,9 +30,9 @@ abstract class Base extends PHPUnit_Framework_TestCase
         $app = new Application;
         $app->instance('path', __DIR__);
 
-        $app['env']          = 'production';
-        $app['path.config']  = __DIR__.'/config';
-        $app['path.storage'] = __DIR__.'/storage';
+        $app['env'] = 'production';
+        $app['path.config'] = __DIR__ . '/config';
+        $app['path.storage'] = __DIR__ . '/storage';
 
         // Filesystem
         $files = m::mock('Illuminate\Filesystem\Filesystem');
@@ -48,14 +48,14 @@ abstract class Base extends PHPUnit_Framework_TestCase
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        $config = include $this->twigBridgeRoot.'/../config/twigbridge.php';
+        $config = include $this->twigBridgeRoot . '/../config/twigbridge.php';
 
-        $configData = array(
-        	'twigbridge' => array(
+        $configData = [
+            'twigbridge' => [
                 'extensions' => $config['extensions'],
-                'twig' => array(
-                    'extension' => 'twig',
-                    'environment' => array(
+                'twig'       => [
+                    'extension'   => 'twig',
+                    'environment' => [
                         'debug'               => false,
                         'charset'             => 'utf-8',
                         'base_template_class' => 'TwigBridge\Twig\Template',
@@ -64,11 +64,11 @@ abstract class Base extends PHPUnit_Framework_TestCase
                         'strict_variables'    => false,
                         'autoescape'          => true,
                         'optimizations'       => -1,
-                    ),
-                    'globals' => array(),
-                ),
-    	    ),
-        );
+                    ],
+                    'globals'     => [],
+                ],
+            ],
+        ];
 
         $configData['twigbridge'] = array_replace_recursive($configData['twigbridge'], $customConfig);
 

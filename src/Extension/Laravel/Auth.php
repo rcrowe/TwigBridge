@@ -11,14 +11,14 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
 use Illuminate\Auth\AuthManager;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Access Laravels auth class in your Twig templates.
  */
-class Auth extends Twig_Extension
+class Auth extends AbstractExtension
 {
     /**
      * @var \Illuminate\Auth\AuthManager
@@ -49,10 +49,10 @@ class Auth extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('auth_check', [$this->auth, 'check']),
-            new Twig_SimpleFunction('auth_guest', [$this->auth, 'guest']),
-            new Twig_SimpleFunction('auth_user', [$this->auth, 'user']),
-            new Twig_SimpleFunction('auth_guard', [$this->auth, 'guard']),
+            new TwigFunction('auth_check', [$this->auth, 'check']),
+            new TwigFunction('auth_guest', [$this->auth, 'guest']),
+            new TwigFunction('auth_user', [$this->auth, 'user']),
+            new TwigFunction('auth_guard', [$this->auth, 'guard']),
         ];
     }
 }

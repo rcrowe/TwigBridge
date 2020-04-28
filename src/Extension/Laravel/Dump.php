@@ -13,15 +13,20 @@ namespace TwigBridge\Extension\Laravel;
 
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Twig\Environment;
+use Twig\Template;
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Dump a variable or the view context
  *
  * Based on the Symfony Twig Bridge Dump Extension
- * @see https://github.com/symfony/symfony/blob/2.6/src/Symfony/Bridge/Twig/Extension/DumpExtension.php
+ *
+ * @see    https://github.com/symfony/symfony/blob/2.6/src/Symfony/Bridge/Twig/Extension/DumpExtension.php
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class Dump extends \Twig_Extension
+class Dump extends AbstractExtension
 {
     public function __construct()
     {
@@ -30,9 +35,13 @@ class Dump extends \Twig_Extension
 
     public function getFunctions()
     {
-        return array(
-          new \Twig_SimpleFunction('dump', array($this, 'dump'), array('is_safe' => array('html'), 'needs_context' => true, 'needs_environment' => true)),
-        );
+        return [
+            new TwigFunction('dump', [$this, 'dump'], [
+                'is_safe'           => ['html'],
+                'needs_context'     => true,
+                'needs_environment' => true
+            ]),
+        ];
     }
 
     public function getName()
@@ -40,19 +49,19 @@ class Dump extends \Twig_Extension
         return 'TwigBridge_Extension_Laravel_Dump';
     }
 
-    public function dump(\Twig_Environment $env, $context)
+    public function dump(Environment $env, $context)
     {
-        if (!$env->isDebug()) {
+        if (! $env->isDebug()) {
             return;
         }
         if (2 === func_num_args()) {
-            $vars = array();
+            $vars = [];
             foreach ($context as $key => $value) {
-                if (!$value instanceof \Twig_Template) {
+                if (! $value instanceof Template) {
                     $vars[$key] = $value;
                 }
             }
-            $vars = array($vars);
+            $vars = [$vars];
         } else {
             $vars = func_get_args();
             unset($vars[0], $vars[1]);
@@ -63,6 +72,7 @@ class Dump extends \Twig_Extension
             $dumper->dump($this->cloner->cloneVar($value));
         }
         rewind($dump);
+
         return stream_get_contents($dump);
     }
 }
