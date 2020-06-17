@@ -329,7 +329,7 @@ class Lint extends Command
     /**
      * Grabs the surrounding lines around the exception.
      *
-     * @param string     $template Contents of Twig template.
+     * @param object     $template Contents of Twig template.
      * @param string|int $line     Line where the exception occurred.
      * @param int        $context  Number of lines around the line where the exception occurred.
      *
@@ -337,7 +337,7 @@ class Lint extends Command
      */
     protected function getContext($template, $line, $context = 3)
     {
-        $lines    = explode("\n", $template);
+        $lines    = explode("\n", $template->getCode());
         $position = max(0, $line - $context);
         $max      = min(count($lines), $line - 1 + $context);
 
