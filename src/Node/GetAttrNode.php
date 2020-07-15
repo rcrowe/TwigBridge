@@ -7,6 +7,7 @@
  */
 namespace TwigBridge\Node;
 
+use ArrayAccess;
 use Twig\Compiler;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
@@ -129,7 +130,12 @@ class GetAttrNode extends GetAttrExpression
         $sandboxed = false,
         int $lineno = -1
     ) {
-        if (Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
+        // Twig doesn't support sandboxing on objects that implement ArrayAccess
+        //   https://github.com/twigphp/Twig/issues/106#issuecomment-583737
+        //   https://github.com/twigphp/Twig/pull/1863
+        //
+        //   https://github.com/twigphp/Twig/issues/2878
+        if (Template::METHOD_CALL !== $type and $object instanceof ArrayAccess) {
             // We can't easily find out if an attribute actually exists, so return true
             if ($isDefinedTest) {
                 return true;
@@ -139,8 +145,8 @@ class GetAttrNode extends GetAttrExpression
                 $env->getExtension(SandboxExtension::class)->checkPropertyAllowed($object, $item);
             }
 
-            // Call the attribute, the Model object does the rest of the magic
-            return $object->$item;
+            // Call the attribute, the object does the rest of the magic
+            return isset($object[$item]) ? $object[$item] : null;
         }
 
         return \twig_get_attribute(
