@@ -135,7 +135,7 @@ class GetAttrNode extends GetAttrExpression
         //   https://github.com/twigphp/Twig/pull/1863
         //
         //   https://github.com/twigphp/Twig/issues/2878
-        if (Template::METHOD_CALL !== $type and $object instanceof ArrayAccess && isset($object[$item])) {
+        if (Template::METHOD_CALL !== $type and $object instanceof ArrayAccess) {
             // We can't easily find out if an attribute actually exists, so return true
             if ($isDefinedTest) {
                 return true;
@@ -146,7 +146,7 @@ class GetAttrNode extends GetAttrExpression
             }
 
             // Call the attribute, the object does the rest of the magic
-            return $object[$item];
+            return isset($object[$item]) ? $object[$item] : null;
         }
 
         return \twig_get_attribute(
