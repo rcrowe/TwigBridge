@@ -9,13 +9,10 @@
 namespace TwigBridge;
 
 use Illuminate\Config\Repository;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 class AppVariable
 {
-    protected $session;
-    protected $user;
     protected $request;
     protected $environment;
     protected $debug;

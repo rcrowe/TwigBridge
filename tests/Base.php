@@ -42,6 +42,10 @@ abstract class Base extends TestCase
         $finder = m::mock('Illuminate\View\ViewFinderInterface');
         $finder->shouldReceive('addExtension');
 
+        // Request
+        $request = m::mock('Illuminate\Http\Request');
+        $app['request'] = $request;
+
         $app['view'] = new Factory(
             new EngineResolver,
             $finder,
