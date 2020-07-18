@@ -85,6 +85,7 @@ class Twig extends CompilerEngine
      */
     public function get($path, array $data = [])
     {
+        unset($data['app']);
         $data = array_merge($this->globalData, $data);
 
         try {

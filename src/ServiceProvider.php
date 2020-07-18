@@ -219,6 +219,8 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerEngine()
     {
+        $this->app->bindIf('twig.appvariable', AppVariable::class);
+
         $this->app->bindIf(
             'twig',
             function () {
@@ -273,10 +275,14 @@ class ServiceProvider extends ViewServiceProvider
         });
 
         $this->app->bindIf('twig.engine', function () {
+            $globalData = array_merge([
+                'app' => $this->app['twig.appvariable'],
+            ], $this->app['config']->get('twigbridge.twig.globals', []));
+
             return new Engine\Twig(
                 $this->app['twig.compiler'],
                 $this->app['twig.loader.viewfinder'],
-                $this->app['config']->get('twigbridge.twig.globals', [])
+                $globalData
             );
         });
     }
@@ -315,6 +321,7 @@ class ServiceProvider extends ViewServiceProvider
             'twig',
             'twig.compiler',
             'twig.engine',
+            'twig.appvariable',
         ];
     }
 }
