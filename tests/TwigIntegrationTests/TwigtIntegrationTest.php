@@ -187,7 +187,7 @@ class TwigtIntegrationTest extends IntegrationTestCase
                 'TwigBridge\Extension\Loader\Functions',
             ],
         ];
-        $laravelApp = $this->getApplication([], $extensionsConfig);
+        $laravelApp = $this->getApplication(['extensions' => $extensionsConfig]);
         $laravelApp['twig.loader.viewfinder'] = $loader;
         $this->addBridgeServiceToApplication($laravelApp);
         return $laravelApp;

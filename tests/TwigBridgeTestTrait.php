@@ -25,11 +25,11 @@ trait TwigBridgeTestTrait
     }
 
     /**
-     * @param array $customConfig
-     * @param array|bool $extensions if an array, it will replace the extensions list as set in the default twigbridge.php config file
+     * @param array $customConfig that will override the default config.
+     *      A recursive merge is apply except for $customConfig['extensions'] which will replace the whole 'extensions' if present
      * @return Application
      */
-    protected function getApplication(array $customConfig = [], $extensions = false)
+    protected function getApplication(array $customConfig = [])
     {
         $app = new Application;
         $app->instance('path', __DIR__);
@@ -52,15 +52,14 @@ trait TwigBridgeTestTrait
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        if (!is_array($extensions)) {
+        if (!isset($customConfig['extensions'])) {
             $config = include $this->twigBridgeRoot . '/../config/twigbridge.php';
-            $extensions = $config['extensions'];
+            $customConfig['extensions'] = $config['extensions'];
         }
 
         $configData = [
             'twigbridge' => [
-                'extensions' => $extensions,
-                'twig'       => [
+                'twig' => [
                     'extension'   => 'twig',
                     'environment' => [
                         'debug'               => false,
