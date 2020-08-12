@@ -1,0 +1,19 @@
+--TEST--
+Test how Laravel events affect a simple template
+--TEMPLATE--
+{% set setValue = 'this is a set value' %}
+{{ setValue }}
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+
+OK
+--DATA--
+return []
+--EXPECT--
+this is a set value
+from composing index event
+from creating index event
+
+OK
+--EXPECT_EVENT_COUNTS--
+{"index": 1}

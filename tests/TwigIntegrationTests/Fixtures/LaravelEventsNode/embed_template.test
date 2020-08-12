@@ -1,0 +1,99 @@
+--TEST--
+Test how Laravel events affect embeded twig template
+--TEMPLATE--
+{% embed 'template.html.twig' %}
+    {% block content1 %}
+        {{ parent() }}
+
+    content from embedded:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+    {% endblock %}
+{% endembed %}
+
+{% include 'template.html.twig' with {} only %}
+Content from index.html:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+
+--TEMPLATE(template.html.twig)--
+
+{% block content %}
+    content from template_content:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+{% endblock %}
+{% block content1 %}
+    content from template_content1:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+{% endblock %}
+{% block content2 %}
+    content from template_content2:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    from composing template.html event
+    from creating template.html event
+{% endblock %}
+
+--DATA--
+return []
+--EXPECT--
+content from template_content:
+    from composing index event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+            content from template_content1:
+    from composing index event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+
+
+    content from embedded:
+    from composing index event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+        content from template_content2:
+    from composing index event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+
+
+
+    content from template_content:
+    none
+    none
+    from composing template.html event
+    from creating template.html event
+    content from template_content1:
+    none
+    none
+    from composing template.html event
+    from creating template.html event
+    content from template_content2:
+    none
+    none
+    from composing template.html event
+    from creating template.html event
+Content from index.html:
+from composing index event
+from creating index event
+none
+none
+--EXPECT_EVENT_COUNTS--
+{
+    "index": 1,
+    "template.html": 2
+}

@@ -1,0 +1,171 @@
+--TEST--
+Test how Laravel events affect included twig template that overrides its parent
+--TEMPLATE--
+{% include 'template.html.twig' with {variableFromComposingEvent_index: 'This should be overwritten by Laravel Event'}  %}
+{% include 'template2.html.twig' %}
+{% include 'parent.html.twig' with {} only %}
+Content from index.html:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+{{ variableFromComposingEvent_parenthtml|default('none') }}
+{{ variableFromCreatingEvent_parenthtml|default('none') }}
+--TEMPLATE(template.html.twig)--
+{% extends 'parent.html.twig' %}
+{% block content1 %}
+    {{ parent() }}
+
+content from template.html.twig:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+{{ variableFromComposingEvent_parenthtml|default('none') }}
+{{ variableFromCreatingEvent_parenthtml|default('none') }}
+{% endblock %}
+--TEMPLATE(template2.html.twig)--
+{% extends 'parent.html.twig' %}
+{% block content %}
+    {{ parent() }}
+
+content from template2.html.twig:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+{{ variableFromComposingEvent_parenthtml|default('none') }}
+{{ variableFromCreatingEvent_parenthtml|default('none') }}
+{% endblock %}
+--TEMPLATE(parent.html.twig)--
+
+{% block content %}
+    content from parent_content:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+    {{ variableFromComposingEvent_parenthtml|default('none') }}
+    {{ variableFromCreatingEvent_parenthtml|default('none') }}
+{% endblock %}
+{% block content1 %}
+    content from parent_content1:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+    {{ variableFromComposingEvent_parenthtml|default('none') }}
+    {{ variableFromCreatingEvent_parenthtml|default('none') }}
+{% endblock %}
+{% block content2 %}
+    content from parent_content2:
+    {{ variableFromComposingEvent_index|default('none') }}
+    {{ variableFromCreatingEvent_index|default('none') }}
+    {{ variableFromComposingEvent_templatehtml|default('none') }}
+    {{ variableFromCreatingEvent_templatehtml|default('none') }}
+    {{ variableFromComposingEvent_parenthtml|default('none') }}
+    {{ variableFromCreatingEvent_parenthtml|default('none') }}
+{% endblock %}
+
+--DATA--
+return []
+--EXPECT--
+content from parent_content:
+    This should be overwritten by Laravel Event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+    from composing parent.html event
+    from creating parent.html event
+        content from parent_content1:
+    This should be overwritten by Laravel Event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+    from composing parent.html event
+    from creating parent.html event
+
+
+content from template.html.twig:
+This should be overwritten by Laravel Event
+from creating index event
+from composing template.html event
+from creating template.html event
+from composing parent.html event
+from creating parent.html event
+    content from parent_content2:
+    This should be overwritten by Laravel Event
+    from creating index event
+    from composing template.html event
+    from creating template.html event
+    from composing parent.html event
+    from creating parent.html event
+
+
+        content from parent_content:
+    from composing index event
+    from creating index event
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+
+
+content from template2.html.twig:
+from composing index event
+from creating index event
+none
+none
+from composing parent.html event
+from creating parent.html event
+    content from parent_content1:
+    from composing index event
+    from creating index event
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+    content from parent_content2:
+    from composing index event
+    from creating index event
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+
+
+    content from parent_content:
+    none
+    none
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+    content from parent_content1:
+    none
+    none
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+    content from parent_content2:
+    none
+    none
+    none
+    none
+    from composing parent.html event
+    from creating parent.html event
+Content from index.html:
+from composing index event
+from creating index event
+none
+none
+none
+none
+--EXPECT_EVENT_COUNTS--
+{
+    "index": 1,
+    "template.html": 1,
+    "parent.html": 3,
+    "template2.html": 1
+}

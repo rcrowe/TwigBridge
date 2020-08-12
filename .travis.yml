@@ -17,7 +17,7 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit --configuration phpunit.xml
-  - ./vendor/bin/phpcs --standard=PSR2 -p --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
+  - ./vendor/bin/phpcs --standard=PSR2 -p --ignore=./tests/storage/* --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
 
 after_script:
   - ./vendor/bin/coveralls -v

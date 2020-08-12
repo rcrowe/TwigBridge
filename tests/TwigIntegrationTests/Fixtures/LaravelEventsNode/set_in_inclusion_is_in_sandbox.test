@@ -1,0 +1,37 @@
+--TEST--
+Test that Laravel events do not affect {% set %} directive
+--TEMPLATE--
+{% include 'template.html.twig' with {variableFromComposingEvent_index: 'received as parameter'} only %}
+Content from index.html:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+--TEMPLATE(template.html.twig)--
+{%-set variableFromComposingEvent_templatehtml='set in template' -%}
+{% block content1 %}
+content from template.html.twig:
+{{ variableFromComposingEvent_index|default('none') }}
+{{ variableFromCreatingEvent_index|default('none') }}
+{{ variableFromComposingEvent_templatehtml|default('none') }}
+{{ variableFromCreatingEvent_templatehtml|default('none') }}
+{% endblock %}
+
+--DATA--
+return []
+--EXPECT--
+content from template.html.twig:
+received as parameter
+none
+set in template
+from creating template.html event
+Content from index.html:
+from composing index event
+from creating index event
+none
+none
+--EXPECT_EVENT_COUNTS--
+{
+    "index": 1,
+    "template.html": 1
+}
