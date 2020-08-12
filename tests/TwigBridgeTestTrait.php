@@ -26,7 +26,8 @@ trait TwigBridgeTestTrait
 
     /**
      * @param array $customConfig that will override the default config.
-     *      A recursive merge is apply except for $customConfig['extensions'] which will replace the whole 'extensions' if present
+     *      A recursive merge is apply except for $customConfig['extensions'] which
+     *      will replace the whole 'extensions' if present
      * @return Application
      */
     protected function getApplication(array $customConfig = [])

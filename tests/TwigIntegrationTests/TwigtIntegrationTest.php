@@ -19,7 +19,8 @@ use TwigBridge\Tests\TwigBridgeTestTrait;
 /**
  * Adaptation of Twig IntegrationTestCase to use Laravel's TwigBridge as the compiler.
  *
- * The .test file now support an additional section below the --EXPECT-- section: --EXPECT_EVENT_COUNTS--. It should contains a json containing the expected events creating and composing counts for each template.
+ * The .test file now support an additional section below the --EXPECT-- section: --EXPECT_EVENT_COUNTS--.
+ * It should contains a json containing the expected events creating and composing counts for each template.
  *
  */
 class TwigtIntegrationTest extends IntegrationTestCase
@@ -45,7 +46,8 @@ class TwigtIntegrationTest extends IntegrationTestCase
     }
 
     /**
-     * Override parent because we need to inject additional initialization and assertion from the parent doIntegrationTest.
+     * Override parent because we need to inject additional initialization and
+     * assertion from the parent doIntegrationTest.
      *
      *
      * @param $file
@@ -59,8 +61,15 @@ class TwigtIntegrationTest extends IntegrationTestCase
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\SyntaxError
      */
-    protected function doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs, $deprecation = '')
-    {
+    protected function doIntegrationTest(
+        $file,
+        $message,
+        $condition,
+        $templates,
+        $exception,
+        $outputs,
+        $deprecation = ''
+    ) {
         if (!$outputs) {
             $this->markTestSkipped('no tests to run');
         }
@@ -110,15 +119,17 @@ class TwigtIntegrationTest extends IntegrationTestCase
 
             $deprecations = [];
             try {
-                $prevHandler = set_error_handler(function ($type, $msg, $file, $line, $context = []) use (&$deprecations, &$prevHandler) {
-                    if (E_USER_DEPRECATED === $type) {
-                        $deprecations[] = $msg;
+                $prevHandler = set_error_handler(
+                    function ($type, $msg, $file, $line, $context = []) use (&$deprecations, &$prevHandler) {
+                        if (E_USER_DEPRECATED === $type) {
+                            $deprecations[] = $msg;
 
-                        return true;
+                            return true;
+                        }
+
+                        return $prevHandler ? $prevHandler($type, $msg, $file, $line, $context) : false;
                     }
-
-                    return $prevHandler ? $prevHandler($type, $msg, $file, $line, $context) : false;
-                });
+                );
 
                 $template = $twig->load('index.twig');
             } catch (\Exception $e) {
@@ -126,7 +137,10 @@ class TwigtIntegrationTest extends IntegrationTestCase
                     $message = $e->getMessage();
                     $this->assertSame(trim($exception), trim(sprintf('%s: %s', \get_class($e), $message)));
                     $last = substr($message, \strlen($message) - 1);
-                    $this->assertTrue('.' === $last || '?' === $last, 'Exception message must end with a dot or a question mark.');
+                    $this->assertTrue(
+                        '.' === $last || '?' === $last,
+                        'Exception message must end with a dot or a question mark.'
+                    );
 
                     return;
                 }
@@ -154,7 +168,11 @@ class TwigtIntegrationTest extends IntegrationTestCase
 
             if (false !== $exception) {
                 [$class] = explode(':', $exception);
-                $constraintClass = class_exists('PHPUnit\Framework\Constraint\Exception') ? 'PHPUnit\Framework\Constraint\Exception' : 'PHPUnit_Framework_Constraint_Exception';
+                if (class_exists('PHPUnit\Framework\Constraint\Exception')) {
+                    $constraintClass = 'PHPUnit\Framework\Constraint\Exception';
+                } else {
+                    $constraintClass = 'PHPUnit_Framework_Constraint_Exception';
+                }
                 $this->assertThat(null, new $constraintClass($class));
             }
 
@@ -207,7 +225,11 @@ class TwigtIntegrationTest extends IntegrationTestCase
             //The EXPECT section contains the additional EXPECT_EVENT_COUNTS section.
             $output = $splittedMatch[1];
             $expectedEventsCalled = json_decode($splittedMatch[2], true);
-            $this->assertSame(JSON_ERROR_NONE, json_last_error(), 'EXPECT_EVENT_COUNTS section has this error: ' . json_last_error_msg());
+            $this->assertSame(
+                JSON_ERROR_NONE,
+                json_last_error(),
+                'EXPECT_EVENT_COUNTS section has this error: ' . json_last_error_msg()
+            );
         }
         return [$output, $expectedEventsCalled];
     }
@@ -224,16 +246,24 @@ class TwigtIntegrationTest extends IntegrationTestCase
         foreach ($templates as $templateName => $template) {
             //Remove the .twig part
             $viewName = Str::substr($templateName, 0, strlen($templateName) - 5);
-            $viewFactory->getDispatcher()->listen("composing: $viewName", function (View $view) use ($eventValuesHolder) {
-                $count = $eventValuesHolder->composingCounts[$view->getName()] ?? 0;
-                $eventValuesHolder->composingCounts[$view->getName()] = ++$count;
-                $view['variableFromComposingEvent_' . Str::slug($view->getName())] = "from composing {$view->getName()} event";
-            });
-            $viewFactory->getDispatcher()->listen("creating: $viewName", function (View $view) use ($eventValuesHolder) {
-                $count = $eventValuesHolder->creatingCounts[$view->getName()] ?? 0;
-                $eventValuesHolder->creatingCounts[$view->getName()] = ++$count;
-                $view['variableFromCreatingEvent_' . Str::slug($view->getName())] = "from creating {$view->getName()} event";
-            });
+            $viewFactory->getDispatcher()->listen(
+                "composing: $viewName",
+                function (View $view) use ($eventValuesHolder) {
+                    $count = $eventValuesHolder->composingCounts[$view->getName()] ?? 0;
+                    $eventValuesHolder->composingCounts[$view->getName()] = ++$count;
+                    $view['variableFromComposingEvent_' . Str::slug($view->getName())] =
+                        "from composing {$view->getName()} event";
+                }
+            );
+            $viewFactory->getDispatcher()->listen(
+                "creating: $viewName",
+                function (View $view) use ($eventValuesHolder) {
+                    $count = $eventValuesHolder->creatingCounts[$view->getName()] ?? 0;
+                    $eventValuesHolder->creatingCounts[$view->getName()] = ++$count;
+                    $view['variableFromCreatingEvent_' . Str::slug($view->getName())] =
+                        "from creating {$view->getName()} event";
+                }
+            );
         }
         return $eventValuesHolder;
     }
