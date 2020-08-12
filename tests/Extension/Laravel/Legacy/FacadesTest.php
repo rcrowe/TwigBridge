@@ -2,11 +2,11 @@
 
 namespace TwigBridge\Tests\Extension\Laravel\Legacy;
 
-use Twig\Environment;
-use TwigBridge\Tests\Base;
 use Mockery as m;
-use Illuminate\Config\Repository;
+use Twig\Environment;
+use Twig\TwigFunction;
 use TwigBridge\Extension\Laravel\Legacy\Facades;
+use TwigBridge\Tests\Base;
 
 class FacadesTest extends Base
 {
@@ -32,7 +32,7 @@ class FacadesTest extends Base
 
     public function testAliases()
     {
-        $facade  = $this->getFacade();
+        $facade = $this->getFacade();
         $aliases = [
             'FOO_BAR' => 'hello_world',
         ];
@@ -46,7 +46,7 @@ class FacadesTest extends Base
 
     public function testShortcuts()
     {
-        $facade    = $this->getFacade();
+        $facade = $this->getFacade();
         $shortcuts = [
             'FOO_BAR' => 'HELLO_WORLD',
         ];
@@ -79,8 +79,8 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getLookup('FOO'));
-        $facade->setLookup('FoO', new \Twig\TwigFunction('testLookup'));
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getLookup('foo'));
+        $facade->setLookup('FoO', new TwigFunction('testLookup'));
+        $this->assertInstanceOf(TwigFunction::class, $facade->getLookup('foo'));
     }
 
     public function testFunctionLookup()
@@ -88,8 +88,8 @@ class FacadesTest extends Base
         $facade = $this->getFacade();
 
         $this->assertFalse($facade->getFunction('foo'));
-        $facade->setLookup('FOO', new \Twig\TwigFunction('testFunctionLookup'));
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo'));
+        $facade->setLookup('FOO', new TwigFunction('testFunctionLookup'));
+        $this->assertInstanceOf(TwigFunction::class, $facade->getFunction('foo'));
     }
 
     public function testFunctionNotAliased()
@@ -111,11 +111,11 @@ class FacadesTest extends Base
         $this->assertFalse($facade->getLookup('foo_bar'));
 
         $result = $facade->getFunction('foo_bar');
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $result);
+        $this->assertInstanceOf(TwigFunction::class, $result);
         $this->assertEquals('Baz::bar', $result->getCallable());
 
         // Check lookup now set
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $facade->getFunction('foo_bar'));
+        $this->assertInstanceOf(TwigFunction::class, $facade->getFunction('foo_bar'));
     }
 
     protected function getFacade(Environment $twig = null)

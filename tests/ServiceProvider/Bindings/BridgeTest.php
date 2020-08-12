@@ -2,10 +2,10 @@
 
 namespace TwigBridge\Tests\ServiceProvider\Bindings;
 
-use Twig\Lexer;
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Lexer;
 use TwigBridge\ServiceProvider;
+use TwigBridge\Tests\Base;
 
 class BridgeTest extends Base
 {

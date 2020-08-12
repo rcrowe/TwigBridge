@@ -232,6 +232,3 @@ Lint all Twig templates:
 ```
 $ php artisan twig:lint
 ```
-
-# Missing features 
- - Events `composing:{view name}` and `creating:{view name}` are no longer triggered in version greater than v0.11

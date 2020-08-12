@@ -44,14 +44,14 @@ class Loader implements LoaderInterface
     protected $cache = [];
 
     /**
-     * @param \Illuminate\Filesystem\Filesystem $files The filesystem
-     * @param \Illuminate\View\ViewFinderInterface $finder
-     * @param string $extension Twig file extension.
+     * @param \Illuminate\Filesystem\Filesystem     $files     The filesystem
+     * @param \Illuminate\View\ViewFinderInterface  $finder
+     * @param string                                $extension Twig file extension.
      */
     public function __construct(Filesystem $files, ViewFinderInterface $finder, $extension = 'twig')
     {
-        $this->files = $files;
-        $this->finder = $finder;
+        $this->files     = $files;
+        $this->finder    = $finder;
         $this->extension = $extension;
     }
 
@@ -60,8 +60,8 @@ class Loader implements LoaderInterface
      *
      * @param string $name Template file name or path.
      *
-     * @return string Path to template
      * @throws LoaderError
+     * @return string Path to template
      */
     public function findTemplate($name)
     {
@@ -87,13 +87,13 @@ class Loader implements LoaderInterface
     /**
      * Normalize the Twig template name to a name the ViewFinder can use
      *
-     * @param string $name Template file name.
+     * @param  string $name Template file name.
      * @return string The parsed name
      */
     protected function normalizeName($name)
     {
         if ($this->files->extension($name) === $this->extension) {
-            $name = substr($name, 0, -(strlen($this->extension) + 1));
+            $name = substr($name, 0, - (strlen($this->extension) + 1));
         }
 
         return $name;

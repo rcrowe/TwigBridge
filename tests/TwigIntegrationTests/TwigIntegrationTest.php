@@ -204,6 +204,7 @@ class TwigIntegrationTest extends IntegrationTestCase
                 'TwigBridge\Extension\Loader\Facades',
                 'TwigBridge\Extension\Loader\Filters',
                 'TwigBridge\Extension\Loader\Functions',
+                'TwigBridge\Extension\Loader\Globals',
             ],
         ];
         $laravelApp = $this->getApplication(['extensions' => $extensionsConfig]);

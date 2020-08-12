@@ -107,11 +107,11 @@ return [
         |
         */
         'enabled' => [
-            'TwigBridge\Extension\Loader\Globals',
             'TwigBridge\Extension\Laravel\Event',
             'TwigBridge\Extension\Loader\Facades',
             'TwigBridge\Extension\Loader\Filters',
             'TwigBridge\Extension\Loader\Functions',
+            'TwigBridge\Extension\Loader\Globals',
 
             'TwigBridge\Extension\Laravel\Auth',
             'TwigBridge\Extension\Laravel\Config',

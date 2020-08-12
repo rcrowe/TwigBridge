@@ -2,10 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use Twig\Node\Node;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Extension\Laravel\Translator;
+use Twig\Node\Node;
 
 class TranslatorTest extends Base
 {

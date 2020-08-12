@@ -31,9 +31,9 @@ class ContentTest extends Base
 
         $command->setLaravel($app);
 
-        $input = new ArrayInput([
-                'filename' => 'foo.txt',
-            ]);
+        $input  = new ArrayInput([
+            'filename' => 'foo.txt',
+        ]);
         $output = m::mock('Symfony\Component\Console\Output\NullOutput')->makePartial();
 
         $command->run($input, $output);

@@ -2,10 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use Twig\Node\Node;
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Node\Node;
 use TwigBridge\Extension\Laravel\Session;
+use TwigBridge\Tests\Base;
 
 class SessionTest extends Base
 {
