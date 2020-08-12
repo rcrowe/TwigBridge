@@ -95,5 +95,4 @@ class Bridge extends Environment
 
         return true;
     }
-
 }
