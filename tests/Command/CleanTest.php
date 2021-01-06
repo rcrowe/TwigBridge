@@ -2,6 +2,7 @@
 
 namespace TwigBridge\Tests\Command;
 
+use Twig\Environment;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Command\Clean;
@@ -20,10 +21,10 @@ class CleanTest extends Base
     {
         $app = $this->getApplication();
 
-        $app['twig'] = m::mock('Twig_Environment');
+        $app['twig'] = m::mock(Environment::class);
         $app['twig']->shouldReceive('getCache');
 
-        $app['files'] = m::mock('Twig_Environment');
+        $app['files'] = m::mock(Environment::class);
         $app['files']->shouldReceive('deleteDirectory');
         $app['files']->shouldReceive('exists')->andReturn(true);
 
@@ -43,10 +44,10 @@ class CleanTest extends Base
     {
         $app = $this->getApplication();
 
-        $app['twig'] = m::mock('Twig_Environment');
+        $app['twig'] = m::mock(Environment::class);
         $app['twig']->shouldReceive('getCache');
 
-        $app['files'] = m::mock('Twig_Environment');
+        $app['files'] = m::mock(Environment::class);
         $app['files']->shouldReceive('deleteDirectory');
         $app['files']->shouldReceive('exists')->andReturn(false);
 

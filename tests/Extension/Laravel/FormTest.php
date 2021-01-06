@@ -2,9 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Node\Node;
 use TwigBridge\Extension\Laravel\Form;
+use TwigBridge\Tests\Base;
 
 class FormTest extends Base
 {
@@ -35,7 +36,7 @@ class FormTest extends Base
         $form     = $this->getForm();
         $function = $form->getFunctions()[0];
 
-        $this->assertTrue(in_array('html', $function->getSafe(m::mock('Twig_Node'))));
+        $this->assertTrue(in_array('html', $function->getSafe(m::mock(Node::class))));
     }
 
     protected function getForm()

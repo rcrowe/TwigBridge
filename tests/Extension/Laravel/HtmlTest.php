@@ -2,9 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Node\Node;
 use TwigBridge\Extension\Laravel\Html;
+use TwigBridge\Tests\Base;
 
 class HtmlTest extends Base
 {
@@ -62,7 +63,7 @@ class HtmlTest extends Base
     {
         $html      = $this->getHtml();
         $functions = $html->getFunctions();
-        $mock      = m::mock('Twig_Node');
+        $mock      = m::mock(Node::class);
 
         foreach ($functions as $function) {
             $this->assertTrue(in_array('html', $function->getSafe($mock)));

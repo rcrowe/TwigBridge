@@ -15,8 +15,7 @@ use Exception;
 use Illuminate\View\Compilers\CompilerInterface;
 use InvalidArgumentException;
 use Twig\Environment;
-use Twig\LoaderError;
-use TwigBridge\Twig\Template;
+use Twig\TemplateWrapper;
 
 /**
  * Compiles Twig templates.
@@ -88,24 +87,19 @@ class Compiler implements CompilerInterface
      *
      * @param string $path
      *
+     * @return TemplateWrapper
      * @throws \InvalidArgumentException
      *
-     * @return string \TwigBridge\Twig\Template
      */
     public function load($path)
     {
         // Load template
         try {
-            $template = $this->twig->loadTemplate($path);
-        } catch (LoaderError $e) {
+            $tmplWrapper = $this->twig->load($path);
+        } catch (Exception $e) {
             throw new InvalidArgumentException("Error loading $path: ". $e->getMessage(), $e->getCode(), $e);
         }
 
-        if ($template instanceof Template) {
-            // Events are already fired by the View Environment
-            $template->setFiredEvents(true);
-        }
-
-        return $template;
+        return $tmplWrapper;
     }
 }

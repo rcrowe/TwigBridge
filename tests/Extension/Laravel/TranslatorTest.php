@@ -5,6 +5,7 @@ namespace TwigBridge\Tests\Extension\Laravel;
 use TwigBridge\Tests\Base;
 use Mockery as m;
 use TwigBridge\Extension\Laravel\Translator;
+use Twig\Node\Node;
 
 class TranslatorTest extends Base
 {
@@ -34,7 +35,7 @@ class TranslatorTest extends Base
     {
         $translator = $this->getTranslator();
         $functions  = $translator->getFunctions();
-        $node       = m::mock('Twig_Node');
+        $node       = m::mock(Node::class);
         $check      = [
             'trans',
             'trans_choice'

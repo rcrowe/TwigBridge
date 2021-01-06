@@ -2,9 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Node\Node;
 use TwigBridge\Extension\Laravel\Str;
+use TwigBridge\Tests\Base;
 
 class StrTest extends Base
 {
@@ -52,7 +53,7 @@ class StrTest extends Base
         $string   = $this->getString();
         $function = $string->getFunctions()[0];
 
-        $this->assertFalse(in_array('html', $function->getSafe(m::mock('Twig_Node'))));
+        $this->assertFalse(in_array('html', $function->getSafe(m::mock(Node::class))));
     }
 
     public function testCustomFilters()

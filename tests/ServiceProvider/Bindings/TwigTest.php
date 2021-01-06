@@ -5,6 +5,8 @@ namespace TwigBridge\Tests\ServiceProvider\Bindings;
 use Mockery as m;
 use Illuminate\View\Factory;
 use Illuminate\View\Engines\EngineResolver;
+use Twig\Environment;
+use Twig\Loader\ChainLoader;
 use TwigBridge\Tests\Base;
 use TwigBridge\ServiceProvider;
 
@@ -122,7 +124,7 @@ class TwigTest extends Base
         $app['twig.bridge']->shouldReceive('getExtension')->andReturn('twig');
 
         // Loader
-        $this->assertInstanceOf('Twig_Loader_Chain', $app['twig.loader']);
+        $this->assertInstanceOf(ChainLoader::class, $app['twig.loader']);
     }
 
     public function testTwig()
@@ -150,7 +152,7 @@ class TwigTest extends Base
             m::mock('Illuminate\Events\Dispatcher')
         );
 
-        $this->assertInstanceOf('Twig_Environment', $app['twig']);
+        $this->assertInstanceOf(Environment::class, $app['twig']);
     }
 
     public function testTwigEngine()

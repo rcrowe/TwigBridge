@@ -14,9 +14,9 @@ namespace TwigBridge\Twig;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\ViewFinderInterface;
 use InvalidArgumentException;
-use Twig\Source;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
+use Twig\Source;
 
 /**
  * Basic loader using absolute paths.
@@ -116,7 +116,7 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceContext($name)
+    public function getSourceContext(String $name): Source
     {
         $path = $this->findTemplate($name);
 
@@ -126,7 +126,7 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCacheKey($name)
+    public function getCacheKey(string $name): string
     {
         return $this->findTemplate($name);
     }
@@ -134,7 +134,7 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function isFresh($name, $time)
+    public function isFresh(string $name, int $time): bool
     {
         return $this->files->lastModified($this->findTemplate($name)) <= $time;
     }

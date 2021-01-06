@@ -2,9 +2,10 @@
 
 namespace TwigBridge\Tests\Extension\Laravel;
 
-use TwigBridge\Tests\Base;
 use Mockery as m;
+use Twig\Node\Node;
 use TwigBridge\Extension\Laravel\Url;
+use TwigBridge\Tests\Base;
 
 class UrlTest extends Base
 {
@@ -82,7 +83,7 @@ class UrlTest extends Base
     {
         $url       = $this->getUrl();
         $functions = $url->getFunctions();
-        $mock      = m::mock('Twig_Node');
+        $mock      = m::mock(Node::class);
 
         foreach ($functions as $function) {
             if (is_a($function->getCallable(), 'Closure')) {
