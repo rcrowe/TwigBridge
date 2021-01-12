@@ -4,7 +4,7 @@
 Version greater than v0.11.x now require Twig3. There are some feature that were removed in Twig3, so we were forced to remove some features as well in TwigBridge 
 
  - add `'TwigBridge\Extension\Loader\Globals'` in the configuration twigbridge.extensions.enabled. Or else, you will loose global variables `errors`, `app` and all other shared with `View::share`
- - add `'TwigBridge\Extension\Loader\Event'` in the configuration twigbridge.extensions.enabled. Or else, `composing:{view name}` and `creating:{view name}` events will no longer be triggered.                   
+ - add `'TwigBridge\Extension\Laravel\Event'` in the configuration twigbridge.extensions.enabled. Or else, `composing:{view name}` and `creating:{view name}` events will no longer be triggered.
  - Remove config 'base_template_class' in config/twigbridge.php. It is no longer possible to use a custom template class.
  - Make sure you no longer support Twig2 deprecated features: https://twig.symfony.com/doc/2.x/deprecated.html
 
