@@ -129,7 +129,7 @@ class GetAttrNode extends GetAttrExpression
         $sandboxed = false,
         int $lineno = -1
     ) {
-        if (Template::METHOD_CALL !== $type and is_a($object, 'Illuminate\Database\Eloquent\Model')) {
+        if (Template::METHOD_CALL !== $type and (is_a($object, 'Illuminate\Database\Eloquent\Model') || is_a($object, 'Livewire\Component'))) {
             // We can't easily find out if an attribute actually exists, so return true
             if ($isDefinedTest) {
                 return true;
