@@ -14,12 +14,12 @@ trait TwigBridgeTestTrait
     protected $twigBridgeRoot;
 
 
-    public function setup()
+    public function setUp(): void
     {
         $this->twigBridgeRoot = realpath(__DIR__ . '/../src');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
