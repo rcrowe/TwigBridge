@@ -15,7 +15,7 @@ class ConfigTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getConfig()->getName());
+        $this->assertTrue(is_string($this->getConfig()->getName()));
     }
 
     public function testFunctions()
@@ -23,7 +23,7 @@ class ConfigTest extends Base
         $config    = $this->getConfig();
         $functions = $config->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             $this->assertInstanceOf('Illuminate\Config\Repository', $function->getCallable()[0]);

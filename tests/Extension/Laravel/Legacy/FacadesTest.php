@@ -17,7 +17,7 @@ class FacadesTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getFacade()->getName());
+        $this->assertTrue(is_string($this->getFacade()->getName()));
     }
 
     public function testUndefinedHandlerRegistered()

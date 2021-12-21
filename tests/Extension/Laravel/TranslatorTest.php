@@ -16,7 +16,7 @@ class TranslatorTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getTranslator()->getName());
+        $this->assertTrue(is_string($this->getTranslator()->getName()));
     }
 
     public function testFunctions()
@@ -24,7 +24,7 @@ class TranslatorTest extends Base
         $translator = $this->getTranslator();
         $functions  = $translator->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             $this->assertInstanceOf('Illuminate\Translation\Translator', $function->getCallable()[0]);

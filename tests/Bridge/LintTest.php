@@ -15,10 +15,11 @@ class LintTest extends Base
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testUnknownFile()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $finder = m::mock('TwigBridge\Twig\Loader');
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();

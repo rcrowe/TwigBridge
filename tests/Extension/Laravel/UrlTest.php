@@ -24,7 +24,7 @@ class UrlTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getUrl()->getName());
+        $this->assertTrue(is_string($this->getUrl()->getName()));
     }
 
     public function testCustomFunctions()
@@ -32,7 +32,7 @@ class UrlTest extends Base
         $url       = $this->getUrl();
         $functions = $url->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             if (!in_array($function->getName(), $this->customFunctions)) {

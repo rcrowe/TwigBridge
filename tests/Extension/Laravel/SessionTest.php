@@ -16,7 +16,7 @@ class SessionTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getSession()->getName());
+        $this->assertTrue(is_string($this->getSession()->getName()));
     }
 
     public function testFunctions()
@@ -24,7 +24,7 @@ class SessionTest extends Base
         $session   = $this->getSession();
         $functions = $session->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             if (is_array($function->getCallable())) {

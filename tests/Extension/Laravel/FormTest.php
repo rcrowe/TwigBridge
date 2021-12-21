@@ -16,7 +16,7 @@ class FormTest extends Base
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getForm()->getName());
+        $this->assertTrue(is_string($this->getForm()->getName()));
     }
 
     public function testFunctionCallback()
@@ -26,7 +26,7 @@ class FormTest extends Base
 
         $form = new Form($builder);
 
-        $this->assertInternalType('array', $form->getFunctions());
+        $this->assertTrue(is_array($form->getFunctions()));
 
         call_user_func($form->getFunctions()[0]->getCallable(), 'foo_bar');
     }
