@@ -1,0 +1,41 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.2, 7.3, 7.4, 8.0, 8.1]
+        stability: [prefer-stable]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: pcov
+
+      - name: Install dependencies
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests
+        run: ./vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Execute code style checks
+        run: ./vendor/bin/phpcs --standard=PSR2 -p --ignore=./tests/storage/* --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
+
+      - name: Check code coverage
+        if: ${{ matrix.php == '8.1' }}
+        uses: codecov/codecov-action@v2.1.0
