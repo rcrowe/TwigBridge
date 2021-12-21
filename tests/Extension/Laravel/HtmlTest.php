@@ -16,7 +16,7 @@ class HtmlTest extends Base
         'link_to_action',
     ];
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

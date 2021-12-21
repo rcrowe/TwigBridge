@@ -9,7 +9,7 @@ use TwigBridge\Tests\Base;
 
 class SessionTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

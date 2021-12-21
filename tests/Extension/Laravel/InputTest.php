@@ -8,7 +8,7 @@ use TwigBridge\Extension\Laravel\Input;
 
 class InputTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

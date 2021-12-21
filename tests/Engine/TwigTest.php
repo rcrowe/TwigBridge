@@ -11,7 +11,7 @@ use TwigBridge\Engine\Compiler;
 
 class TwigTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

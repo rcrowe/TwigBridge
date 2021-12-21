@@ -9,7 +9,7 @@ use TwigBridge\Tests\Base;
 
 class FormTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

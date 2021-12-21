@@ -9,7 +9,7 @@ use Twig\Node\Node;
 
 class TranslatorTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

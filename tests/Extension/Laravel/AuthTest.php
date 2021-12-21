@@ -8,7 +8,7 @@ use TwigBridge\Extension\Laravel\Auth;
 
 class AuthTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

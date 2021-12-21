@@ -9,7 +9,7 @@ use TwigBridge\Bridge;
 
 class LintTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

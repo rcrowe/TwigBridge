@@ -8,7 +8,7 @@ use TwigBridge\Extension\Laravel\Config;
 
 class ConfigTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
