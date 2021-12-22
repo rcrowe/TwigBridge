@@ -42,8 +42,7 @@ class GetAttrNode extends GetAttrExpression
         $env = $compiler->getEnvironment();
 
         // optimize array calls
-        if (
-            $this->getAttribute('optimizable')
+        if ($this->getAttribute('optimizable')
             && (!$env->isStrictVariables() || $this->getAttribute('ignore_strict_check'))
             && !$this->getAttribute('is_defined_test')
             && Template::ARRAY_CALL === $this->getAttribute('type')
