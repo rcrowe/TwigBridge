@@ -16,14 +16,14 @@ class HtmlTest extends Base
         'link_to_action',
     ];
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getHtml()->getName());
+        $this->assertTrue(is_string($this->getHtml()->getName()));
     }
 
     public function testCustomFunctions()
@@ -31,7 +31,7 @@ class HtmlTest extends Base
         $html      = $this->getHtml();
         $functions = $html->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             if (!in_array($function->getName(), $this->customFunctions)) {

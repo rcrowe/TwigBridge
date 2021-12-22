@@ -8,14 +8,14 @@ use TwigBridge\Extension\Laravel\Input;
 
 class InputTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getInput()->getName());
+        $this->assertTrue(is_string($this->getInput()->getName()));
     }
 
     public function testFunctions()
@@ -23,7 +23,7 @@ class InputTest extends Base
         $input     = $this->getInput();
         $functions = $input->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             $this->assertInstanceOf('Illuminate\Http\Request', $function->getCallable()[0]);

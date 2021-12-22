@@ -12,7 +12,7 @@ class FiltersTest extends Base
     {
         $filters = new Filters(m::mock('Illuminate\Config\Repository'));
 
-        $this->assertInternalType('string', $filters->getName());
+        $this->assertTrue(is_string($filters->getName()));
     }
 
     public function testNoFilters()
@@ -23,7 +23,7 @@ class FiltersTest extends Base
         $filters = new Filters($config);
         $filters = $filters->getFunctions();
 
-        $this->assertInternalType('array', $filters);
+        $this->assertTrue(is_array($filters));
         $this->assertTrue(empty($filters));
     }
 

@@ -11,7 +11,10 @@ class FinderTest extends Base
 {
     public function testGet()
     {
-        $this->assertInstanceOf('Symfony\Component\Finder\Finder', (new Lint)->getFinder([__DIR__]));
+        $app     = $this->getApplication();
+        $command = new Lint;
+        $command->setLaravel($app);
+        $this->assertInstanceOf('Symfony\Component\Finder\Finder', $command->getFinder([__DIR__]));
     }
 
     public function testSet()
@@ -23,7 +26,9 @@ class FinderTest extends Base
         $finder->shouldReceive('in')->andReturn($finder);
         $finder->shouldReceive('name')->andReturn($data);
 
+        $app     = $this->getApplication();
         $command = new Lint;
+        $command->setLaravel($app);
         $command->setFinder($finder);
         $command->setFinder($finder);
 

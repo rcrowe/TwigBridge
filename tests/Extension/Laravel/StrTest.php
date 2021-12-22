@@ -15,7 +15,7 @@ class StrTest extends Base
         'studly_case',
     ];
 
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
@@ -27,12 +27,11 @@ class StrTest extends Base
         $this->assertEquals('Illuminate\Support\Str', $string->getCallback());
         $string->setCallback('FooBar');
         $this->assertEquals('FooBar', $string->getCallback());
-
     }
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getString()->getName());
+        $this->assertTrue(is_string($this->getString()->getName()));
     }
 
     public function testFunctionCallback()
@@ -43,7 +42,7 @@ class StrTest extends Base
         $string = $this->getString();
         $string->setCallback($mock);
 
-        $this->assertInternalType('array', $string->getFunctions());
+        $this->assertTrue(is_array($string->getFunctions()));
 
         call_user_func($string->getFunctions()[0]->getCallable(), 'foo_bar');
     }
@@ -61,7 +60,7 @@ class StrTest extends Base
         $string  = $this->getString();
         $filters = $string->getFilters();
 
-        $this->assertInternalType('array', $filters);
+        $this->assertTrue(is_array($filters));
 
         foreach ($filters as $filter) {
             if (!in_array($filter->getName(), $this->customFilters)) {

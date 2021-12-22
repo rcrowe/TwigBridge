@@ -9,16 +9,17 @@ use TwigBridge\Bridge;
 
 class LintTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testUnknownFile()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $finder = m::mock('TwigBridge\Twig\Loader');
         $bridge = new Bridge($finder);
         $app    = $this->getApplication();

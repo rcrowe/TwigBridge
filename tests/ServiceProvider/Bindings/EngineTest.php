@@ -8,7 +8,7 @@ use Mockery as m;
 
 class EngineTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }

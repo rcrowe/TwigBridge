@@ -8,14 +8,14 @@ use TwigBridge\Extension\Laravel\Auth;
 
 class AuthTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getAuth()->getName());
+        $this->assertTrue(is_string($this->getAuth()->getName()));
     }
 
     public function testFunctions()
@@ -23,7 +23,7 @@ class AuthTest extends Base
         $auth      = $this->getAuth();
         $functions = $auth->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
 
         foreach ($functions as $function) {
             $this->assertInstanceOf('Illuminate\Auth\AuthManager', $function->getCallable()[0]);

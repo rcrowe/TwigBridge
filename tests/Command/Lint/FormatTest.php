@@ -63,6 +63,8 @@ class FormatTest extends Base
      */
     public function testInvalidFormat()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $command = new Lint;
         $app     = $this->getApplication();
 

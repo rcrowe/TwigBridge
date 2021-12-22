@@ -10,14 +10,14 @@ use TwigBridge\Tests\Base;
 
 class FacadesTest extends Base
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         m::close();
     }
 
     public function testName()
     {
-        $this->assertInternalType('string', $this->getFacade()->getName());
+        $this->assertTrue(is_string($this->getFacade()->getName()));
     }
 
     public function testUndefinedHandlerRegistered()

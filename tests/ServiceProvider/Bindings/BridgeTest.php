@@ -6,6 +6,7 @@ use Mockery as m;
 use Twig\Lexer;
 use TwigBridge\ServiceProvider;
 use TwigBridge\Tests\Base;
+use TwigBridge\Tests\Helpers;
 
 class BridgeTest extends Base
 {
@@ -32,7 +33,7 @@ class BridgeTest extends Base
         $provider->register();
         $provider->boot();
 
-        $this->assertEquals($this->readAttribute($app['twig'], 'lexer')->fooBar(), 'baz');
+        $this->assertEquals(Helpers::readObjectAttribute($app['twig'], 'lexer')->fooBar(), 'baz');
     }
 
     public function testAddExtensions()

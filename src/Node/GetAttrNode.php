@@ -42,8 +42,7 @@ class GetAttrNode extends GetAttrExpression
         $env = $compiler->getEnvironment();
 
         // optimize array calls
-        if (
-            $this->getAttribute('optimizable')
+        if ($this->getAttribute('optimizable')
             && (!$env->isStrictVariables() || $this->getAttribute('ignore_strict_check'))
             && !$this->getAttribute('is_defined_test')
             && Template::ARRAY_CALL === $this->getAttribute('type')
@@ -129,7 +128,9 @@ class GetAttrNode extends GetAttrExpression
         $sandboxed = false,
         int $lineno = -1
     ) {
-        if (Template::METHOD_CALL !== $type and (is_a($object, 'Illuminate\Database\Eloquent\Model') || is_a($object, 'Livewire\Component'))) {
+        if (Template::METHOD_CALL !== $type
+            && (is_a($object, 'Illuminate\Database\Eloquent\Model') || is_a($object, 'Livewire\Component'))
+        ) {
             // We can't easily find out if an attribute actually exists, so return true
             if ($isDefinedTest) {
                 return true;

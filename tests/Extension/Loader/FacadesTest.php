@@ -12,7 +12,7 @@ class FacadesTest extends Base
     {
         $facades = new Facades(m::mock('Illuminate\Config\Repository'));
 
-        $this->assertInternalType('string', $facades->getName());
+        $this->assertTrue(is_string($facades->getName()));
     }
 
     public function testNoGlobals()
@@ -23,7 +23,7 @@ class FacadesTest extends Base
         $facades = new Facades($config);
         $globals = $facades->getGlobals();
 
-        $this->assertInternalType('array', $globals);
+        $this->assertTrue(is_array($globals));
         $this->assertTrue(empty($globals));
     }
 

@@ -22,6 +22,8 @@ class ContentTest extends Base
      */
     public function testEmpty()
     {
+        $this->expectException(\RuntimeException::class);
+
         $command = new Lint;
         $app     = $this->getApplication();
 

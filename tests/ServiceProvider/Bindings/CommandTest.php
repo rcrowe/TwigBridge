@@ -9,7 +9,7 @@ class CommandTest extends Base
 {
     protected $app;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setup();
         $this->app = $this->getApplication();

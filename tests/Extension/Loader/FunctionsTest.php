@@ -12,7 +12,7 @@ class FunctionsTest extends Base
     {
         $functions = new Functions(m::mock('Illuminate\Config\Repository'));
 
-        $this->assertInternalType('string', $functions->getName());
+        $this->assertTrue(is_string($functions->getName()));
     }
 
     public function testNoFunctions()
@@ -23,7 +23,7 @@ class FunctionsTest extends Base
         $functions = new Functions($config);
         $functions = $functions->getFunctions();
 
-        $this->assertInternalType('array', $functions);
+        $this->assertTrue(is_array($functions));
         $this->assertTrue(empty($functions));
     }
 
