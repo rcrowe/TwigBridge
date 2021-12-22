@@ -79,7 +79,7 @@ class GetAttrTest extends NodeTestCase
             );
             $this->fail();
         } catch (SecurityError $e) {
-            $this->assertTrue(strpos('is not allowed', $e->getMessage()) !== false);
+            $this->assertTrue(strpos($e->getMessage(), 'is not allowed') !== false);
         }
 
         $object->attr = null;
@@ -98,7 +98,7 @@ class GetAttrTest extends NodeTestCase
             );
             $this->fail();
         } catch (SecurityError $e) {
-            $this->assertTrue(strpos('is not allowed', $e->getMessage()) !== false);
+            $this->assertTrue(strpos($e->getMessage(), 'is not allowed') !== false);
         }
     }
 
