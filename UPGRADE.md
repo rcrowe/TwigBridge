@@ -1,7 +1,7 @@
 # TwigBridge Upgrade Guide
 
-## Upgrade v0.11.x -> x.x.x
-Version greater than v0.11.x now require Twig3. There are some feature that were removed in Twig3, so we were forced to remove some features as well in TwigBridge 
+## Upgrade v0.12.x -> v0.13.x
+Version greater than v0.12.x now require Twig3. There are some feature that were removed in Twig3, so we were forced to remove some features as well in TwigBridge 
 
  - add `'TwigBridge\Extension\Loader\Globals'` in the configuration twigbridge.extensions.enabled. Or else, you will loose global variables `errors`, `app` and all other shared with `View::share`
  - add `'TwigBridge\Extension\Laravel\Event'` in the configuration twigbridge.extensions.enabled. Or else, `composing:{view name}` and `creating:{view name}` events will no longer be triggered.
