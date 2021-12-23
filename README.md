@@ -2,6 +2,7 @@ Allows you to use [Twig](http://twig.sensiolabs.org/) seamlessly in [Laravel](ht
 
 [![Latest Stable Version](https://poser.pugx.org/rcrowe/twigbridge/v/stable.png)](https://packagist.org/packages/rcrowe/twigbridge)
 [![Total Downloads](https://poser.pugx.org/rcrowe/twigbridge/downloads.png)](https://packagist.org/packages/rcrowe/twigbridge)
+[![test](https://github.com/rcrowe/TwigBridge/actions/workflows/ci.yml/badge.svg)](https://github.com/rcrowe/TwigBridge/actions/workflows/ci.yml)
 [![License](https://poser.pugx.org/rcrowe/twigbridge/license.png)](https://packagist.org/packages/rcrowe/twigbridge)
 
 # Requirements
