@@ -73,7 +73,7 @@ class FormatTest extends Base
         $finder = m::mock('Symfony\Component\Finder\Finder');
         $finder->shouldReceive('files')->andReturn($finder);
         $finder->shouldReceive('in')->andReturn($finder);
-        $finder->shouldReceive('name')->andReturn([]);
+        $finder->shouldReceive('name')->andReturn($finder);
         $command->setFinder($finder);
 
         $input  = new ArrayInput([
