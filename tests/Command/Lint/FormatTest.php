@@ -63,8 +63,6 @@ class FormatTest extends Base
      */
     public function testInvalidFormat()
     {
-        $this->markTestSkipped('Mismatch between Symfony finder versions?');
-        return;
         $this->expectException(\InvalidArgumentException::class);
 
         $command = new Lint;
@@ -75,7 +73,7 @@ class FormatTest extends Base
         $finder = m::mock('Symfony\Component\Finder\Finder');
         $finder->shouldReceive('files')->andReturn($finder);
         $finder->shouldReceive('in')->andReturn($finder);
-        $finder->shouldReceive('name')->andReturn($finder);
+        $finder->shouldReceive('name')->andReturn([]);
         $command->setFinder($finder);
 
         $input  = new ArrayInput([

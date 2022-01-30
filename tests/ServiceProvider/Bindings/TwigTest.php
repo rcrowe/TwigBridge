@@ -19,9 +19,6 @@ class TwigTest extends Base
 
     public function testTwigOptions()
     {
-        $this->markTestSkipped('Mismatch between Laravel versions?');
-        return;
-
         $app      = $this->getApplication();
         $provider = new ServiceProvider($app);
         $provider->register();
