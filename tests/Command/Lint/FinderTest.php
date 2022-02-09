@@ -2,7 +2,6 @@
 
 namespace TwigBridge\Tests\Command\Lint;
 
-use ArrayObject;
 use Mockery as m;
 use TwigBridge\Command\Lint;
 
@@ -18,8 +17,6 @@ class FinderTest extends Base
 
     public function testSet()
     {
-        $data = ['fooBar'];
-
         /** @var \Symfony\Component\Finder\Finder|\Mockery\MockInterface $finder */
         $finder = m::mock('Symfony\Component\Finder\Finder');
         $finder->shouldReceive('files')->andReturn($finder);
