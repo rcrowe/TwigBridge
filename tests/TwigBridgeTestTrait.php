@@ -32,8 +32,7 @@ trait TwigBridgeTestTrait
      */
     protected function getApplication(array $customConfig = [])
     {
-        $app = new Application;
-        $app->instance('path', __DIR__);
+        $app = new Application(__DIR__);
 
         $app['env'] = 'production';
         $app['path.config'] = __DIR__ . '/config';
