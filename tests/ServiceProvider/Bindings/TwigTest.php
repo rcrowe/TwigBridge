@@ -29,7 +29,7 @@ class TwigTest extends Base
 
         // Make sure that twig.options sets the storage path automatically
         $this->assertEmpty($config['cache']);
-        $this->assertEquals($options['cache'], '/storage/framework/views/twig');
+        $this->assertEquals('/storage/framework/views/twig', (realpath($options['cache']) === false ? $options['cache'] : realpath($options['cache'])));
 
         // Make sure same config is returned
         $options['cache'] = null;
