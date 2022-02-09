@@ -2,9 +2,8 @@
 
 namespace TwigBridge\Tests\Command\Lint;
 
+use ArrayObject;
 use Mockery as m;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
 use TwigBridge\Command\Lint;
 
 class FinderTest extends Base
@@ -21,17 +20,18 @@ class FinderTest extends Base
     {
         $data = ['fooBar'];
 
+        /** @var \Symfony\Component\Finder\Finder|\Mockery\MockInterface $finder */
         $finder = m::mock('Symfony\Component\Finder\Finder');
         $finder->shouldReceive('files')->andReturn($finder);
         $finder->shouldReceive('in')->andReturn($finder);
-        $finder->shouldReceive('name')->andReturn($data);
+        $finder->shouldReceive('name')->andReturn($finder);
+        $finder->shouldReceive('count')->andReturn(1);
 
         $app     = $this->getApplication();
         $command = new Lint;
         $command->setLaravel($app);
         $command->setFinder($finder);
-        $command->setFinder($finder);
 
-        $this->assertEquals($data, $command->getFinder([__DIR__]));
+        $this->assertEquals(1, $command->getFinder([__DIR__])->count());
     }
 }
