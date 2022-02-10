@@ -5,6 +5,7 @@ namespace TwigBridge\Node;
 
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\View\ViewName;
 use Twig\Compiler;
 use Twig\Node\Node;
 
@@ -30,7 +31,7 @@ class EventNode extends Node
         }
         /** @var \Illuminate\View\Factory $factory */
         $env = resolve('view');
-        $viewName = $templateName;
+        $viewName = ViewName::normalize($templateName);
 
         $view = new View(
             $env,
