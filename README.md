@@ -19,25 +19,7 @@ composer require rcrowe/twigbridge
 
 # Quick Start
 
-Once Composer has installed or updated your packages you need to register TwigBridge with Laravel itself. Open up config/app.php and find the providers key, towards the end of the file, and add 'TwigBridge\ServiceProvider', to the end:
-
-```php
-'providers' => [
-     ...
-                TwigBridge\ServiceProvider::class,
-],
-```
-
-Now find the aliases key, again towards the end of the file, and add 'Twig' => 'TwigBridge\Facade\Twig', to have easier access to the TwigBridge (or Twig\Environment):
-
-```php
-'aliases' => [
-    ...
-                'Twig' => TwigBridge\Facade\Twig::class,
-],
-```
-
-Now that you have both of those lines added to config/app.php we will use Artisan to add the new twig config file:
+Laravel automatically registers the Service Provider. Use Artisan to publish the twig config file:
 
 ```php
 php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
