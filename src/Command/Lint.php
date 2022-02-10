@@ -154,7 +154,7 @@ class Lint extends Command
         }
 
         // If no files passed, use the view paths
-        if (empty($search)) {
+        if (empty($search) && !empty($paths)) {
             foreach ($this->getFinder($paths) as $file) {
                 $search[] = $file->getRealPath();
             }
