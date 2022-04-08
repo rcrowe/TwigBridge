@@ -11,7 +11,7 @@
 
 namespace TwigBridge\Extension\Laravel;
 
-use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
@@ -21,16 +21,16 @@ use Twig\Extension\AbstractExtension;
 class Config extends AbstractExtension
 {
     /**
-     * @var \Illuminate\Config\Repository
+     * @var ConfigContract
      */
     protected $config;
 
     /**
      * Create a new config extension
      *
-     * @param \Illuminate\Config\Repository
+     * @param ConfigContract
      */
-    public function __construct(ConfigRepository $config)
+    public function __construct(ConfigContract $config)
     {
         $this->config = $config;
     }
