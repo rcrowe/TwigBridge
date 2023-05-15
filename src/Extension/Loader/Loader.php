@@ -24,6 +24,11 @@ use Twig\Extension\AbstractExtension;
 abstract class Loader extends AbstractExtension
 {
     /**
+     * @var \Illuminate\Config\Repository
+     */
+    protected $config;
+
+    /**
      * Create a new loader extension.
      *
      * @param \Illuminate\Config\Repository
