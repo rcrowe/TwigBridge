@@ -69,6 +69,58 @@ php artisan vendor:publish --provider="TwigBridge\ServiceProvider"
 
 If you make changes to the `/config/twigbridge.php` file you will most likely have to run the `twig:clean` Artisan command for the changes to take effect.
 
+For example
+```php
+config([
+	'twigbridge' => [
+        'twig' => [
+            'extension' => 'twig',
+            'environment' => [
+                'debug' => config('app.debug', false),
+                'charset' => 'utf-8',
+                'base_template_class' => 'TwigBridge\Twig\Template',
+                'cache' => null,
+                'auto_reload' => true,
+                'strict_variables' => false,
+                'autoescape' => true,
+                'optimizations' => -1,
+            ],
+            'globals' => [],
+        ],
+
+        'extensions' => [
+            'enabled' => [
+                'TwigBridge\Extension\Loader\Facades',
+                'TwigBridge\Extension\Loader\Filters',
+                'TwigBridge\Extension\Loader\Functions',
+
+                'TwigBridge\Extension\Laravel\Auth',
+                'TwigBridge\Extension\Laravel\Config',
+                'TwigBridge\Extension\Laravel\Dump',
+                'TwigBridge\Extension\Laravel\Input',
+                'TwigBridge\Extension\Laravel\Session',
+                'TwigBridge\Extension\Laravel\String',
+                'TwigBridge\Extension\Laravel\Translator',
+                'TwigBridge\Extension\Laravel\Url',
+
+                 'TwigBridge\Extension\Laravel\Form',
+                 'TwigBridge\Extension\Laravel\Html',
+                // 'TwigBridge\Extension\Laravel\Legacy\Facades',
+            ],
+            'facades' => [],
+            'functions' => [
+                'elixir',
+                'head',
+                'last',
+            ],
+            'filters' => [],
+        ],
+    ]
+]);
+```
+
+In order to use the included Form and Html extensions you will need install the Laravel Collective Html package. Remembering to add 'Collective\Html\HtmlServiceProvider' to your config/app.php file.
+
 # Installation on Lumen
 
 For Lumen, you need to load the same Service Provider, but you have to disable the `Auth`, `Translator` and `Url` extensions in your local configuration.
