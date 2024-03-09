@@ -11,33 +11,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.2', '7.3', '7.4', '8.0', '8.1', '8.2' ]
-        laravel: [ '6', '7', '8', '9', '10' ]
+        php: [ '8.1', '8.2', '8.3']
+        laravel: [ '9', '10', '11' ]
         exclude:
-          - php: '7.2'
-            laravel: '8'
-          - php: '7.2'
-            laravel: '9'
-          - php: '7.3'
-            laravel: '9'
-          - php: '7.4'
-            laravel: '9'
-          - php: '8.1'
-            laravel: '6'
-          - php: '8.1'
-            laravel: '7'
-          - php: '8.2'
-            laravel: '6'
-          - php: '8.2'
-            laravel: '7'
-          - php: '7.2'
-            laravel: '10'
-          - php: '7.3'
-            laravel: '10'
-          - php: '7.4'
-            laravel: '10'
-          - php: '8.0'
-            laravel: '10'
+          - laravel: 11
+            php: 8.1
 
     name: PHP ${{ matrix.php }}; Laravel ${{ matrix.laravel }}
 
@@ -55,30 +33,6 @@ jobs:
       - name: Setup Problem Matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Select Laravel 6
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer require "laravel/framework:6.*" "phpunit/phpunit:^8.5.8|^9.3.7" --no-update --no-interaction
-        if: "matrix.laravel == '6'"
-
-      - name: Select Laravel 7
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer require "laravel/framework:7.*" "phpunit/phpunit:^8.5.8|^9.3.7" --no-update --no-interaction
-        if: "matrix.laravel == '7'"
-
-      - name: Select Laravel 8
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer require "laravel/framework:8.*" "phpunit/phpunit:^9.3.7" --no-update --no-interaction
-        if: "matrix.laravel == '8'"
-        
       - name: Select Laravel 9
         uses: nick-invision/retry@v1
         with:
@@ -95,6 +49,14 @@ jobs:
           command: composer require "laravel/framework:10.*" "phpunit/phpunit:^9.3.7" --no-update --no-interaction
         if: "matrix.laravel == '10'"
 
+      - name: Select Laravel 11
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer require "laravel/framework:11.*" "phpunit/phpunit:^9.3.7" --no-update --no-interaction
+        if: "matrix.laravel == '11'"
+
       - name: Install PHP Dependencies
         uses: nick-invision/retry@v1
         with:
@@ -106,7 +68,7 @@ jobs:
         run: ./vendor/bin/phpunit --coverage-clover clover.xml
 
       - name: Execute code style checks
-        run: ./vendor/bin/phpcs --standard=PSR2 -p --ignore=./tests/storage/* --report=full --report-checkstyle=build/logs/checkstyle.xml src/ tests/
+        run: ./vendor/bin/phpcs --standard=PSR2 -p --ignore=./tests/storage/* src/ tests/
 
       - name: Check code coverage
         if: ${{ matrix.php == '8.1' }}
