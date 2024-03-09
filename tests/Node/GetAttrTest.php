@@ -137,7 +137,7 @@ class GetAttrTest extends NodeTestCase
         $tests[] = [
             $node,
             sprintf(
-                '%s%s, "bar", [0 => %s, 1 => "bar"], "method", false, false, false, 1)',
+                '%s%s, "bar", [%s, "bar"], "method", false, false, false, 1)',
                 $this->getAttributeGetter(),
                 $this->getVariableGetter('foo', 1),
                 $this->getVariableGetter('foo')
