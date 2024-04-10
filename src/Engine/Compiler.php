@@ -13,6 +13,7 @@ namespace TwigBridge\Engine;
 
 use Exception;
 use Illuminate\View\Compilers\CompilerInterface;
+use Illuminate\View\ViewName;
 use InvalidArgumentException;
 use Twig\Environment;
 use Twig\TemplateWrapper;
@@ -95,6 +96,12 @@ class Compiler implements CompilerInterface
     {
         // Load template
         try {
+            $path = str_replace(resource_path('views') . '/', '', $path);
+            if (str_ends_with($path, ".twig")) {
+                $path = substr($path, 0, -5);
+            }
+            $path = ViewName::normalize($path);
+
             $tmplWrapper = $this->twig->load($path);
         } catch (Exception $e) {
             throw new InvalidArgumentException("Error loading $path: ". $e->getMessage(), $e->getCode(), $e);
