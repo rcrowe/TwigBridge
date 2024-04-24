@@ -10,6 +10,7 @@ namespace TwigBridge\Node;
 use Twig\Compiler;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Node\Expression\GetAttrExpression;
 use Twig\Node\Node;
@@ -142,6 +143,12 @@ class GetAttrNode extends GetAttrExpression
 
             // Call the attribute, the Model object does the rest of the magic
             return $object->$item;
+        }
+
+        // Note: Since twig:3.9 the 'twig_get_attribute' function was renamed to CoreExtension::getAttribute.
+        //       Because this is an internal function of twig, the authors could break it in a minor version.
+        if (!function_exists('twig_get_attribute')) {
+            return CoreExtension::getAttribute($env, $source, $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
         }
 
         return \twig_get_attribute(
