@@ -7,6 +7,7 @@
  */
 namespace TwigBridge\Node;
 
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Environment;
 use Twig\Error\RuntimeError;
@@ -24,6 +25,7 @@ use Twig\Template;
  *  - https://github.com/rcrowe/TwigBridge/issues/362
  *  - https://github.com/rcrowe/TwigBridge/issues/265
  */
+#[YieldReady]
 class GetAttrNode extends GetAttrExpression
 {
     /**
@@ -145,6 +147,15 @@ class GetAttrNode extends GetAttrExpression
             return $object->$item;
         }
 
-        return CoreExtension::getAttribute($env, $source, $object, $item, $arguments, $type, $isDefinedTest, $ignoreStrictCheck);
+        return CoreExtension::getAttribute(
+            $env,
+            $source,
+            $object,
+            $item,
+            $arguments,
+            $type,
+            $isDefinedTest,
+            $ignoreStrictCheck
+        );
     }
 }
