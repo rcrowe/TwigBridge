@@ -6,9 +6,11 @@ namespace TwigBridge\Node;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\View\ViewName;
+use Twig\Attribute\YieldReady;
 use Twig\Compiler;
 use Twig\Node\Node;
 
+#[YieldReady]
 class EventNode extends Node
 {
 
@@ -16,10 +18,7 @@ class EventNode extends Node
     {
         $compiler
             ->write(
-                sprintf(
-                    '$context = ' .
-                    EventNode::class . '::triggerLaravelEvents($this->getTemplateName(), $context);'
-                )
+                '$context = ' . EventNode::class . '::triggerLaravelEvents($this->getTemplateName(), $context);'
             )
             ->raw("\n");
     }
