@@ -45,7 +45,7 @@ class GetAttrAdjuster implements NodeVisitorInterface
             'optimizable' => $node->getAttribute('optimizable'),
         ];
 
-        return new GetAttrNode($nodes, $attributes, $node->getTemplateLine(), $node->getNodeTag());
+        return new GetAttrNode($nodes, $attributes, $node->getTemplateLine());
     }
 
     /**
