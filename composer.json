@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "twig/twig": "~3.9",
+        "twig/twig": "~3.12",
         "illuminate/support": "^9|^10|^11",
         "illuminate/view": "^9|^10|^11"
     },
