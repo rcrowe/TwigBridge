@@ -18,6 +18,7 @@ use Twig\Lexer;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface;
 use Twig\Extension\EscaperExtension;
+use Twig\Runtime\EscaperRuntime;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
 
@@ -231,7 +232,12 @@ class ServiceProvider extends ViewServiceProvider
                 );
 
                 foreach ($this->app['config']->get('twigbridge.twig.safe_classes', []) as $safeClass => $strategy) {
-                    $twig->getExtension(EscaperExtension::class)->addSafeClass($safeClass, $strategy);
+                    // "Since twig/twig 3.10: The "Twig\Extension\EscaperExtension::addSafeClass()" method is deprecated, use the "Twig\Runtime\EscaperRuntime::addSafeClass()" method instead."
+                    if (class_exists(EscaperRuntime::class)) {
+                        $twig->getRuntime(EscaperRuntime::class)->addSafeClass($safeClass, $strategy);
+                    } else {
+                        $twig->getExtension(EscaperExtension::class)->addSafeClass($safeClass, $strategy);
+                    }
                 }
 
                 // Instantiate and add extensions
