@@ -126,6 +126,7 @@ return [
 
             // 'TwigBridge\Extension\Laravel\Form',
             // 'TwigBridge\Extension\Laravel\Html',
+            // 'TwigBridge\Extension\Laravel\Vite',
             // 'TwigBridge\Extension\Laravel\Legacy\Facades',
         ],
 
