@@ -29,7 +29,8 @@ class LaravelEventNodeVisitor implements NodeVisitorInterface
                 $isEmbedded = false;
             }
             if (!$isEmbedded) {
-                $node->setNode('display_start', new Node([new EventNode(), $node->getNode('display_start')]));
+                $displayStartNodes = $node->getNode('display_start');
+                $displayStartNodes->setNode(count($displayStartNodes), new EventNode());
             }
         }
         return $node;
