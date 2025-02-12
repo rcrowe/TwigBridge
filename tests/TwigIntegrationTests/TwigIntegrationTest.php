@@ -112,11 +112,6 @@ class TwigIntegrationTest extends IntegrationTestCase
                 $twig->addFunction($function);
             }
 
-            // avoid using the same PHP class name for different cases
-            $p = new \ReflectionProperty(Environment::class, 'templateClassPrefix');
-            $p->setAccessible(true);
-            $p->setValue($twig, '__TwigTemplate_' . hash('sha256', uniqid(mt_rand(), true), false) . '_');
-
             $deprecations = [];
             try {
                 $prevHandler = set_error_handler(

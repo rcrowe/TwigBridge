@@ -122,10 +122,10 @@ class GetAttrTest extends NodeTestCase
         $node = $this->getNode($expr, $attr, $args, Template::ARRAY_CALL);
         $tests[] = [
             $node,
-            '(($__internal_%s = // line 1' . "\n"
+            '(($_v0 = // line 1' . "\n"
                 . '($context["foo"] ?? null))'
-                . ' && is_array($__internal_%s)'
-                . ' || $__internal_%s instanceof ArrayAccess ? ($__internal_%s["bar"] ?? null) : null)',
+                . ' && is_array($_v0)'
+                . ' || $_v0 instanceof ArrayAccess ? ($_v0["bar"] ?? null) : null)',
             null,
             true,
         ];
