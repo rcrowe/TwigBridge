@@ -118,7 +118,7 @@ class FacadesTest extends Base
         $this->assertInstanceOf(TwigFunction::class, $facade->getFunction('foo_bar'));
     }
 
-    protected function getFacade(Environment $twig = null)
+    protected function getFacade(?Environment $twig = null)
     {
         $app = $this->getApplication();
 
