@@ -115,23 +115,17 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerCommands()
     {
-        $this->app->bindIf(
-            'command.twig', function () {
-                return new Command\TwigBridge;
-            }
-        );
+        $this->app->bindIf('command.twig', function () {
+            return new Command\TwigBridge;
+        });
 
-        $this->app->bindIf(
-            'command.twig.clean', function () {
-                return new Command\Clean;
-            }
-        );
+        $this->app->bindIf('command.twig.clean', function () {
+            return new Command\Clean;
+        });
 
-        $this->app->bindIf(
-            'command.twig.lint', function () {
-                return new Command\Lint;
-            }
-        );
+        $this->app->bindIf('command.twig.lint', function () {
+            return new Command\Lint;
+        });
 
         $this->commands(
             'command.twig',
@@ -147,48 +141,40 @@ class ServiceProvider extends ViewServiceProvider
      */
     protected function registerOptions()
     {
-        $this->app->bindIf(
-            'twig.extension', function () {
-                return $this->app['config']->get('twigbridge.twig.extension');
+        $this->app->bindIf('twig.extension', function () {
+            return $this->app['config']->get('twigbridge.twig.extension');
+        });
+
+        $this->app->bindIf('twig.options', function () {
+            $options = $this->app['config']->get('twigbridge.twig.environment', []);
+
+            // Check whether we have the cache path set
+            if (! isset($options['cache']) || is_null($options['cache'])) {
+                // No cache path set for Twig, lets set to the Laravel views storage folder
+                $options['cache'] = storage_path('framework/views/twig');
             }
-        );
 
-        $this->app->bindIf(
-            'twig.options', function () {
-                $options = $this->app['config']->get('twigbridge.twig.environment', []);
+            return $options;
+        });
 
-                // Check whether we have the cache path set
-                if (! isset($options['cache']) || is_null($options['cache'])) {
-                    // No cache path set for Twig, lets set to the Laravel views storage folder
-                    $options['cache'] = storage_path('framework/views/twig');
-                }
+        $this->app->bindIf('twig.extensions', function () {
+            $load = $this->app['config']->get('twigbridge.extensions.enabled', []);
 
-                return $options;
+            // Is debug enabled?
+            // If so enable debug extension
+            $options = $this->app['twig.options'];
+            $isDebug = (bool) (isset($options['debug'])) ? $options['debug'] : false;
+
+            if ($isDebug) {
+                array_unshift($load, DebugExtension::class);
             }
-        );
 
-        $this->app->bindIf(
-            'twig.extensions', function () {
-                $load = $this->app['config']->get('twigbridge.extensions.enabled', []);
+            return $load;
+        });
 
-                // Is debug enabled?
-                // If so enable debug extension
-                $options = $this->app['twig.options'];
-                $isDebug = (bool) (isset($options['debug'])) ? $options['debug'] : false;
-
-                if ($isDebug) {
-                    array_unshift($load, DebugExtension::class);
-                }
-
-                return $load;
-            }
-        );
-
-        $this->app->bindIf(
-            'twig.lexer', function () {
-                return null;
-            }
-        );
+        $this->app->bindIf('twig.lexer', function () {
+            return null;
+        });
     }
 
     /**
@@ -199,37 +185,29 @@ class ServiceProvider extends ViewServiceProvider
     protected function registerLoaders()
     {
         // The array used in the ArrayLoader
-        $this->app->bindIf(
-            'twig.templates', function () {
-                return [];
-            }
-        );
+        $this->app->bindIf('twig.templates', function () {
+            return [];
+        });
 
-        $this->app->bindIf(
-            'twig.loader.array', function ($app) {
-                return new ArrayLoader($app['twig.templates']);
-            }
-        );
+        $this->app->bindIf('twig.loader.array', function ($app) {
+            return new ArrayLoader($app['twig.templates']);
+        });
 
-        $this->app->bindIf(
-            'twig.loader.viewfinder', function () {
-                return new Twig\Loader(
-                    $this->app['files'],
-                    $this->app['view']->getFinder(),
-                    $this->app['twig.extension']
-                );
-            }
-        );
+        $this->app->bindIf('twig.loader.viewfinder', function () {
+            return new Twig\Loader(
+                $this->app['files'],
+                $this->app['view']->getFinder(),
+                $this->app['twig.extension']
+            );
+        });
 
         $this->app->bindIf(
             'twig.loader',
             function () {
-                return new ChainLoader(
-                    [
+                return new ChainLoader([
                     $this->app['twig.loader.array'],
                     $this->app['twig.loader.viewfinder'],
-                    ]
-                );
+                ]);
             },
             true
         );
@@ -296,21 +274,17 @@ class ServiceProvider extends ViewServiceProvider
         $this->app->alias('twig', Environment::class);
         $this->app->alias('twig', Bridge::class);
 
-        $this->app->bindIf(
-            'twig.compiler', function () {
-                return new Engine\Compiler($this->app['twig']);
-            }
-        );
+        $this->app->bindIf('twig.compiler', function () {
+            return new Engine\Compiler($this->app['twig']);
+        });
 
-        $this->app->bindIf(
-            'twig.engine', function () {
-                return new Engine\Twig(
-                    $this->app['twig.compiler'],
-                    $this->app['twig.loader.viewfinder'],
-                    $this->app['config']->get('twigbridge.twig.globals', [])
-                );
-            }
-        );
+        $this->app->bindIf('twig.engine', function () {
+            return new Engine\Twig(
+                $this->app['twig.compiler'],
+                $this->app['twig.loader.viewfinder'],
+                $this->app['config']->get('twigbridge.twig.globals', [])
+            );
+        });
     }
 
     /**
