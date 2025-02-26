@@ -16,35 +16,23 @@ use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
 /**
- * Access Laravels string class in your Twig templates.
+ * Access Laravels vite class in your Twig templates.
  */
 class Vite extends AbstractExtension
 {
     /**
-     * @var string|object
+     * @var \Illuminate\Foundation\Vite
      */
-    protected $callback = 'Illuminate\Foundation\Vite';
+    protected $vite;
 
     /**
-     * Return the string object callback.
+     * Create a new Vite extension
      *
-     * @return string|object
+     * @param \Illuminate\Foundation\Vite
      */
-    public function getCallback()
+    public function __construct(IlluminateVite $vite)
     {
-        return $this->callback;
-    }
-
-    /**
-     * Set a new string callback.
-     *
-     * @param string|object
-     *
-     * @return void
-     */
-    public function setCallback($callback)
-    {
-        $this->callback = $callback;
+        $this->vite = $vite;
     }
 
     /**
@@ -61,24 +49,7 @@ class Vite extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction(
-                'vite',
-                function (...$arguments) {
-                    $arguments ??= '()';
-
-                    $html = app(IlluminateVite::class)($arguments);
-
-                    return $html->toHtml();
-                }
-            ),
+            new TwigFunction('vite', [$this->vite, '__invoke']),
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFilters()
-    {
-        return [];
     }
 }
