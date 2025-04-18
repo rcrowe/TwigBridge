@@ -28,6 +28,12 @@ class EventNode extends Node
         if (Str::endsWith($templateName, '.twig')) {
             $templateName = Str::substr($templateName, 0, mb_strlen($templateName) - 5);
         }
+
+        $viewPath = resource_path('views');
+        if (Str::startsWith($templateName, $viewPath)) {
+            $templateName = Str::substr($templateName, mb_strlen($viewPath)+1);
+        }
+        
         /** @var \Illuminate\View\Factory $factory */
         $env = resolve('view');
         $viewName = ViewName::normalize($templateName);
