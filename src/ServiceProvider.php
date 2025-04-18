@@ -232,7 +232,7 @@ class ServiceProvider extends ViewServiceProvider
                 );
 
                 foreach ($this->app['config']->get('twigbridge.twig.safe_classes', []) as $safeClass => $strategy) {
-                    $twig->getExtension(EscaperExtension::class)->addSafeClass($safeClass, $strategy);
+                    $twig->getRuntime(EscaperRuntime::class)->addSafeClass($safeClass, $strategy);
                 }
 
                 // Instantiate and add extensions
