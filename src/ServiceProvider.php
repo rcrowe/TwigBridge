@@ -21,6 +21,7 @@ use Twig\Extension\EscaperExtension;
 use Twig\Runtime\EscaperRuntime;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
+use Twig\RuntimeLoader\ContainerRuntimeLoader;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -234,6 +235,9 @@ class ServiceProvider extends ViewServiceProvider
                 foreach ($this->app['config']->get('twigbridge.twig.safe_classes', []) as $safeClass => $strategy) {
                     $twig->getRuntime(EscaperRuntime::class)->addSafeClass($safeClass, $strategy);
                 }
+
+                // Register container-based runtime extension loader
+                $twig->addRuntimeLoader(new ContainerRuntimeLoader($this->app));
 
                 // Instantiate and add extensions
                 foreach ($extensions as $extension) {
