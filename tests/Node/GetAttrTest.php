@@ -157,7 +157,6 @@ class GetAttrTest extends NodeTestCase
         $nodes = ['node' => $expr, 'attribute' => $attr, 'arguments' => $args];
         $attributes = [
             'type'                  => $type,
-            'is_defined_test'       => false,
             'ignore_strict_check'   => false,
             'optimizable'           => true
         ];
