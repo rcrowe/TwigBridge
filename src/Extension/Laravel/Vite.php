@@ -49,7 +49,15 @@ class Vite extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('vite', [$this->vite, '__invoke']),
+            new TwigFunction(
+                'vite',
+                [$this->vite, '__invoke'],
+                [
+                    'is_safe' => [
+                        'html',
+                    ],
+                ],
+            ),
         ];
     }
 }
