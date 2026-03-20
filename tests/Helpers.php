@@ -16,13 +16,7 @@ class Helpers
                     return $object->$attributeName;
                 }
 
-                $attribute->setAccessible(true);
-
-                try {
-                    return $attribute->getValue($object);
-                } finally {
-                    $attribute->setAccessible(false);
-                }
+                return $attribute->getValue($object);
             } catch (\ReflectionException $e) {
                 // do nothing
             }

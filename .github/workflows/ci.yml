@@ -11,15 +11,21 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '8.1', '8.2', '8.3', '8.4']
-        laravel: [ '9', '10', '11', '12' ]
+        php: [ '8.1', '8.2', '8.3', '8.4', '8.5']
+        laravel: [ '9', '10', '11', '12', '13' ]
         exclude:
+          - laravel: 13
+            php: 8.1
+          - laravel: 13
+            php: 8.2
           - laravel: 12
             php: 8.1
           - laravel: 11
             php: 8.1
           - laravel: 9
             php: 8.4
+          - laravel: 9
+            php: 8.5
 
     name: PHP ${{ matrix.php }}; Laravel ${{ matrix.laravel }}
 
@@ -68,6 +74,14 @@ jobs:
           max_attempts: 5
           command: composer require "laravel/framework:12.*" "phpunit/phpunit:^9.3.7" --no-update --no-interaction
         if: "matrix.laravel == '12'"
+
+      - name: Select Laravel 13
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer require "laravel/framework:13.*" "phpunit/phpunit:^9.3.7" --no-update --no-interaction
+        if: "matrix.laravel == '13'"
 
       - name: Install PHP Dependencies
         uses: nick-invision/retry@v1
