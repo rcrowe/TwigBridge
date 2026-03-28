@@ -11,6 +11,7 @@
 
 namespace TwigBridge;
 
+use Illuminate\View\Factory as LaravelFactory;
 use Illuminate\View\ViewServiceProvider;
 use InvalidArgumentException;
 use Twig\Environment;
@@ -22,6 +23,7 @@ use Twig\Runtime\EscaperRuntime;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
 use Twig\RuntimeLoader\ContainerRuntimeLoader;
+use TwigBridge\View\Factory;
 
 /**
  * Bootstrap Laravel TwigBridge.
@@ -283,6 +285,19 @@ class ServiceProvider extends ViewServiceProvider
                 $this->app['twig.loader.viewfinder'],
                 $this->app['config']->get('twigbridge.twig.globals', [])
             );
+        });
+
+        $this->app->extend('view', function (LaravelFactory $view, $app) {
+            $factory = new Factory($view->getEngineResolver(), $view->getFinder(), $view->getDispatcher());
+
+            // We will also set the container instance on this view environment since the
+            // view composers may be classes registered in the container, which allows
+            // for great testable, flexible composers for the application developer.
+            $factory->setContainer($app);
+
+            $factory->share('app', $app);
+
+            return $factory;
         });
     }
 
