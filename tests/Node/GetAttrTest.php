@@ -102,6 +102,71 @@ class GetAttrTest extends NodeTestCase
         }
     }
 
+    public function testGetAttributeOnObjectWithSandbox()
+    {
+        $twig = new Environment($this->createMock(LoaderInterface::class));
+        $policy = new SecurityPolicy([], [], [/*method*/], [/*prop*/], []);
+        $twig->addExtension(new SandboxExtension($policy, true));
+        $template = new TemplateForTest($twig);
+
+        $object = new PlainObjectForTest;
+
+        try {
+            GetAttrNode::attribute(
+                $twig,
+                $template->getSourceContext(),
+                $object,
+                "method",
+                [],
+                Template::METHOD_CALL,
+                false,
+                false,
+                true,
+                7
+            );
+            $this->fail('Sandbox should prevent calling a method that is not allowed');
+        } catch (SecurityError $e) {
+            $this->assertTrue(strpos($e->getMessage(), 'is not allowed') !== false);
+            $this->assertSame(7, $e->getTemplateLine());
+            $this->assertSame('index.twig', $e->getSourceContext()->getName());
+        }
+
+        try {
+            GetAttrNode::attribute(
+                $twig,
+                $template->getSourceContext(),
+                $object,
+                "prop",
+                [],
+                Template::ANY_CALL,
+                false,
+                false,
+                true,
+                9
+            );
+            $this->fail('Sandbox should prevent reading a property that is not allowed');
+        } catch (SecurityError $e) {
+            $this->assertTrue(strpos($e->getMessage(), 'is not allowed') !== false);
+            $this->assertSame(9, $e->getTemplateLine());
+        }
+
+        // Not sandboxed: the same calls succeed
+        $this->assertSame('method', GetAttrNode::attribute(
+            $twig,
+            $template->getSourceContext(),
+            $object,
+            "method",
+            [],
+            Template::METHOD_CALL
+        ));
+        $this->assertSame('prop', GetAttrNode::attribute(
+            $twig,
+            $template->getSourceContext(),
+            $object,
+            "prop"
+        ));
+    }
+
     public function getTests()
     {
         $tests = [];

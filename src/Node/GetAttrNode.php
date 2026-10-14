@@ -155,7 +155,9 @@ class GetAttrNode extends GetAttrExpression
             $arguments,
             $type,
             $isDefinedTest,
-            $ignoreStrictCheck
+            $ignoreStrictCheck,
+            $sandboxed,
+            $lineno
         );
     }
 }
